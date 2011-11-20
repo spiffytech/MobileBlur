@@ -7,6 +7,7 @@
 <section id="story-list">
     {{ for story in stories: }}
         <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"])) }}" class="{{= "unread" if story["read_status"] == 1 else "read" }}"><h2>{{= story["story_title"] }}</h2></a>
+        <p>{{= story["story_date"] }}</p>
     {{ pass }}
 </section>
 
