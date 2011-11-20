@@ -145,9 +145,10 @@ html { overflow-y: scroll; }
  
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: none; }
-
+/*
 a, a:active, a:visited { color:#607890; }
 a:hover { color:#036; }
+*/
 
 ul, ol { margin-left: 1.8em; }
 ol { list-style-type: decimal; }
@@ -554,3 +555,9 @@ a.button:hover span.icon.user { background-position: 0 -869px }
   h2, h3{ page-break-after: avoid; }
 }
 
+#story-list > .read > h2 {
+    color: #607890;
+}
+#story-list > .unread > h2 {
+    color: #306;
+}
