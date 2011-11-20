@@ -6,11 +6,11 @@ def all(items):
 def peekfile(path,file):
     return A(file.replace('\\\\','/'),_href=URL('peek', args=(app, path, file)))
 def editfile(path,file):
-    return A(SPAN(T('edit')),_class='button editbutton',_href=URL('edit', args=(app, path, file)))
+    return A(SPAN(T('Edit')),_class='button editbutton',_href=URL('edit', args=(app, path, file)))
 def testfile(path,file):
     return A(TAG[''](IMG(_src=URL('static', 'images/test_icon.png'), _alt=T('test')), SPAN(T("Run tests in this file"))), _class='icon test tooltip',_href=URL('test', args=(app, file)))
 def editlanguagefile(path,file):
-    return A(SPAN(T('edit')),_class='button editbutton',_href=URL('edit_language', args=(app, path, file))) 
+    return A(SPAN(T('Edit')),_class='button editbutton',_href=URL('edit_language', args=(app, path, file))) 
 def file_upload_form(location):
     form=FORM(T("upload file:")," ",
               INPUT(_type="file",_name="file")," ",T("and rename it:")," ",

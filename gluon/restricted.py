@@ -112,29 +112,30 @@ class RestrictedError(Exception):
         layer='',
         code='',
         output='',
-        environment={},
+        environment=None,
         ):
         """
         layer here is some description of where in the system the exception
         occurred.
         """
-
+        if environment is None: environment = {}
         self.layer = layer
         self.code = code
         self.output = output
+        self.environment = environment
         if layer:
             try:
                 self.traceback = traceback.format_exc()
             except:
                 self.traceback = 'no traceback because template parting error'
             try:
-                self.snapshot = snapshot(context=10,code=code,environment=environment)
+                self.snapshot = snapshot(context=10,code=code,
+                                         environment=self.environment)
             except:
                 self.snapshot = {}
         else:
             self.traceback = '(no error)'
             self.snapshot = {}
-        self.environment = environment
 
     def log(self, request):
         """
@@ -177,12 +178,13 @@ def compile2(code,layer):
     """
     return compile(code.rstrip().replace('\r\n','\n')+'\n', layer, 'exec')
 
-def restricted(code, environment={}, layer='Unknown'):
+def restricted(code, environment=None, layer='Unknown'):
     """
     runs code in environment and returns the output. if an exception occurs
     in code it raises a RestrictedError containing the traceback. layer is
     passed to RestrictedError to identify where the error occurred.
     """
+    if environment is None: environment = {}
     environment['__file__'] = layer
     try:
         if type(code) == types.CodeType:
@@ -283,4 +285,6 @@ def snapshot(info=None, context=5, code=None, environment=None):
             s[k] = BEAUTIFY(v)
 
     return s
+
+
 

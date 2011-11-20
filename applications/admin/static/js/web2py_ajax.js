@@ -25,7 +25,7 @@ String.prototype.reverse = function () { return this.split('').reverse().join(''
 function web2py_ajax_init() {
   jQuery('.hidden').hide();
   jQuery('.error').hide().slideDown('slow');
-  jQuery('.flash').click(function() { jQuery(this).fadeOut('slow'); return false; });
+  jQuery('.flash').click(function(e) { jQuery(this).fadeOut('slow'); e.preventDefault(); });
   // jQuery('input[type=submit]').click(function(){var t=jQuery(this);t.hide();t.after('<input class="submit_disabled" disabled="disabled" type="submit" name="'+t.attr("name")+'_dummy" value="'+t.val()+'">')});
   jQuery('input.integer').live('keyup', function(){this.value=this.value.reverse().replace(/[^0-9\-]|\-(?=.)/g,'').reverse();});
   jQuery('input.double,input.decimal').live('keyup', function(){this.value=this.value.reverse().replace(/[^0-9\-\.,]|[\-](?=.)|[\.,](?=[0-9]*[\.,])/g,'').reverse();});
@@ -55,10 +55,10 @@ function web2py_trap_form(action,target) {
    jQuery('#'+target+' form').each(function(i){
       var form=jQuery(this);
       if(!form.hasClass('no_trap'))
-        form.submit(function(obj){
+        form.submit(function(e){
          jQuery('.flash').hide().html('');
          web2py_ajax_page('post',action,form.serialize(),target);
-         return false;
+	 e.preventDefault();
       });
    });
 }

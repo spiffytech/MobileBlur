@@ -16,4 +16,6 @@ sys.path = [path]+[p for p in sys.path if not p==path]
 import gluon.widget
 
 # Start Web2py and Web2py cron service!
-gluon.widget.start(cron=True)
+if __name__ == '__main__':
+    gluon.widget.start(cron=True)
+

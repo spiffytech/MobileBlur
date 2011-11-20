@@ -248,3 +248,4 @@ class Cursor(object):
     InternalError = InternalError
     ProgrammingError = ProgrammingError
     NotSupportedError = NotSupportedError
+

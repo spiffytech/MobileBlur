@@ -66,11 +66,15 @@ class _BaseImporter(object):
         help the management of this aspect.
         """
 
-    def __call__(self, name, globals={}, locals={}, fromlist=[], level=-1):
+    def __call__(self, name, globals=None, locals=None,
+		 fromlist=None, level=-1):
         """
         The import method itself.
         """
-        return _STANDARD_PYTHON_IMPORTER(name, globals, locals, fromlist,
+        return _STANDARD_PYTHON_IMPORTER(name,
+					 globals,
+					 locals,
+					 fromlist,
                                          level)
 
     def end(self):
@@ -97,12 +101,17 @@ class _DateTrackerImporter(_BaseImporter):
     def begin(self):
         self._tl._modules_loaded = set()
 
-    def __call__(self, name, globals={}, locals={}, fromlist=[], level=-1):
+    def __call__(self, name, globals=None, locals=None,
+		 fromlist=None, level=-1):
         """
         The import method itself.
         """
 
-        call_begin_end = self._tl._modules_loaded == None
+	globals = globals or {}
+	locals = locals or {}
+	fromlist = fromlist or []
+
+        call_begin_end = self._tl._modules_loaded is None
         if call_begin_end:
             self.begin()
 
@@ -242,10 +251,15 @@ class _Web2pyImporter(_BaseImporter):
             return self.__RE_APP_DIR.match(file_path)
         return False
 
-    def __call__(self, name, globals={}, locals={}, fromlist=[], level=-1):
+    def __call__(self, name, globals=None, locals=None,
+		 fromlist=None, level=-1):
         """
         The import method itself.
         """
+
+	globals = globals or {}
+	locals = locals or {}
+	fromlist = fromlist or []
 
         self.begin()
         #try:
@@ -308,4 +322,6 @@ class _Web2pyDateTrackerImporter(_Web2pyImporter, _DateTrackerImporter):
     """
     Like _Web2pyImporter but using a _DateTrackerImporter.
     """
+
+
 

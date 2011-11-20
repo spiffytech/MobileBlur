@@ -19,7 +19,7 @@ __version__ = "1.02c"
 
 import xml.dom.minidom
 from decimal import Decimal
-import datetime 
+import datetime
 import time
 
 DEBUG = False
@@ -41,7 +41,7 @@ class Alias():
         return self.py_type(value)
     def __repr__(self):
         return "<alias '%s' for '%s'>" % (self.xml_type, self.py_type)
-        
+
 byte = Alias(str,'byte')
 short = Alias(int,'short')
 double = Alias(float,'double')
@@ -53,7 +53,7 @@ Time = datetime.time
 # Define convertion function (python type): xml schema type
 TYPE_MAP = {str:'string',unicode:'string',
             bool:'boolean', short:'short', byte:'byte',
-            int:'int', long:'long', integer:'integer', 
+            int:'int', long:'long', integer:'integer',
             float:'float', double:'double',
             Decimal:'decimal',
             datetime.datetime:'dateTime', datetime.date:'date',
@@ -103,7 +103,7 @@ class OrderedDict(dict):
 
 class SimpleXMLElement(object):
     "Simple XML manipulation (simil PHP)"
-    
+
     def __init__(self, text = None, elements = None, document = None, namespace = None, prefix=None):
         self.__ns = namespace
         self.__prefix = prefix
@@ -117,7 +117,7 @@ class SimpleXMLElement(object):
         else:
             self.__elements = elements
             self.__document = document
-    
+
     def add_child(self,name,text=None,ns=True):
         "Adding a child tag to a node"
         if not ns or not self.__ns:
@@ -140,7 +140,7 @@ class SimpleXMLElement(object):
                     document=self.__document,
                     namespace=self.__ns,
                     prefix=self.__prefix)
-    
+
     def __setattr__(self, tag, text):
         "Add text child tag node (short form)"
         if tag.startswith("_"):
@@ -189,7 +189,7 @@ class SimpleXMLElement(object):
 
     def __getitem__(self, item):
         "Return xml tag attribute value or a slice of attributes (iter)"
-        if DEBUG: print "__getitem__(%s)" % item 
+        if DEBUG: print "__getitem__(%s)" % item
         if isinstance(item,basestring):
             if self._element.hasAttribute(item):
                 return self._element.attributes[item].value
@@ -204,11 +204,11 @@ class SimpleXMLElement(object):
                     document=self.__document,
                     namespace=self.__ns,
                     prefix=self.__prefix)
-            
+
     def add_attribute(self, name, value):
         "Set an attribute value from a string"
         self._element.setAttribute(name, value)
- 
+
     def __setitem__(self, item, value):
         "Set an attribute value"
         if isinstance(item,basestring):
@@ -235,7 +235,7 @@ class SimpleXMLElement(object):
                 for ns_uri in isinstance(ns, (tuple, list)) and ns or (ns, ):
                     if DEBUG: print "searching %s by ns=%s" % (tag,ns_uri)
                     elements = self._element.getElementsByTagNameNS(ns_uri, tag)
-                    if elements: 
+                    if elements:
                         break
             if self.__ns and not elements:
                 if DEBUG: print "searching %s by ns=%s" % (tag, self.__ns)
@@ -260,7 +260,7 @@ class SimpleXMLElement(object):
     def __getattr__(self, tag):
         "Shortcut for __call__"
         return self.__call__(tag)
-        
+
     def __iter__(self):
         "Iterate over xml tags at this level"
         try:
@@ -275,7 +275,7 @@ class SimpleXMLElement(object):
 
     def __dir__(self):
         "List xml children tags names"
-        return [node.tagName for node 
+        return [node.tagName for node
                 in self._element.childNodes
                 if node.nodeType != node.TEXT_NODE]
 
@@ -295,11 +295,11 @@ class SimpleXMLElement(object):
     def __len__(self):
         "Return elements count"
         return len(self.__elements)
-        
+
     def __contains__( self, item):
         "Search for a tag name in this element or child nodes"
         return self._element.getElementsByTagName(item)
-    
+
     def __unicode__(self):
         "Returns the unicode text nodes of the current element"
         if self._element.childNodes:
@@ -309,7 +309,7 @@ class SimpleXMLElement(object):
                     rc = rc + node.data
             return rc
         return ''
-    
+
     def __str__(self):
         "Returns the str text nodes of the current element"
         return unicode(self).encode("utf8","ignore")
@@ -323,8 +323,8 @@ class SimpleXMLElement(object):
         try:
             return float(self.__str__())
         except:
-            raise IndexError(self._element.toxml())    
-    
+            raise IndexError(self._element.toxml())
+
     _element = property(lambda self: self.__elements[0])
 
     def unmarshall(self, types):
@@ -354,7 +354,7 @@ class SimpleXMLElement(object):
                 elif str(node) or fn == str:
                     try:
                         # get special desserialization function (if any)
-                        fn = TYPE_UNMARSHAL_FN.get(fn,fn) 
+                        fn = TYPE_UNMARSHAL_FN.get(fn,fn)
                         value = fn(unicode(node))
                     except (ValueError, TypeError), e:
                         raise ValueError("Tag: %s: %s" % (name, unicode(e)))
@@ -385,12 +385,12 @@ class SimpleXMLElement(object):
             self.add_child(name,ns=ns)
         elif value in TYPE_MAP.keys():
             # add commented placeholders for simple tipes (for examples/help only)
-            child = self.add_child(name,ns=ns) 
+            child = self.add_child(name,ns=ns)
             child.add_comment(TYPE_MAP[value])
-        else: # the rest of object types are converted to string 
+        else: # the rest of object types are converted to string
             # get special serialization function (if any)
             fn = TYPE_MARSHAL_FN.get(type(value),str)
-            self.add_child(name,fn(value),ns=ns) 
+            self.add_child(name,fn(value),ns=ns)
 
     def import_node(self, other):
         x = self.__document.importNode(other._element, True)  # deep copy
@@ -406,10 +406,11 @@ if __name__ == "__main__":
     assert [str(a) for a in span1.a()] == ['google', 'yahoo', 'hotmail']
     span1.add_child('a','altavista')
     span1.b = "ex msn"
-    d = {'href':'http://www.bing.com/', 'alt': 'Bing'} 
+    d = {'href':'http://www.bing.com/', 'alt': 'Bing'}
     span1.b[:] = d
     assert sorted([(k,v) for k,v in span1.b[:]]) == sorted(d.items())
     print span1.as_xml()
     assert 'b' in span1
     span.import_node(span1)
     print span.as_xml()
+

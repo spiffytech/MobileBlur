@@ -15,7 +15,7 @@
   </div>
   <div class="box">
     <h3>Current settings</h3>      
-    <p>{{=button(URL('step1'), T('edit'))}}</p>
+    <p>{{=button(URL('step1'), T('Edit'))}}</p>
     <ul id="current_settings">
     	{{for key,value in session.app['params']:}}
     	<li><b>{{=key}}:</b> {{=value}}</li>
@@ -27,7 +27,7 @@
     <p>{{=button(URL('step2'), T('edit all'))}}</p>
     <ul>
     	{{for i,table in enumerate(session.app['tables']):}}
-    	<li>{{=button(URL('step3',args=i), T('edit'))}} <strong>{{=table}}</strong></li>
+    	<li>{{=button(URL('step3',args=i), T('Edit'))}} <strong>{{=table}}</strong></li>
     	{{pass}}
     </ul>
   </div>
@@ -36,7 +36,7 @@
     <p>{{=button(URL('step4'), T('edit all'))}}</p>
     <ul>
       {{for i,page in enumerate(session.app['pages']):}}
-      <li>{{=button(URL('step5',args=i), T('edit'))}} <strong>{{=page}}</strong></li>
+      <li>{{=button(URL('step5',args=i), T('Edit'))}} <strong>{{=page}}</strong></li>
       {{pass}}
     </ul>
   </div>

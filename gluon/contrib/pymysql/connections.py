@@ -54,7 +54,7 @@ MAX_PACKET_LENGTH = 256*256*256-1
 
 
 def dump_packet(data):
-    
+
     def is_ascii(data):
         if byte2int(data) >= 65 and byte2int(data) <= 122: #data.isalnum():
             return data
@@ -715,7 +715,7 @@ class Connection(object):
 
     def _execute_command(self, command, sql):
         self._send_command(command, sql)
-        
+
     def _request_authentication(self):
         self._send_authentication()
 
@@ -930,3 +930,4 @@ class MySQLResult(object):
         eof_packet = self.connection.read_packet()
         assert eof_packet.is_eof_packet(), 'Protocol error, expecting EOF'
         self.description = tuple(description)
+

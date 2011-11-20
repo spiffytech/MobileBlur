@@ -1,4 +1,5 @@
-#!/usr/bin/env python                                                                                                        # created my Massimo Di Pierro
+#!/usr/bin/env python 
+# created my Massimo Di Pierro
 # license MIT/BSD/GPL
 import re
 import cgi
@@ -397,7 +398,9 @@ def render(text,extra={},allowed={},sep='p'):
     #############################################################
     items = [item.strip() for item in text.split('\n\n')]
     if sep=='p':
-        text = ''.join(p[:2]!='<<' and p!=META and '<p>%s</p>'%p or '%s'%p for p in items if p)
+        text = ''.join(
+            (p[:2]!='<<' and p!=META and '<p>%s</p>'%p or '%s'%p) \
+                for p in items if p.strip())
     elif sep=='br':
         text = '<br />'.join(items)
 
@@ -453,3 +456,4 @@ if __name__ == '__main__':
             fargv.close()
     else:
         doctest.testmod()
+

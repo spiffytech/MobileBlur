@@ -636,3 +636,4 @@ class Renderer :
                     self._write( r'\pard\intbl\cell' )
 
             self._write( '\\row}\n' )
+

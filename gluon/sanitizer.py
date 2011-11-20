@@ -223,3 +223,5 @@ def sanitize(text, permitted_tags=[
     return XssCleaner(permitted_tags=permitted_tags,
                       allowed_attributes=allowed_attributes).strip(text, escape)
 
+
+

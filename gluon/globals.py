@@ -74,11 +74,13 @@ class Request(Storage):
         self.application = None
         self.function = None
         self.args = List()
-        self.extension = None
+        self.extension = 'html'
         self.now = datetime.datetime.now()
+        self.utcnow = datetime.datetime.utcnow()
         self.is_restful = False
         self.is_https = False
         self.is_local = False
+        self.global_settings = settings.global_settings
 
     def compute_uuid(self):
         self.uuid = '%s/%s.%s.%s' % (
@@ -102,6 +104,8 @@ class Request(Storage):
                 method = _self.env.request_method
                 if len(_self.args) and '.' in _self.args[-1]:
                     _self.args[-1],_self.extension = _self.args[-1].rsplit('.',1)
+                    current.response.headers['Content-Type'] = \
+                        contenttype(_self.extension.lower())
                 if not method in ['GET','POST','DELETE','PUT']:
                     raise HTTP(400,"invalid method")
                 rest_action = _action().get(method,None)
@@ -182,6 +186,23 @@ class Response(Storage):
             page = self.body.getvalue()
         return page
 
+    def include_meta(self):
+        s = ''
+        for key,value in (self.meta or {}).items():
+            s += '<meta name="%s" content="%s" />' % (key,xmlescape(value))
+        self.write(s,escape=False)
+
+    def include_files(self):
+        s = ''
+        for k,f in enumerate(self.files or []):
+            if not f in self.files[:k]:
+                filename = f.lower().split('?')[0]
+                if filename.endswith('.css'):
+                    s += '<link href="%s" rel="stylesheet" type="text/css" />' % f
+                elif filename.endswith('.js'):
+                    s += '<script src="%s" type="text/javascript"></script>' % f
+        self.write(s,escape=False)
+    
     def stream(
         self,
         stream,

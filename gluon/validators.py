@@ -19,7 +19,7 @@ import struct
 import decimal
 import unicodedata
 from cStringIO import StringIO
-from utils import simple_hash, hmac_hash
+from utils import simple_hash, hmac_hash, web2py_uuid
 
 __all__ = [
     'CLEANUP',
@@ -122,19 +122,40 @@ class IS_MATCH(Validator):
         >>> IS_MATCH('.+')('hello')
         ('hello', None)
 
+        >>> IS_MATCH('hell')('hello')
+        ('hello', 'invalid expression')
+
+        >>> IS_MATCH('hell.*', strict=False)('hello')
+        ('hello', None)
+
+        >>> IS_MATCH('hello')('shello')
+        ('shello', 'invalid expression')
+
+        >>> IS_MATCH('hello', search=True)('shello')
+        ('hello', None)
+
+        >>> IS_MATCH('hello', search=True, strict=False)('shellox')
+        ('hello', None)
+
+        >>> IS_MATCH('.*hello.*', search=True, strict=False)('shellox')
+        ('shellox', None)
+
         >>> IS_MATCH('.+')('')
         ('', 'invalid expression')
     """
 
-    def __init__(self, expression, error_message='invalid expression', strict=True):
+    def __init__(self, expression, error_message='invalid expression', strict=True, search=False):
         if strict:
             if not expression.endswith('$'):
                 expression = '(%s)$' % expression
+        if not search:
+            if not expression.startswith('^'):
+                expression = '^(%s)' % expression
         self.regex = re.compile(expression)
         self.error_message = error_message
 
     def __call__(self, value):
-        match = self.regex.match(value)
+        match = self.regex.search(value)
         if match:
             return (match.group(), None)
         return (value, translate(self.error_message))
@@ -318,7 +339,7 @@ class IS_IN_SET(Validator):
             items = [(k, self.labels[i]) for (i, k) in enumerate(self.theset)]
         if self.sort:
             items.sort(options_sorter)
-        if zero and self.zero != None and not self.multiple:
+        if zero and not self.zero is None and not self.multiple:
             items.insert(0,('',self.zero))
         return items
 
@@ -335,7 +356,7 @@ class IS_IN_SET(Validator):
             values = [value]
         failures = [x for x in values if not x in self.theset]
         if failures and self.theset:
-            if self.multiple and (value == None or value == ''):
+            if self.multiple and (value is None or value == ''):
                 return ([], None)
             return (value, translate(self.error_message))
         if self.multiple:
@@ -439,7 +460,7 @@ class IS_IN_DB(Validator):
         items = [(k, self.labels[i]) for (i, k) in enumerate(self.theset)]
         if self.sort:
             items.sort(options_sorter)
-        if zero and self.zero != None and not self.multiple:
+        if zero and not self.zero is None and not self.multiple:
             items.insert(0,('',self.zero))
         return items
 
@@ -457,7 +478,7 @@ class IS_IN_DB(Validator):
             if not [x for x in values if not x in self.theset]:
                 return (values, None)
         elif self.theset:
-            if value in self.theset:
+            if str(value) in self.theset:
                 if self._and:
                     return self._and(value)
                 else:
@@ -609,6 +630,11 @@ class IS_INT_IN_RANGE(Validator):
             pass
         return (value, self.error_message)
 
+def str2dec(number):
+    s = str(number)
+    if not '.' in s: s+='.00'
+    else: s+='0'*(2-len(s.split('.')[1]))
+    return s
 
 class IS_FLOAT_IN_RANGE(Validator):
     """
@@ -697,10 +723,7 @@ class IS_FLOAT_IN_RANGE(Validator):
         return (value, self.error_message)
 
     def formatter(self,value):
-        if self.dot=='.':
-            return str(value)
-        else:
-            return str(value).replace('.',self.dot)
+        return str2dec(value).replace('.',self.dot)
 
 
 class IS_DECIMAL_IN_RANGE(Validator):
@@ -804,7 +827,7 @@ class IS_DECIMAL_IN_RANGE(Validator):
         return (value, self.error_message)
 
     def formatter(self, value):
-        return str(value).replace('.',self.dot)
+        return str2dec(value).replace('.',self.dot)
 
 def is_empty(value, empty_regex=None):
     "test empty field"
@@ -812,7 +835,7 @@ def is_empty(value, empty_regex=None):
         value = value.strip()
         if empty_regex is not None and empty_regex.match(value):
             value = ''
-    if value == None or value == '' or value == []:
+    if value is None or value == '' or value == []:
         return (value, True)
     return (value, False)
 
@@ -1346,7 +1369,7 @@ class IS_GENERIC_URL(Validator):
         """
 
         self.error_message = error_message
-        if allowed_schemes == None:
+        if allowed_schemes is None:
             self.allowed_schemes = all_url_schemes
         else:
             self.allowed_schemes = allowed_schemes
@@ -1375,7 +1398,7 @@ class IS_GENERIC_URL(Validator):
                     # the scheme
                     scheme = url_split_regex.match(value).group(2)
                     # Clean up the scheme before we check it
-                    if scheme != None:
+                    if not scheme is None:
                         scheme = urllib.unquote(scheme).lower()
                     # If the scheme really exists
                     if scheme in self.allowed_schemes:
@@ -1392,7 +1415,7 @@ class IS_GENERIC_URL(Validator):
                             prependTest = self.__call__(schemeToUse
                                      + '://' + value)
                             # if the prepend test succeeded
-                            if prependTest[1] == None:
+                            if prependTest[1] is None:
                                 # if prepending in the output is enabled
                                 if self.prepend_scheme:
                                     return prependTest
@@ -1761,7 +1784,7 @@ class IS_HTTP_URL(Validator):
         """
 
         self.error_message = error_message
-        if allowed_schemes == None:
+        if allowed_schemes is None:
             self.allowed_schemes = http_schemes
         else:
             self.allowed_schemes = allowed_schemes
@@ -1791,7 +1814,7 @@ class IS_HTTP_URL(Validator):
             x = IS_GENERIC_URL(error_message=self.error_message,
                                allowed_schemes=self.allowed_schemes,
                                prepend_scheme=self.prepend_scheme)
-            if x(value)[1] == None:
+            if x(value)[1] is None:
                 componentsMatch = url_split_regex.match(value)
                 authority = componentsMatch.group(4)
                 # if there is an authority component
@@ -1830,7 +1853,7 @@ class IS_HTTP_URL(Validator):
                             prependTest = self.__call__(schemeToUse
                                      + '://' + value)
                             # if the prepend test succeeded
-                            if prependTest[1] == None:
+                            if prependTest[1] is None:
                                 # if prepending in the output is enabled
                                 if self.prepend_scheme:
                                     return prependTest
@@ -1986,7 +2009,7 @@ class IS_URL(Validator):
 
             methodResult = subMethod(asciiValue)
             #if the validation of the US-ASCII version of the value failed
-            if methodResult[1] != None:
+            if not methodResult[1] is None:
                 # then return the original input value, not the US-ASCII version
                 return (value, methodResult[1])
             else:
@@ -2046,9 +2069,9 @@ class IS_TIME(Validator):
             ivalue = value
             value = regex_time.match(value.lower())
             (h, m, s) = (int(value.group('h')), 0, 0)
-            if value.group('m') != None:
+            if not value.group('m') is None:
                 m = int(value.group('m'))
-            if value.group('s') != None:
+            if not value.group('s') is None:
                 s = int(value.group('s'))
             if value.group('d') == 'pm' and 0 < h < 12:
                 h = h + 12
@@ -2480,13 +2503,25 @@ class CRYPT(object):
     If the digest_alg is specified this is used to replace the
     MD5 with, for example, SHA512. The digest_alg can be
     the name of a hashlib algorithm as a string or the algorithm itself.
+    
+    min_length is the minimal password length (default 4) - IS_STRONG for serious security
+    error_message is the message if password is too short
+    
+    Notice that an empty password is accepted but invalid. It will not allow login back.
+    Stores junk as hashed password.
     """
 
-    def __init__(self, key=None, digest_alg='md5'):
+    def __init__(self, key=None, digest_alg='md5', min_length=0, error_message='too short'):
         self.key = key
         self.digest_alg = digest_alg
+        self.min_length = min_length
+        self.error_message = error_message
 
     def __call__(self, value):
+        if not value and self.min_length>0:
+            value = web2py_uuid()
+        elif len(value)<self.min_length:
+            return ('',translate(self.error_message))
         if self.key:
             return (hmac_hash(value, self.key, self.digest_alg), None)
         else:
@@ -2915,13 +2950,13 @@ class IS_IPV4(Validator):
             for bottom, top in zip(self.minip, self.maxip):
                 if self.invert != (bottom <= number <= top):
                     ok = True
-            if not (self.is_localhost == None or self.is_localhost == \
+            if not (self.is_localhost is None or self.is_localhost == \
                 (number == self.localhost)):
                     ok = False
-            if not (self.is_private == None or self.is_private == \
+            if not (self.is_private is None or self.is_private == \
                 (sum([number[0] <= number <= number[1] for number in self.private]) > 0)):
                     ok = False
-            if not (self.is_automatic == None or self.is_automatic == \
+            if not (self.is_automatic is None or self.is_automatic == \
                 (self.automatic[0] <= number <= self.automatic[1])):
                     ok = False
             if ok:
@@ -2931,4 +2966,6 @@ class IS_IPV4(Validator):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+
+
 

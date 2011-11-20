@@ -35,3 +35,4 @@ class GaeGoogleAccount(object):
         if user:
             return dict(nickname=user.nickname(), email=user.email(),
                         user_id=user.user_id(), source="google account")
+

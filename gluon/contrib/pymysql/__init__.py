@@ -110,7 +110,7 @@ def thread_safe():
 def install_as_MySQLdb():
     """
     After this function is called, any application that imports MySQLdb or
-    _mysql will unwittingly actually use 
+    _mysql will unwittingly actually use
     """
     sys.modules["MySQLdb"] = sys.modules["_mysql"] = sys.modules["pymysql"]
 
@@ -129,3 +129,4 @@ __all__ = [
 
     "NULL","__version__",
     ]
+

@@ -6,7 +6,7 @@ Usage:
     Install py2exe: http://sourceforge.net/projects/py2exe/files/
     Copy script to the web2py directory
     c:\bin\python26\python build_windows_exe.py py2exe
-    
+
 Adapted from http://bazaar.launchpad.net/~flavour/sahana-eden/trunk/view/head:/static/scripts/tools/standalone_exe.py
 """
 
@@ -39,7 +39,7 @@ if python_version == '2.6':
         shutil.copytree('C:\Bin\Microsoft.VC90.CRT', 'dist/')
     except:
         print "You MUST copy Microsoft.VC90.CRT folder into the dist directory"
-        
+
 #read web2py version from VERSION file
 web2py_version_line = readlines_file('VERSION')[0]
 #use regular expression to get just the version number
@@ -83,7 +83,7 @@ if delete_ms_files.lower().startswith("y"):
     #delete the API-MS-Win-Core DLLs
     for f in glob ('dist/API-MS-Win-*.dll'):
         os.unlink (f)
-    #then delete some other files belonging to Microsoft    
+    #then delete some other files belonging to Microsoft
     other_ms_files = ['KERNELBASE.dll', 'MPR.dll', 'MSWSOCK.dll', 'POWRPROF.dll']
     for f in other_ms_files:
         try:
@@ -113,7 +113,7 @@ if copy_apps.lower().startswith("y"):
     if os.path.exists('dist/site-packages')
         shutil.rmtree('dist/site-packages')
     shutil.copytree('site-packages', 'dist/site-packages')
-    #copy scripts 
+    #copy scripts
     if os.path.exists('dist/scripts'):
         shutil.rmtree('dist/scripts')
     shutil.copytree('scripts', 'dist/scripts')
@@ -121,7 +121,7 @@ else:
     #no worries, web2py will create the (empty) folder first run
     print "Skipping site-packages & scripts"
     pass
-    
+
 
 print ""
 
@@ -146,7 +146,7 @@ if create_zip.lower().startswith("y"):
     shutil.rmtree('zip_temp')
     print "Your Windows binary version of web2py can be found in web2py_win.zip"
     print "You may extract the archive anywhere and then run web2py/web2py.exe"
-    
+
     # offer to clear up
     print "Since you created a zip file you likely do not need the build, deposit and dist folders used while building binary."
     clean_up_files = raw_input("Delete these un-necessary folders/files? (Y/n) ")
@@ -160,7 +160,8 @@ else:
     #Didn't want zip file created
     print ""
     print "Creation of web2py Windows binary completed."
-    print "You should copy the /dist directory and its contents." 
+    print "You should copy the /dist directory and its contents."
     print "To run use web2py.exe"
 print "Finished!"
 print "Enjoy web2py " +web2py_version_line
+

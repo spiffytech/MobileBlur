@@ -39,7 +39,7 @@ def _router_default():
         default_controller = 'default',
             controllers = 'DEFAULT',
         default_function = 'index',
-            functions = None,
+            functions = dict(),
         default_language = None,
             languages = None,
         root_static = ['favicon.ico', 'robots.txt'],
@@ -365,10 +365,6 @@ def load_routers(all_apps):
             router.controllers = set()
         elif not isinstance(router.controllers, str):
             router.controllers = set(router.controllers)
-        if router.functions:
-            router.functions = set(router.functions)
-        else:
-            router.functions = set()
         if router.languages:
             router.languages = set(router.languages)
         else:
@@ -389,7 +385,15 @@ def load_routers(all_apps):
                 router.controllers.add('static')
                 router.controllers.add(router.default_controller)
             if router.functions:
-                router.functions.add(router.default_function)
+                if isinstance(router.functions, (set, tuple, list)):
+                    functions = set(router.functions)
+                    if isinstance(router.default_function, str):
+                        functions.add(router.default_function)  # legacy compatibility
+                    router.functions = { router.default_controller: functions }
+                for controller in router.functions:
+                    router.functions[controller] = set(router.functions[controller])
+            else:
+                router.functions = dict()
 
     if isinstance(routers.BASE.applications, str) and routers.BASE.applications == 'ALL':
         routers.BASE.applications = list(all_apps)
@@ -425,11 +429,14 @@ def load_routers(all_apps):
             if ':' in domain:
                 (domain, port) = domain.split(':')
             ctlr = None
+            fcn = None
             if '/' in app:
-                (app, ctlr) = app.split('/')
+                (app, ctlr) = app.split('/', 1)
+            if ctlr and '/' in ctlr:
+                (ctlr, fcn) = ctlr.split('/')
             if app not in all_apps and app not in routers:
                 raise SyntaxError, "unknown app '%s' in domains" % app
-            domains[(domain, port)] = (app, ctlr)
+            domains[(domain, port)] = (app, ctlr, fcn)
     routers.BASE.domains = domains
 
 def regex_uri(e, regexes, tag, default=None):
@@ -754,7 +761,7 @@ class MapUrlIn(object):
         self.extension = 'html'
 
         self.controllers = set()
-        self.functions = set()
+        self.functions = dict()
         self.languages = set()
         self.default_language = None
         self.map_hyphen = False
@@ -810,17 +817,20 @@ class MapUrlIn(object):
         base = routers.BASE  # base router
         self.domain_application = None
         self.domain_controller = None
+        self.domain_function = None
         arg0 = self.harg0
-        if base.applications and arg0 in base.applications:
-            self.application = arg0
-        elif (self.host, self.port) in base.domains:
-            (self.application, self.domain_controller) = base.domains[(self.host, self.port)]
+        if (self.host, self.port) in base.domains:
+            (self.application, self.domain_controller, self.domain_function) = base.domains[(self.host, self.port)]
             self.env['domain_application'] = self.application
             self.env['domain_controller'] = self.domain_controller
+            self.env['domain_function'] = self.domain_function
         elif (self.host, None) in base.domains:
-            (self.application, self.domain_controller) = base.domains[(self.host, None)]
+            (self.application, self.domain_controller, self.domain_function) = base.domains[(self.host, None)]
             self.env['domain_application'] = self.application
             self.env['domain_controller'] = self.domain_controller
+            self.env['domain_function'] = self.domain_function
+        elif base.applications and arg0 in base.applications:
+            self.application = arg0
         elif arg0 and not base.applications:
             self.application = arg0
         else:
@@ -928,8 +938,14 @@ class MapUrlIn(object):
     def map_function(self):
         "handle function.extension"
         arg0 = self.harg0    # map hyphens
-        if not arg0 or self.functions and arg0 not in self.functions and self.controller == self.default_controller:
-            self.function = self.router.default_function or ""
+        functions = self.functions.get(self.controller, set())
+        if isinstance(self.router.default_function, dict):
+            default_function = self.router.default_function.get(self.controller, None)
+        else:
+            default_function = self.router.default_function # str or None
+        default_function = self.domain_function or default_function
+        if not arg0 or functions and arg0 not in functions:
+            self.function = default_function or ""
             self.pop_arg_if(arg0 and self.function == arg0)
         else:
             func_ext = arg0.split('.')
@@ -1023,7 +1039,7 @@ class MapUrlOut(object):
 
         self.applications = routers.BASE.applications
         self.controllers = self.router.controllers
-        self.functions = self.router.functions
+        self.functions = self.router.functions.get(self.controller, set())
         self.languages = self.router.languages
         self.default_language = self.router.default_language
         self.exclusive_domain = self.router.exclusive_domain
@@ -1033,7 +1049,10 @@ class MapUrlOut(object):
 
         self.domain_application = request and self.request.env.domain_application
         self.domain_controller = request and self.request.env.domain_controller
-        self.default_function = self.router.default_function
+        if isinstance(self.router.default_function, dict):
+            self.default_function = self.router.default_function.get(self.controller, None)
+        else:
+            self.default_function = self.router.default_function
 
         if (self.router.exclusive_domain and self.domain_application and self.domain_application != self.application and not self.host):
             raise SyntaxError, 'cross-domain conflict: must specify host'
@@ -1062,7 +1081,7 @@ class MapUrlOut(object):
 
         #  Handle the easy no-args case of tail-defaults: /a/c  /a  /
         #
-        if not self.args and self.function == router.default_function:
+        if not self.args and self.function == self.default_function:
             self.omit_function = True
             if self.controller == router.default_controller:
                 self.omit_controller = True
@@ -1082,9 +1101,9 @@ class MapUrlOut(object):
         if self.controller == default_controller:
             self.omit_controller = True
 
-        #  omit function if default controller/function
+        #  omit function if possible
         #
-        if self.functions and self.function == self.default_function and self.omit_controller:
+        if self.functions and self.function in self.functions and self.function == self.default_function:
             self.omit_function = True
 
         #  prohibit ambiguous cases
@@ -1205,7 +1224,7 @@ def map_url_out(request, env, application, controller, function, args, other, sc
         /da/c/f/args  => /c/f/args
         /da/dc/f/args => /f/args
 
-    We use [applications] and [controllers] and [functions] to suppress ambiguous omissions.
+    We use [applications] and [controllers] and {functions} to suppress ambiguous omissions.
 
     We assume that language names do not collide with a/c/f names.
     '''
@@ -1217,4 +1236,6 @@ def get_effective_router(appname):
     if not routers or appname not in routers:
         return None
     return Storage(routers[appname])  # return a copy
+
+
 

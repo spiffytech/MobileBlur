@@ -420,3 +420,4 @@ class JSONDecoder(object):
         except StopIteration:
             raise JSONDecodeError("No JSON object could be decoded", s, idx)
         return obj, end
+

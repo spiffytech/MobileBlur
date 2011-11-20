@@ -85,3 +85,4 @@ def autoretry_datastore_timeouts(attempts=5.0, interval=0.1, exponent=2.0):
     if getattr(wrapped, '_autoretry_datastore_timeouts', True):
         apiproxy_stub_map.MakeSyncCall = wrapper
 
+

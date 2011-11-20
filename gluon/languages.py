@@ -210,7 +210,7 @@ class translator(object):
         self.otherTs = {}
 
     def get_possible_languages(self):
-        possible_languages = self.current_languages
+        possible_languages = [lang for lang in self.current_languages]
         file_ending = re.compile("\.py$")
         for langfile in os.listdir(os.path.join(self.folder,'languages')):
             if file_ending.search(langfile):
@@ -224,7 +224,7 @@ class translator(object):
         self.force(self.http_accept_language)
 
     def force(self, *languages):
-        if not languages or languages[0] == None:
+        if not languages or languages[0] is None:
             languages = []
         if len(languages) == 1 and isinstance(languages[0], (str, unicode)):
             languages = languages[0]
@@ -250,7 +250,7 @@ class translator(object):
         self.t = {}  # ## no language by default
         return languages
 
-    def __call__(self, message, symbols={},language=None):
+    def __call__(self, message, symbols={}, language=None):
         if not language:
             if self.lazy:
                 return lazyT(message, symbols, self)
@@ -277,6 +277,9 @@ class translator(object):
         the ## notation is ignored in multiline strings and strings that
         start with ##. this is to allow markmin syntax to be translated
         """
+        #for some reason languages.py gets executed before gaehandler.py
+        # is able to set web2py_runtime_gae, so re-check here
+        is_gae = settings.global_settings.web2py_runtime_gae
         if not message.startswith('#') and not '\n' in message:
             tokens = message.rsplit('##', 1)
         else:
@@ -286,7 +289,7 @@ class translator(object):
             tokens[0] = tokens[0].strip()
             message = tokens[0] + '##' + tokens[1].strip()
         mt = self.t.get(message, None)
-        if mt == None:
+        if mt is None:
             self.t[message] = mt = tokens[0]
             if self.language_file and not is_gae:
                 write_dict(self.language_file, self.t)
@@ -344,5 +347,7 @@ def update_all_languages(application_path):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+
+
 
 

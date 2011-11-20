@@ -40,14 +40,7 @@ start() {
 
 stop() {
 	echo -n $"Shutting down $DESC ($NAME): "
-	if [ -r "$PIDFILE" ]; then
-		pid=`cat $PIDFILE`
-		kill -TERM $pid
-		RETVAL=$?
-	else
-		RETVAL=1
-	fi
-	[ $RETVAL -eq 0 ] && success || failure
+	killproc -p "$PIDFILE" -d 3 "$NAME"
 	echo
 	if [ $RETVAL -eq 0 ]; then
 		rm -f /var/lock/subsys/$NAME

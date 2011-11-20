@@ -109,3 +109,4 @@ class Loginza(object):
             form = DIV(A(self.prompt, _href=LOGINZA_URL % (self.language, self.token_url), _class="loginza"),
                    SCRIPT(_src="https://s3-eu-west-1.amazonaws.com/s1.loginza.ru/js/widget.js", _type="text/javascript"))
         return form
+

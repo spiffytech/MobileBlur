@@ -94,7 +94,10 @@ def populate(table, n, default=True):
                 record[fieldname] = None
             elif field.type=='integer' and hasattr(field.requires,'options'):
                 options=field.requires.options(zero=False)
-                record[fieldname] = options[random.randint(0,len(options)-1)][0]
+                if len(options)>0:
+                    record[fieldname] = options[random.randint(0,len(options)-1)][0]
+                else:
+                    record[fieldname] = None
             elif field.type=='list:integer' and hasattr(field.requires,'options'):
                 options=field.requires.options(zero=False)
                 if len(options) > 0:
@@ -159,4 +162,5 @@ if __name__ == '__main__':
     ell=Learner()
     ell.loadd(eval(IUP))
     print ell.generate(1000,prefix=None)
+
 

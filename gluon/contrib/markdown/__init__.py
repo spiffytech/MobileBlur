@@ -14,3 +14,4 @@ def WIKI(text, encoding="utf8", safe_mode='escape', html4tags=False, **attribute
     return XML(markdown(text,extras=extras,
                         safe_mode=safe_mode, html4tags=html4tags)\
                    .encode(encoding,'xmlcharrefreplace'),**attributes)
+

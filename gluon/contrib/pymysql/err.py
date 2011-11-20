@@ -11,11 +11,11 @@ except ImportError:
         e = sys.modules['exceptions']
         Exception = e.Exception
         Warning = e.Warning
-    
+
 from constants import ER
 
 class MySQLError(Exception):
-    
+
     """Exception related to operation with MySQL."""
 
 
@@ -109,7 +109,7 @@ _map_error(NotSupportedError, ER.WARNING_NOT_COMPLETE_ROLLBACK,
 
 del _map_error, ER
 
-    
+
 def _get_error_info(data):
     errno = struct.unpack('<h', data[1:3])[0]
     if data[3] == "#":
@@ -122,7 +122,7 @@ def _get_error_info(data):
         return (errno, None, data[3:].decode("utf8"))
 
 def _check_mysql_exception(errinfo):
-    errno, sqlstate, errorvalue = errinfo 
+    errno, sqlstate, errorvalue = errinfo
     errorclass = error_map.get(errno, None)
     if errorclass:
         raise errorclass, (errno,errorvalue)
@@ -133,7 +133,8 @@ def _check_mysql_exception(errinfo):
 def raise_mysql_exception(data):
     errinfo = _get_error_info(data)
     _check_mysql_exception(errinfo)
-    
+
+
 
 
 

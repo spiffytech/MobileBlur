@@ -90,7 +90,7 @@ _TEST()
 
 class mybuiltin(object):
     """
-    NOTE could simple use a dict and populate it, 
+    NOTE could simple use a dict and populate it,
     NOTE not sure if this changes things though if monkey patching import.....
     """
     #__builtins__
@@ -98,7 +98,7 @@ class mybuiltin(object):
         try:
             return getattr(__builtin__, key)
         except AttributeError:
-            raise KeyError, key            
+            raise KeyError, key
     def __setitem__(self, key, value):
         setattr(self, key, value)
 
@@ -108,15 +108,15 @@ class LoadFactory(object):
     """
     def __init__(self,environment):
         self.environment = environment
-    def __call__(self, c=None, f='index', args=[], vars={},
+    def __call__(self, c=None, f='index', args=None, vars=None,
                  extension=None, target=None,ajax=False,ajax_trap=False,
                  url=None,user_signature=False, content='loading...',**attr):
+        if args is None: args = []
+        vars = Storage(vars or {})
         import globals
         target = target or 'c'+str(random.random())[2:]
         attr['_id']=target
         request = self.environment['request']
-        if not isinstance(vars,Storage):
-            vars = Storage(vars)
         if '.' in f:
             f, extension = f.split('.',1)
         if url or ajax:
@@ -136,7 +136,7 @@ class LoadFactory(object):
                 other_request[key] = value
             other_request['env'] = Storage()
             for key, value in request.env.items():
-                other_request.env['key'] = value 
+                other_request.env['key'] = value
             other_request.controller = c
             other_request.function = f
             other_request.extension = extension or request.extension
@@ -151,7 +151,7 @@ class LoadFactory(object):
             other_request.env.query_string = \
                 vars and html.URL(vars=vars).split('?')[1] or ''
             other_request.env.http_web2py_component_location = \
-                request.env.path_info            
+                request.env.path_info
             other_request.cid = target
             other_request.env.http_web2py_component_element = target
             other_response.view = '%s/%s.%s' % (c,f, other_request.extension)
@@ -266,7 +266,7 @@ def build_environment(request, response, session, store_current=True):
     if is_jython: # jython hack
         __builtins__ = mybuiltin()
     else:
-        __builtins__['__import__'] = __builtin__.__import__
+        __builtins__['__import__'] = __builtin__.__import__ ### WHY?
     environment['__builtins__'] = __builtins__
     environment['HTTP'] = HTTP
     environment['redirect'] = redirect
@@ -314,7 +314,7 @@ def compile_views(folder):
     """
 
     path = os.path.join(folder, 'views')
-    for file in listdir(path, '^[\w/]+\.\w+$'):
+    for file in listdir(path, '^[\w/\-]+(\.\w+)+$'):
         data = parse_template(file, path)
         filename = ('views/%s.py' % file).replace('/', '_').replace('\\', '_')
         filename = os.path.join(folder, 'compiled', filename)
@@ -568,4 +568,6 @@ def test():
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+
+
 
