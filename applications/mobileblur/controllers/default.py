@@ -29,3 +29,10 @@ def login():
             login_form.insert(-1, ex.message)
 
     return dict(login_form=login_form)
+
+
+def logout():
+    response.cookies["nb_cookie"] = ""
+    response.cookies["nb_cookie"]["expires"] = -10
+    response.cookies["nb_cookie"]["path"] = "/"
+    redirect(URL("index"))
