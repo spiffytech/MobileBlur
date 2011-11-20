@@ -340,7 +340,7 @@ class TestRouter(unittest.TestCase):
         self.assertEqual(filter_url('http://domain1.com/abc', app=True), 'app1')
         self.assertEqual(filter_url('http://www.domain1.com/abc', app=True), 'app1')
         self.assertEqual(filter_url('http://domain2.com/abc', app=True), 'app2')
-        self.assertEqual(filter_url('http://domain2.com/admin', app=True), 'admin')
+        self.assertEqual(filter_url('http://domain2.com/admin', app=True), 'app2')
 
         self.assertEqual(filter_url('http://domain.com/goodapp', app=True), 'goodapp')
         self.assertRaises(HTTP, filter_url, 'http://domain.com/bad!app', app=True)
@@ -375,6 +375,9 @@ class TestRouter(unittest.TestCase):
                     #  two domains, same app, two controllers
                     "domain3a.com" : "app3/c3a",
                     "domain3b.com" : "app3/c3b",
+                    #  two domains, same app & controller, two functions
+                    "domain4a.com" : "app4/c4/f4a",
+                    "domain4b.com" : "app4/c4/f4b",
                     #  http vs https
                     "domain6.com:80"  : "app6",
                     "domain6.com:443" : "app6s",
@@ -384,7 +387,7 @@ class TestRouter(unittest.TestCase):
             app2a = dict( default_controller = 'c2a', default_function = 'f2a', controllers = ['c2a'], ),
             app2b = dict( default_controller = 'c2b', default_function = 'f2b', controllers = ['c2b'], ),
             app3 =  dict( controllers = ['c3a', 'c3b'], ),
-            app4 =  dict( default_controller = 'c4', controllers = ['c4'], domain = 'domain4.com' ),
+            app4 =  dict( default_controller = 'c4', controllers = ['c4']),
             app5 =  dict( default_controller = 'c5', controllers = ['c5'], domain = 'localhost' ),
             app6 =  dict( default_controller = 'c6',  default_function = 'f6',  controllers = ['c6'], ),
             app6s =  dict( default_controller = 'c6s',  default_function = 'f6s',  controllers = ['c6s'], ),
@@ -396,6 +399,7 @@ class TestRouter(unittest.TestCase):
         self.assertEqual(filter_url('http://domain1.com/abc.html'), '/app1/c1/abc')
         self.assertEqual(filter_url('http://domain1.com/abc.css'), '/app1/c1/abc.css')
         self.assertEqual(filter_url('http://domain1.com/index/abc'), "/app1/c1/index ['abc']")
+        self.assertEqual(filter_url('http://domain2.com/app1'), "/app2a/c2a/app1")
         
         self.assertEqual(filter_url('https://domain1.com/app1/ctr/fcn', domain=('app1',None), out=True), "/ctr/fcn")
         self.assertEqual(filter_url('https://www.domain1.com/app1/ctr/fcn', domain=('app1',None), out=True), "/ctr/fcn")
@@ -420,8 +424,11 @@ class TestRouter(unittest.TestCase):
         self.assertEqual(filter_url('http://domain3a.com/app3/c3a/fcn', domain=('app3','c3b'), out=True), "/c3a/fcn")
         self.assertEqual(filter_url('http://domain3a.com/app3/c3a/fcn', domain=('app1',None), out=True), "/app3/c3a/fcn")
 
-        self.assertEqual(filter_url('http://domain4.com/abc'), '/app4/c4/abc')
-        self.assertEqual(filter_url('https://domain4.com/app4/c4/fcn', domain=('app4',None), out=True), "/fcn")
+        self.assertEqual(filter_url('http://domain4a.com/abc'), '/app4/c4/abc')
+        self.assertEqual(filter_url('https://domain4a.com/app4/c4/fcn', domain=('app4',None), out=True), "/fcn")
+
+        self.assertEqual(filter_url('http://domain4a.com'), '/app4/c4/f4a')
+        self.assertEqual(filter_url('http://domain4b.com'), '/app4/c4/f4b')
 
         self.assertEqual(filter_url('http://localhost/abc'), '/app5/c5/abc')
         self.assertEqual(filter_url('http:///abc'), '/app5/c5/abc') # test null host => localhost
@@ -525,7 +532,14 @@ class TestRouter(unittest.TestCase):
             ),
             app = dict(
                 controllers = ['default', 'ctr'],
-                functions = ['index', 'user', 'help'],
+                functions = dict(
+                    default=['index', 'user', 'help'],
+                    ctr=['ctrf1', 'ctrf2', 'ctrf3'],
+                ),
+                default_function = dict(
+                    default='index',
+                    ctr='ctrf1',
+                ),
             ),
             app2 = dict(
                 controllers = ['default', 'ctr'],
@@ -533,8 +547,11 @@ class TestRouter(unittest.TestCase):
             ),
         )
         load(rdict=router_functions)
+        
+        # outbound
         self.assertEqual(str(URL(a='init', c='default', f='f', args=['arg1'])), "/init/f/arg1")
         self.assertEqual(str(URL(a='init', c='default', f='index', args=['arg1'])), "/init/index/arg1")
+        
         self.assertEqual(str(URL(a='app', c='default', f='index', args=['arg1'])), "/arg1")
         self.assertEqual(str(URL(a='app', c='default', f='user', args=['arg1'])), "/user/arg1")
         self.assertEqual(str(URL(a='app', c='default', f='user', args=['index'])), "/user/index")
@@ -542,6 +559,8 @@ class TestRouter(unittest.TestCase):
         self.assertEqual(str(URL(a='app', c='default', f='index', args=['init'])), "/index/init")
         self.assertEqual(str(URL(a='app', c='default', f='index', args=['ctr'])), "/index/ctr")
         self.assertEqual(str(URL(a='app', c='ctr', f='index', args=['arg'])), "/ctr/index/arg")
+        self.assertEqual(str(URL(a='app', c='ctr', f='ctrf1', args=['arg'])), "/ctr/arg")
+        self.assertEqual(str(URL(a='app', c='ctr', f='ctrf1', args=['ctrf2'])), "/ctr/ctrf1/ctrf2")
 
         self.assertEqual(str(URL(a='app2', c='default', f='index', args=['arg1'])), "/app2/arg1")
         self.assertEqual(str(URL(a='app2', c='default', f='user', args=['arg1'])), "/app2/user/arg1")
@@ -550,12 +569,12 @@ class TestRouter(unittest.TestCase):
         self.assertEqual(str(URL(a='app2', c='default', f='index', args=['init'])), "/app2/index/init")
         self.assertEqual(str(URL(a='app2', c='default', f='index', args=['ctr'])), "/app2/index/ctr")
 
+        # inbound
         self.assertEqual(filter_url('http://d.com/arg'), "/app/default/index ['arg']")
         self.assertEqual(filter_url('http://d.com/user'), "/app/default/user")
         self.assertEqual(filter_url('http://d.com/user/arg'), "/app/default/user ['arg']")
-        self.assertEqual(filter_url('http://d.com/ctr'), "/app/ctr/index")
-        self.assertEqual(filter_url('http://d.com/ctr/index/arg'), "/app/ctr/index ['arg']")
-        self.assertEqual(filter_url('http://d.com/ctr/arg'), "/app/ctr/arg")
+        self.assertEqual(filter_url('http://d.com/ctr'), "/app/ctr/ctrf1")
+        self.assertEqual(filter_url('http://d.com/ctr/arg'), "/app/ctr/ctrf1 ['arg']")
 
         self.assertEqual(filter_url('http://d.com/app2/arg'), "/app2/default/index ['arg']")
         self.assertEqual(filter_url('http://d.com/app2/user'), "/app2/default/user")
@@ -695,7 +714,7 @@ class TestRouter(unittest.TestCase):
         self.assertEqual(get_effective_router('a1').controllers, set(['c1a', 'c1b', 'default', 'static']))
         self.assertEqual(get_effective_router('a2').controllers, set())
         self.assertEqual(get_effective_router('a3').controllers, set(['c1', 'c2', 'static']))
-        self.assertEqual(get_effective_router('a4').functions, set(['f1', 'f2']))
+        self.assertEqual(get_effective_router('a4').functions, dict(default=set(['f1', 'f2'])))
         self.assertEqual(get_effective_router('xx'), None)
 
     def test_router_error(self):

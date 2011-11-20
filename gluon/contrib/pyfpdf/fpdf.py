@@ -1098,7 +1098,7 @@ class FPDF:
                 self._out('/Filter /'+info['f'])
             if 'parms' in info:
                 self._out(info['parms'])
-            if('trns' in info and type([])==info['trns']):
+            if('trns' in info and isinstance(info['trns'],list)):
                 trns=''
                 for i in xrange(0,len(info['trns'])):
                     trns+=str(info['trns'][i])+' '+str(info['trns'][i])+' '
@@ -1682,5 +1682,6 @@ fpdf_charwidths['zapfdingbats']={
     '\xc6':788,'\xc7':788,'\xc8':788,'\xc9':788,'\xca':788,'\xcb':788,'\xcc':788,'\xcd':788,'\xce':788,'\xcf':788,'\xd0':788,'\xd1':788,'\xd2':788,'\xd3':788,'\xd4':894,'\xd5':838,'\xd6':1016,'\xd7':458,'\xd8':748,'\xd9':924,'\xda':748,'\xdb':918,
     '\xdc':927,'\xdd':928,'\xde':928,'\xdf':834,'\xe0':873,'\xe1':828,'\xe2':924,'\xe3':924,'\xe4':917,'\xe5':930,'\xe6':931,'\xe7':463,'\xe8':883,'\xe9':836,'\xea':836,'\xeb':867,'\xec':867,'\xed':696,'\xee':696,'\xef':874,'\xf0':0,'\xf1':874,
     '\xf2':760,'\xf3':946,'\xf4':771,'\xf5':865,'\xf6':771,'\xf7':888,'\xf8':967,'\xf9':888,'\xfa':831,'\xfb':873,'\xfc':927,'\xfd':970,'\xfe':918,'\xff':0}
+
 
 

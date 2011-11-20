@@ -91,3 +91,4 @@ class ParagraphStyle :
         assert not value or isinstance( value, ParagraphStyle )
         self.Next    = value
         return self
+

@@ -24,8 +24,8 @@ DEFAULT_CHUNK_SIZE = 64*1024
 
 def streamer(stream, chunk_size = DEFAULT_CHUNK_SIZE, bytes = None):
     offset = 0
-    while bytes == None or offset < bytes:
-        if bytes != None and bytes - offset < chunk_size:
+    while bytes is None or offset < bytes:
+        if not bytes is None and bytes - offset < chunk_size:
             chunk_size = bytes - offset
         data = stream.read(chunk_size)
         length = len(data)
@@ -106,4 +106,6 @@ def stream_file_or_304_or_206(
     else:
         wrapped = streamer(stream, chunk_size=chunk_size, bytes=bytes)
     raise HTTP(status, wrapped, **headers)
+
+
 

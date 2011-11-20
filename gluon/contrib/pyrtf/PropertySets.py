@@ -486,3 +486,4 @@ FramePS     = FramePropertySet
 TabPS       = TabPropertySet
 TextPS      = TextPropertySet
 ParagraphPS = ParagraphPropertySet
+

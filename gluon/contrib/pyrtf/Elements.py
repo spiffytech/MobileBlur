@@ -754,3 +754,4 @@ def U( *params ) :
     result = Inline( text_props )
     apply( result.append, params )
     return result
+

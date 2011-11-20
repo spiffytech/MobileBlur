@@ -6,7 +6,7 @@ Aim is
     * very easy to extend
     * reliable enough for practical purposes
     * and assist python web apps to detect clients.
-    
+
 Taken from http://pypi.python.org/pypi/httpagentparser (MIT license)
 Modified my Ross Peoples for web2py to better support iPhone and iPad.
 """
@@ -59,6 +59,7 @@ class DetectorBase(object):
     look_for = "string to look for"
     skip_if_found = [] # strings if present stop processin
     can_register = False
+    is_mobile = False
     prefs = Storage() # dict(info_type = [name1, name2], ..)
     version_splitters = ["/", " "]
     _suggested_detectors = None
@@ -71,9 +72,14 @@ class DetectorBase(object):
     def detect(self, agent, result):
         if agent and self.checkWords(agent):
             result[self.info_type] = Storage(name=self.name)
+            result[self.info_type].is_mobile = self.is_mobile
+            if not result.is_mobile:
+                result.is_mobile = result[self.info_type].is_mobile
+                
             version = self.getVersion(agent)
             if version:
                 result[self.info_type].version = version
+            
             return True
         return False
 
@@ -81,7 +87,7 @@ class DetectorBase(object):
         for w in self.skip_if_found:
             if w in agent:
                 return False
-        if self.look_for:
+        if self.look_for in agent:
             return True
         return False
 
@@ -163,12 +169,12 @@ class Safari(Browser):
             return agent.split('Version/')[-1].split(' ')[0].strip()
         else:
             # Mobile Safari
-            return agent.split('Safari ')[-1].split(' ')[0].strip() 
+            return agent.split('Safari ')[-1].split(' ')[0].strip()
 
 
 class Linux(OS):
     look_for = 'Linux'
-    prefs = Storage(browser=["Firefox"], 
+    prefs = Storage(browser=["Firefox"],
                     dist=["Ubuntu", "Android"], flavor=None)
 
     def getVersion(self, agent):
@@ -234,6 +240,7 @@ class ChromeOS(OS):
 
 class Android(Dist):
     look_for = 'Android'
+    is_mobile = True
 
     def getVersion(self, agent):
         return agent.split('Android')[-1].split(';')[0].strip()
@@ -241,6 +248,7 @@ class Android(Dist):
 
 class iPhone(Dist):
     look_for = 'iPhone'
+    is_mobile = True
 
     def getVersion(self, agent):
         version_end_chars = ['like', ';', ')']
@@ -250,9 +258,10 @@ class iPhone(Dist):
                 version = 'iOS ' + part.split(c)[0].strip()
                 break
         return version.replace('_', '.')
-        
+
 class iPad(Dist):
     look_for = 'iPad'
+    is_mobile = True
 
     def getVersion(self, agent):
         version_end_chars = ['like', ';', ')']
@@ -279,7 +288,7 @@ def detect(agent):
         else:
             detectors = _suggested_detectors
         for detector in detectors:
-            print "detector name: ", detector.name
+            # print "detector name: ", detector.name
             if detector.detect(agent, result):
                 prefs = detector.prefs
                 _suggested_detectors = detector._suggested_detectors
@@ -291,6 +300,8 @@ class Result(Storage):
     def __missing__(self, k):
         return ""
 
+"""
+THIS VERSION OF DETECT CAUSES IndexErrors.
 
 def detect(agent):
     result = Result()
@@ -305,11 +316,11 @@ def detect(agent):
                     detector._suggested_detectors = _suggested_detectors
                     break
     return result
-
+"""
 
 def simple_detect(agent):
     """
-    -> (os, browser) # tuple of strings
+    -> (os, browser, is_mobile) # tuple of strings
     """
     result = detect(agent)
     os_list = []
@@ -318,9 +329,9 @@ def simple_detect(agent):
     if 'os' in result: os_list.append(result['os']['name'])
 
     os = os_list and " ".join(os_list) or "Unknown OS"
-    os_version = os_list and (result['flavor'] and result['flavor'].get(
-            'version')) or (result['dist'] and result['dist'].get('version')) \
-            or (result['os'] and result['os'].get('version')) or ""
+    os_version = os_list and ('flavor' in result and result['flavor'] and result['flavor'].get(
+            'version')) or ('dist' in result and result['dist'] and result['dist'].get('version')) \
+            or ('os' in result and result['os'] and result['os'].get('version')) or ""
     browser = 'browser' in result and result['browser']['name'] \
         or 'Unknown Browser'
     browser_version = 'browser' in result \
@@ -329,7 +340,8 @@ def simple_detect(agent):
         browser = " ".join((browser, browser_version))
     if os_version:
         os = " ".join((os, os_version))
-    return os, browser
+    #is_mobile = ('dist' in result and result.dist.is_mobile) or ('os' in result and result.os.is_mobile) or False
+    return os, browser, result.is_mobile
 
 
 if __name__ == '__main__':
@@ -365,7 +377,7 @@ if __name__ == '__main__':
          ("Windows NT 5.1", "Netscape 8.1"),
          {'os': {'name': 'Windows', 'version': 'NT 5.1'}, 'browser': {'name': 'Netscape', 'version': '8.1'}},),
         )
-    
+
     class TestHAP(unittest.TestCase):
         def setUp(self):
             self.harass_repeat = 1000
@@ -392,3 +404,17 @@ if __name__ == '__main__':
 
     unittest.main()
 
+
+class mobilize(object): 
+
+    def __init__(self, func): 
+        self.func = func 
+
+    def __call__(self):
+        from gluon import current 
+        user_agent = current.request.user_agent()
+        if user_agent.is_mobile: 
+            items = current.response.view.split('.')
+            items.insert(-1,'mobile')
+            current.response.view = '.'.join(items)
+        return self.func() 

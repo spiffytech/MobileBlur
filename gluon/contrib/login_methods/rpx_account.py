@@ -11,9 +11,10 @@
    services with web2py
 """
 
+import os
 import re
 import urllib
-from gluon.html import *
+from gluon import *
 from gluon.tools import fetch
 from gluon.storage import Storage
 import gluon.contrib.simplejson as json
@@ -52,19 +53,20 @@ class RPXAccount(object):
         self.prompt = prompt
         self.on_login_failure = on_login_failure
         self.mappings = Storage()
-
-        self.mappings.Facebook = lambda profile:\
+        
+        dn = {'givenName':'','familyName':''}
+        self.mappings.Facebook = lambda profile, dn=dn:\
             dict(registration_id = profile.get("identifier",""),
                  username = profile.get("preferredUsername",""),
-                 email = profile.get("email",""),
-                 first_name = profile.get("name","").get("givenName",""),
-                 last_name = profile.get("name","").get("familyName",""))
-        self.mappings.Google = lambda profile:\
+                 email = profile.get("email",""),                 
+                 first_name = profile.get("name",dn).get("givenName",""),
+                 last_name = profile.get("name",dn).get("familyName",""))
+        self.mappings.Google = lambda profile, dn=dn:\
             dict(registration_id=profile.get("identifier",""),
                  username=profile.get("preferredUsername",""),
                  email=profile.get("email",""),
-                 first_name=profile.get("name","").get("givenName",""),
-                 last_name=profile.get("name","").get("familyName",""))
+                 first_name=profile.get("name",dn).get("givenName",""),
+                 last_name=profile.get("name",dn).get("familyName",""))
         self.mappings.default = lambda profile:\
             dict(registration_id=profile.get("identifier",""),
                  username=profile.get("preferredUsername",""),
@@ -111,3 +113,15 @@ class RPXAccount(object):
                                  "RPXNOW.show();",
                                  _type="text/javascript"))
         return rpxform
+
+def use_janrain(auth,filename='private/janrain.key',**kwargs):
+    path = os.path.join(current.request.folder,filename)
+    if os.path.exists(path):
+        request = current.request
+        domain,key = open(path,'r').read().strip().split(':')
+        host = current.request.env.http_host
+        url = "http://%s/%s/default/user/login" % (host,request.application)
+        auth.settings.actions_disabled = \
+            ['register','change_password','request_reset_password']
+        auth.settings.login_form = RPXAccount(
+            request, api_key=key,domain=domain, url = url,**kwargs)

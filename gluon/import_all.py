@@ -108,3 +108,5 @@ for module in base_modules + contributed_modules:
             msg += "easy_install-%(python_version)s -U %(module)s" % locals()
             raise ImportError, msg
 
+
+

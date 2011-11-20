@@ -23,7 +23,8 @@ def reset(session):
                   ('login_config',''),
                   ('plugins',[])],
         'tables':['auth_user'],
-        'table_auth_user':['username','first_name','last_name','email','password'],
+        'table_auth_user':['username','first_name',
+                           'last_name','email','password'],
         'pages':['index','error'],
         'page_index':'# Welcome to my new app',
         'page_error':'# Error: the document does not exist',
@@ -43,11 +44,13 @@ def index():
     response.view='wizard/step.html'
     reset(session)
     apps=os.listdir(os.path.join(request.folder,'..'))
-    form=SQLFORM.factory(Field('name',requires=[IS_NOT_EMPTY(),IS_ALPHANUMERIC()]))
+    form=SQLFORM.factory(Field('name',requires=[IS_NOT_EMPTY(),
+                                                IS_ALPHANUMERIC()]))
     if form.accepts(request.vars):
         app = form.vars.name
         session.app['name'] = app
-        if MULTI_USER_MODE and db(db.app.name==app)(db.app.owner!=auth.user.id).count():
+        if MULTI_USER_MODE and db(db.app.name==app)\
+                (db.app.owner!=auth.user.id).count():
             session.flash = 'App belongs already to other user'
         elif app in apps:
             meta = os.path.normpath(\
@@ -60,9 +63,9 @@ def index():
                         session.app = pickle.load(metafile)
                     finally:
                         metafile.close()
-                    session.flash = "The app exists, was created by wizard, continue to overwrite!"
+                    session.flash = T("The app exists, was created by wizard, continue to overwrite!")
                 except:
-                    session.flash = "The app exists, was NOT created by wizard, continue to overwrite!"
+                    session.flash = T("The app exists, was NOT created by wizard, continue to overwrite!")
         redirect(URL('step1'))
     return dict(step='Start',form=form)
 
@@ -120,20 +123,23 @@ def step2():
     form=SQLFORM.factory(Field('table_names','list:string',
                                default=session.app['tables']))
     if form.accepts(request.vars):
-        table_names = [clean(t) for t in listify(form.vars.table_names) if t.strip()]
-        if [t for t in table_names if t.startswith('auth_') and not t=='auth_user']:
-            form.error.table_names = T('invalid table names (auth_* tables already defined)')
+        table_names = [clean(t) for t in listify(form.vars.table_names) \
+                           if t.strip()]
+        if [t for t in table_names if t.startswith('auth_') and \
+                not t=='auth_user']:
+            form.error.table_names = \
+                T('invalid table names (auth_* tables already defined)')
         else:
             session.app['tables']=table_names
             for table in session.app['tables']:
                 if not 'table_'+table in session.app:
                     session.app['table_'+table]=['name']
                 if not table=='auth_user':
-                    for key in ['create','read','update','select','search']:
-                        name = table+'_'+key
-                        if not name in session.app['pages']:
-                            session.app['pages'].append(name)
-                            session.app['page_'+name]='## %s %s' % (key.capitalize(),table)
+                    name = table+'_manage'
+                    if not name in session.app['pages']:
+                        session.app['pages'].append(name)
+                        session.app['page_'+name] = \
+                            '## Manage %s\n{{=form}}' % (table)
             if session.app['tables']:
                 redirect(URL('step3',args=0))
             else:
@@ -166,7 +172,8 @@ def step3():
                 redirect(URL('step3',args=n+1))
             else:
                 redirect(URL('step4'))
-    return dict(step='3: Fields for table "%s" (%s of %s)' % (table,n+1,m),table=table,form=form)
+    return dict(step='3: Fields for table "%s" (%s of %s)' \
+                    % (table,n+1,m),table=table,form=form)
 
 def step4():
     response.view='wizard/step.html'
@@ -191,7 +198,8 @@ def step5():
     markmin_url='http://web2py.com/examples/static/markmin.html'
     form=SQLFORM.factory(Field('content','text',
                                default=session.app.get('page_'+page,[]),
-                               comment=A('use markmin',_href=markmin_url,_target='_blank')),
+                               comment=A('use markmin',
+                                         _href=markmin_url,_target='_blank')),
                          formstyle='table2cols')
     if form.accepts(request.vars):
         session.app['page_'+page]=form.vars.content
@@ -251,8 +259,6 @@ def make_table(table,fields):
     s=''
     s+='\n'+'#'*40+'\n'
     s+="db.define_table('%s',\n" % table
-    s+="    Field('id','id',\n"
-    s+="          represent=lambda id:SPAN(id,' ',A('view',_href=URL('%s_read',args=id)))),\n"%rawtable
     first_field='id'
     for field in fields:
         items=[x.lower() for x in field.split()]
@@ -268,7 +274,8 @@ def make_table(table,fields):
                 has[key] = True
         tables = session.app['tables']
         refs = [t for t in tables if t in items]
-        items = items[:1] + [x for x in items[1:] if not x in keys and not x in tables]
+        items = items[:1] + [x for x in items[1:] \
+                                 if not x in keys and not x in tables]
         barename = name = '_'.join(items)
         if table[:2]=='t_': name='f_'+name
         if first_field=='id': first_field=name
@@ -278,8 +285,8 @@ def make_table(table,fields):
         deftypes={'integer':'integer','double':'double','boolean':'boolean',
                   'float':'double','bool':'boolean',
                   'date':'date','time':'time','datetime':'datetime',
-                  'text':'text','file':'upload','image':'upload','upload':'upload',
-                  'wiki':'text', 'html':'text'}
+                  'text':'text','file':'upload','image':'upload',
+                  'upload':'upload','wiki':'text', 'html':'text'}
         for key,t in deftypes.items():
             if key in has:                
                 ftype = t
@@ -307,10 +314,6 @@ def make_table(table,fields):
             s+=",\n          default=True"
 
         ### determine field representation
-        if 'image' in has:
-            s+=",\n          represent=lambda x: x and IMG(_alt='image',_src=URL('download',args=x), _width='200px') or ''"
-        elif ftype in ('file','upload'):
-            s+=",\n          represent=lambda x: x and A('download',_href=URL('download',args=x)) or ''"
         elif 'wiki' in has:
             s+=",\n          represent=lambda x: MARKMIN(x)"
             s+=",\n          comment='WIKI (markmin)'"
@@ -328,27 +331,20 @@ def make_table(table,fields):
         ### make up a label
         s+=",\n          label=T('%s')),\n" % \
             ' '.join(x.capitalize() for x in barename.split('_'))
-    if table!='auth_user':
-        s+="    Field('is_active','boolean',default=True,\n"
-        s+="          label=T('Active'),writable=False,readable=False),\n"
-    s+="    Field('created_on','datetime',default=request.now,\n"
-    s+="          label=T('Created On'),writable=False,readable=False),\n"
-    s+="    Field('modified_on','datetime',default=request.now,\n"
-    s+="          label=T('Modified On'),writable=False,readable=False,\n"
-    s+="          update=request.now),\n"
-    if not table=='auth_user' and 'auth_user' in session.app['tables']:
-        s+="    Field('created_by',db.auth_user,default=auth.user_id,\n"
-        s+="          label=T('Created By'),writable=False,readable=False),\n"
-        s+="    Field('modified_by',db.auth_user,default=auth.user_id,\n"
-        s+="          label=T('Modified By'),writable=False,readable=False,\n"
-        s+="          update=auth.user_id),\n"
-    elif table=='auth_user':
+    if table=='auth_user':
+        s+="    Field('created_on','datetime',default=request.now,\n"
+        s+="          label=T('Created On'),writable=False,readable=False),\n"
+        s+="    Field('modified_on','datetime',default=request.now,\n"
+        s+="          label=T('Modified On'),writable=False,readable=False,\n"
+        s+="          update=request.now),\n"
         s+="    Field('registration_key',default='',\n"
         s+="          writable=False,readable=False),\n"
         s+="    Field('reset_password_key',default='',\n"
         s+="          writable=False,readable=False),\n"
         s+="    Field('registration_id',default='',\n"
         s+="          writable=False,readable=False),\n"
+    elif 'auth_user' in session.app['tables']:
+        s+="    auth.signature,\n"
     s+="    format='%("+first_field+")s',\n"
     s+="    migrate=settings.migrate)\n\n"
     if table=='auth_user':
@@ -362,9 +358,8 @@ db.auth_user.email.requires = (IS_EMAIL(error_message=auth.messages.invalid_emai
                                IS_NOT_IN_DB(db, db.auth_user.email))
 """
     else:
-        s+="db.define_table('%s_archive',db.%s,Field('current_record','reference %s'))\n" % (table,table,table)
+        s+="db.define_table('%s_archive',db.%s,Field('current_record','reference %s',readable=False,writable=False))\n" % (table,table,table)
     return s
-
 
 def fix_db(filename):
     params = dict(session.app['params'])
@@ -392,21 +387,22 @@ auth.settings.login_form = RPXAccount(request,
     write_file(filename, content, 'wb')
 
 def make_menu(pages):
-    s="""
-response.title = settings.title
-response.subtitle = settings.subtitle
-response.meta.author = '%s <%s>' % (settings.author, settings.author_email)
-response.meta.keywords = settings.keywords
-response.meta.description = settings.description
-response.menu = [
-"""
+    s=''
+    s+='response.title = settings.title\n'
+    s+='response.subtitle = settings.subtitle\n'
+    s+="response.meta.author = '%(author)s <%(author_email)s>' % settings\n"
+    s+='response.meta.keywords = settings.keywords\n'
+    s+='response.meta.description = settings.description\n'
+    s+='response.menu = [\n'
     for page in pages:
-        if not page.endswith('_read') and \
-                not page.endswith('_update') and \
-                not page.endswith('_search') and \
-                not page.startswith('_') and not page.startswith('error'):
-            s+="    (T('%s'),URL('default','%s')==URL(),URL('default','%s'),[]),\n" % \
-                (' '.join(x.capitalize() for x in page.split('_')),page,page)
+        if not page.startswith('error'):
+            if page.endswith('_manage'):
+                page_name = page[:-7]
+            else:
+                page_name = page
+            page_name = ' '.join(x.capitalize() for x in page_name.split('_'))
+            s+="(T('%s'),URL('default','%s')==URL(),URL('default','%s'),[]),\n" \
+                % (page_name,page,page)
     s+=']'
     return s
 
@@ -415,82 +411,22 @@ def make_page(page,contents):
         s="@auth.requires_login()\ndef %s():\n" % page
     else:
         s="def %s():\n" % page
-    items=page.rsplit('_',1)
-    if items[0] in session.app['tables'] and len(items)==2:
-        t=items[0]
-        if items[1]=='read':
-            s+="    record = db.t_%s(request.args(0)) or redirect(URL('error'))\n" % t
-            s+="    form=crud.read(db.t_%s,record)\n" % t
-            s+="    return dict(form=form)\n\n"
-        elif items[1]=='update':
-            s+="    record = db.t_%s(request.args(0),is_active=True) or redirect(URL('error'))\n" % t
-            s+="    form=crud.update(db.t_%s,record,next='%s_read/[id]',\n"  % (t,t)
-            s+="                     ondelete=lambda form: redirect(URL('%s_select')),\n" % t
-            s+="                     onaccept=crud.archive)\n"
-            s+="    return dict(form=form)\n\n"
-        elif items[1]=='create':
-            s+="    form=crud.create(db.t_%s,next='%s_read/[id]')\n" % (t,t)
-            s+="    return dict(form=form)\n\n"
-        elif items[1]=='select':
-            s+="    f,v=request.args(0),request.args(1)\n"
-            s+="    try: query=f and db.t_%s[f]==v or db.t_%s\n" % (t,t)
-            s+="    except: redirect(URL('error'))\n"
-            s+="    rows=db(query)(db.t_%s.is_active==True).select()\n" % t
-            s+="    return dict(rows=rows)\n\n"
-        elif items[1]=='search':
-            s+="    form, rows=crud.search(db.t_%s,query=db.t_%s.is_active==True)\n" % (t,t)
-            s+="    return dict(form=form, rows=rows)\n\n"
-        else:
-            t=None
+    items = page.rsplit('_',1)
+    if items[0] in session.app['tables'] and len(items)==2 and items[1]=='manage':
+        s+="    form = SQLFORM.smartgrid(db.t_%s,onupdate=auth.archive)\n" % items[0]
+        s+="    return locals()\n\n"
     else:
-        t=None
-    if not t:
         s+="    return dict()\n\n"
     return s
 
 def make_view(page,contents):
     s="{{extend 'layout.html'}}\n\n"
     s+=str(MARKMIN(contents))
-    items=page.rsplit('_',1)
-    if items[0] in session.app['tables'] and len(items)==2:
-        t=items[0]
-        if items[1]=='read':
-            s+="\n{{=A(T('edit %s'),_href=URL('%s_update',args=request.args(0)))}}\n<br/>\n"%(t,t)
-            s+='\n{{=form}}\n'
-            s+="{{for t,f in db.t_%s._referenced_by:}}{{if not t[-8:]=='_archive':}}" % t
-            s+="[{{=A(t[2:],_href=URL('%s_select'%t[2:],args=(f,form.record.id)))}}]"
-            s+='{{pass}}{{pass}}'
-        elif items[1]=='create':
-            s+="\n{{=A(T('select %s'),_href=URL('%s_select'))}}\n<br/>\n"%(t,t)
-            s+='\n{{=form}}\n'
-        elif items[1]=='update':
-            s+="\n{{=A(T('show %s'),_href=URL('%s_read',args=request.args(0)))}}\n<br/>\n"%(t,t)
-            s+='\n{{=form}}\n'
-        elif items[1]=='select':
-            s+="\n{{if request.args:}}<h3>{{=T('For %s #%s' % (request.args(0)[2:],request.args(1)))}}</h3>{{pass}}\n"
-            s+="\n{{=A(T('create new %s'),_href=URL('%s_create'))}}\n<br/>\n"%(t,t)
-            s+="\n{{=A(T('search %s'),_href=URL('%s_search'))}}\n<br/>\n"%(t,t)
-            s+="\n{{if rows:}}"
-            s+="\n  {{headers=dict((str(k),k.label) for k in db.t_%s)}}" % t
-            s+="\n  {{=SQLTABLE(rows,headers=headers)}}"
-            s+="\n{{else:}}"
-            s+="\n  {{=TAG.blockquote(T('No Data'))}}"
-            s+="\n{{pass}}\n"
-        elif items[1]=='search':
-            s+="\n{{=A(T('create new %s'),_href=URL('%s_create'))}}\n<br/>\n"%(t,t)
-            s+='\n{{=form}}\n'
-            s+="\n{{if rows:}}"
-            s+="\n  {{headers=dict((str(k),k.label) for k in db.t_%s)}}" % t
-            s+="\n  {{=SQLTABLE(rows,headers=headers)}}"
-            s+="\n{{else:}}"
-            s+="\n  {{=TAG.blockquote(T('No Data'))}}"
-            s+="\n{{pass}}\n"
     return s
 
 def populate(tables):
-
     s = 'from gluon.contrib.populate import populate\n'
-    s+= 'if not db(db.auth_user).count():\n'
+    s+= 'if db(db.auth_user).isempty():\n'
     for table in sort_tables(tables):
         t=table=='auth_user' and 'auth_user' or 't_'+table
         s+="     populate(db.%s,10)\n" % t
@@ -591,9 +527,7 @@ def create(options):
 ### required - do no delete
 def user(): return dict(form=auth())
 def download(): return response.download(request,db)
-def call():
-    session.forget()
-    return service()
+def call(): return service()
 ### end requires
 """)
             for page in session.app['pages']:

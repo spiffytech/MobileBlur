@@ -500,3 +500,4 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 del markers[markerid]
 
     return _iterencode
+

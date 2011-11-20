@@ -125,3 +125,5 @@ def web2py_uuid():
     bytes = ''.join(chr(c ^ ctokens[i]) for i,c in enumerate(bytes))
     return str(uuid.UUID(bytes=bytes, version=4))
 
+
+

@@ -10,9 +10,9 @@ from fcgihandler.py to support SCGI
 fcgihandler has the following copyright:
 " This file is part of the web2py Web Framework
   Copyrighted by Massimo Di Pierro <mdipierro@cs.depaul.edu>
-  License: LGPLv3 (http://www.gnu.org/licenses/lgpl.html) 
+  License: LGPLv3 (http://www.gnu.org/licenses/lgpl.html)
 "
-                                                                            
+
 This is a handler for lighttpd+scgi
 This file has to be in the PYTHONPATH
 Put something like this in the lighttpd.conf file:
@@ -69,3 +69,4 @@ if SOFTCRON:
 # uncomment one of the two rows below depending on the SCGIWSGI server installed
 #scgi.serve_application(application, '', 4000).run()
 SCGIServer(application, port=4000).run()
+

@@ -62,3 +62,4 @@ def pdf_from_html(html):
     else:
         return pyfpdf_from_html(html)
 
+

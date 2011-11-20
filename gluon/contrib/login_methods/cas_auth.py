@@ -57,12 +57,12 @@ class CasAuth( object ):
         self.casusername = casusername
         http_host=current.request.env.http_x_forwarded_host
         if not http_host: http_host=current.request.env.http_host
-        if current.request.env.wsgi_url_scheme in [ 'https', 'HTTPS' ]: 
-            scheme = 'https' 
-        else: 
-            scheme = 'http' 
-        self.cas_my_url='%s://%s%s'%( scheme, http_host, current.request.env.path_info ) 
-    
+        if current.request.env.wsgi_url_scheme in [ 'https', 'HTTPS' ]:
+            scheme = 'https'
+        else:
+            scheme = 'http'
+        self.cas_my_url='%s://%s%s'%( scheme, http_host, current.request.env.path_info )
+
     def login_url( self, next = "/" ):
         current.session.token=self._CAS_login()
         return next
@@ -129,3 +129,4 @@ class CasAuth( object ):
         """
         import urllib
         redirect("%s?service=%s" % (self.cas_logout_url,self.cas_my_url))
+

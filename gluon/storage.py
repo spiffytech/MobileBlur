@@ -61,7 +61,7 @@ class Storage(dict):
             return None
 
     def __setattr__(self, key, value):
-        if value == None:
+        if value is None:
             if key in self:
                 del self[key]
         else:
@@ -221,4 +221,6 @@ class Messages(Storage):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+
+
 

@@ -29,7 +29,7 @@ import tempfile
 import random
 import string
 import platform
-from fileutils import abspath, write_file
+from fileutils import abspath, write_file, parse_version
 from settings import global_settings
 from admin import add_path_first, create_missing_folders, create_missing_app_folders
 from globals import current
@@ -103,8 +103,9 @@ requests = 0    # gc timer
 regex_client = re.compile('[\w\-:]+(\.[\w\-]+)*\.?')  # ## to account for IPV6
 
 version_info = open(abspath('VERSION', gluon=True), 'r')
-web2py_version = version_info.read()
+web2py_version = parse_version(version_info.read().strip())
 version_info.close()
+global_settings.web2py_version = web2py_version
 
 try:
     import rocket
@@ -418,13 +419,14 @@ def wsgibase(environ, responder):
                         request.application = 'welcome'
                         redirect(Url(r=request))
                     elif rewrite.thread.routes.error_handler:
-                        redirect(Url(rewrite.thread.routes.error_handler['application'],
-                                     rewrite.thread.routes.error_handler['controller'],
-                                     rewrite.thread.routes.error_handler['function'],
+                        _handler = rewrite.thread.routes.error_handler
+                        redirect(Url(_handler['application'],
+                                     _handler['controller'],
+                                     _handler['function'],
                                      args=request.application))
                     else:
-                        raise HTTP(404,
-                                   rewrite.thread.routes.error_message % 'invalid request',
+                        raise HTTP(404, rewrite.thread.routes.error_message \
+                                       % 'invalid request',
                                    web2py_error='invalid application')
                 request.url = Url(r=request, args=request.args,
                                        extension=request.raw_extension)
@@ -446,10 +448,12 @@ def wsgibase(environ, responder):
                 # ##################################################
 
                 request.wsgi.environ = environ_aux(environ,request)
-                request.wsgi.start_response = lambda status='200', headers=[], \
+                request.wsgi.start_response = \
+                    lambda status='200', headers=[], \
                     exec_info=None, response=response: \
                     start_response_aux(status, headers, exec_info, response)
-                request.wsgi.middleware = lambda *a: middleware_aux(request,response,*a)
+                request.wsgi.middleware = \
+                    lambda *a: middleware_aux(request,response,*a)
 
                 # ##################################################
                 # load cookies
@@ -471,7 +475,8 @@ def wsgibase(environ, responder):
                 # set no-cache headers
                 # ##################################################
 
-                response.headers['Content-Type'] = contenttype('.'+request.extension)
+                response.headers['Content-Type'] = \
+                    contenttype('.'+request.extension)
                 response.headers['Cache-Control'] = \
                     'no-store, no-cache, must-revalidate, post-check=0, pre-check=0'
                 response.headers['Expires'] = \
@@ -550,8 +555,8 @@ def wsgibase(environ, responder):
                     BaseAdapter.close_all_instances('rollback')
 
                 http_response = \
-                    HTTP(500,
-                         rewrite.thread.routes.error_message_ticket % dict(ticket=ticket),
+                    HTTP(500, rewrite.thread.routes.error_message_ticket % \
+                             dict(ticket=ticket),
                          web2py_error='ticket %s' % ticket)
 
         except:
@@ -573,12 +578,13 @@ def wsgibase(environ, responder):
             e = RestrictedError('Framework', '', '', locals())
             ticket = e.log(request) or 'unrecoverable'
             http_response = \
-                HTTP(500,
-                     rewrite.thread.routes.error_message_ticket % dict(ticket=ticket),
+                HTTP(500, rewrite.thread.routes.error_message_ticket \
+                         % dict(ticket=ticket),
                      web2py_error='ticket %s' % ticket)
 
     finally:
-        if response and hasattr(response, 'session_file') and response.session_file:
+        if response and hasattr(response, 'session_file') \
+                and response.session_file:
             response.session_file.close()
 #         if global_settings.debugging:
 #             import gluon.debug
@@ -592,7 +598,7 @@ def wsgibase(environ, responder):
     if global_settings.web2py_crontype == 'soft':
         newcron.softcron(global_settings.applications_parent).start()
     return http_response.to(responder)
-    
+
 
 def save_password(password, port):
     """
@@ -718,6 +724,7 @@ class HttpServer(object):
         profiler_filename=None,
         ssl_certificate=None,
         ssl_private_key=None,
+        ssl_ca_certificate=None,
         min_threads=None,
         max_threads=None,
         server_name=None,
@@ -769,6 +776,9 @@ class HttpServer(object):
             logger.warning('unable to open SSL private key. SSL is OFF')
         else:
             sock_list.extend([ssl_private_key, ssl_certificate])
+            if ssl_ca_certificate:
+                sock_list.append(ssl_ca_certificate)
+            
             logger.info('SSL is ON')
         app_info = {'wsgi_app': appfactory(wsgibase,
                                            log_filename,
@@ -807,4 +817,6 @@ class HttpServer(object):
             os.unlink(self.pid_filename)
         except:
             pass
+
+
 

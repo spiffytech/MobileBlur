@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/-usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -19,7 +19,6 @@ import socket
 import signal
 import math
 import logging
-
 import newcron
 import main
 
@@ -112,11 +111,13 @@ def presentation(root):
     canvas.pack()
     root.update()
 
-    img = Tkinter.PhotoImage(file='splashlogo.gif')
-    pnl = Tkinter.Label(canvas, image=img, background='white', bd=0)
-    pnl.pack(side='top', fill='both', expand='yes')
-    # Prevent garbage collection of img
-    pnl.image=img
+    logo = 'splashlogo.gif'
+    if os.path.exists(logo):
+        img = Tkinter.PhotoImage(file=logo)
+        pnl = Tkinter.Label(canvas, image=img, background='white', bd=0)
+        pnl.pack(side='top', fill='both', expand='yes')
+        # Prevent garbage collection of img
+        pnl.image=img
 
     def add_label(text='Change Me', font_size=12, foreground='#195866', height=1):
         return Tkinter.Label(
@@ -221,7 +222,7 @@ class web2pyDialog(object):
 
         self.password = Tkinter.Entry(self.root, show='*')
         self.password.bind('<Return>', lambda e: self.start())
-        self.password.focus_force()
+        self.password.focus_force() 
         self.password.grid(row=2, column=1, sticky=sticky)
 
         # Prepare the canvas
@@ -321,7 +322,7 @@ class web2pyDialog(object):
                 pass
 
             self.root.destroy()
-            sys.exit()
+            sys.exit(0)
 
     def error(self, message):
         """ Show error message """
@@ -488,6 +489,12 @@ def console():
                       dest='ssl_private_key',
                       help='file that contains ssl private key')
 
+    parser.add_option('--ca-cert',
+                      action='store',
+                      dest='ssl_ca_certificate',
+                      default=None,
+                      help='Use this file containing the CA certificate to validate X509 certificates from clients')
+
     parser.add_option('-d',
                       '--pid_filename',
                       default='httpserver.pid',
@@ -620,6 +627,15 @@ def console():
                       default='',
                       help=msg)
 
+    msg = 'run scheduled tasks for the specified apps'
+    msg += '-K app1,app2,app3'
+    msg += 'requires a scheduler defined in the models'
+    parser.add_option('-K',
+                      '--scheduler',
+                      dest='scheduler',
+                      default=None,
+                      help=msg)
+
     msg = 'run doctests in web2py environment; ' +\
         'TEST_PATH like a/c/f (c,f optional)'
     parser.add_option('-T',
@@ -703,7 +719,8 @@ def console():
                       dest='nobanner',
                       help='Do not print header banner')
 
-    msg = 'listen on multiple addresses: "ip:port:cert:key;ip2:port2:cert2:key2;..." (:cert:key optional; no spaces)'
+
+    msg = 'listen on multiple addresses: "ip:port:cert:key:ca_cert;ip2:port2:cert2:key2:ca_cert2;..." (:cert:key optional; no spaces)'
     parser.add_option('--interfaces',
                       action='store',
                       dest='interfaces',
@@ -736,14 +753,16 @@ def console():
 
     options.folder = os.path.abspath(options.folder)
 
-    #  accept --interfaces in the form "ip:port:cert:key;ip2:port2;ip3:port3:cert3:key3"
+    #  accept --interfaces in the form 
+    #  "ip:port:cert:key;ip2:port2;ip3:port3:cert3:key3"
     #  (no spaces; optional cert:key indicate SSL)
-    #
     if isinstance(options.interfaces, str):
-        options.interfaces = [interface.split(':') for interface in options.interfaces.split(';')]
+        options.interfaces = [
+            interface.split(':') for interface in options.interfaces.split(';')]
         for interface in options.interfaces:
             interface[1] = int(interface[1])    # numeric port
-        options.interfaces = [tuple(interface) for interface in options.interfaces]
+        options.interfaces = [
+            tuple(interface) for interface in options.interfaces]
 
     if options.numthreads is not None and options.minthreads is None:
         options.minthreads = options.numthreads  # legacy
@@ -763,7 +782,32 @@ def console():
 
     return (options, args)
 
+def start_schedulers(options):
+    apps = [app.strip() for app in options.scheduler.split(',')]
+    try:
+        from multiprocessing import Process
+    except:
+        sys.stderr.write('Sorry, -K only supported for python 2.6-2.7\n')
+        return
+    processes = []
+    code = "from gluon import current; current._scheduler.loop()"
+    for app in apps:
+        print 'starting scheduler for "%s"...' % app
+        args = (app,True,True,None,False,code)
+        logging.getLogger().setLevel(logging.DEBUG)        
+        p = Process(target=run, args=args)
+        processes.append(p)
+        print "Currently running %s scheduler processes" % (len(processes))
+        p.start()
+        print "Processes started"
+    for p in processes:
+        try:
+            p.join()
+        except KeyboardInterrupt:
+            p.terminate()
+            p.join()
 
+            
 def start(cron=True):
     """ Start server  """
 
@@ -801,9 +845,17 @@ def start(cron=True):
         test(options.test, verbose=options.verbose)
         return
 
+    # ## if -K
+    if options.scheduler:
+        try:
+            start_schedulers(options)
+        except KeyboardInterrupt:
+            pass
+        return
+
     # ## if -S start interactive shell (also no cron)
     if options.shell:
-        if options.args!=None:
+        if not options.args is None:
             sys.argv[:] = options.args
         run(options.shell, plain=options.plain, bpython=options.bpython,
             import_models=options.import_models, startfile=options.run)
@@ -905,6 +957,7 @@ def start(cron=True):
                              profiler_filename=options.profiler_filename,
                              ssl_certificate=options.ssl_certificate,
                              ssl_private_key=options.ssl_private_key,
+                             ssl_ca_certificate=options.ssl_ca_certificate,
                              min_threads=options.minthreads,
                              max_threads=options.maxthreads,
                              server_name=options.server_name,
@@ -919,4 +972,6 @@ def start(cron=True):
     except KeyboardInterrupt:
         server.stop()
     logging.shutdown()
+
+
 

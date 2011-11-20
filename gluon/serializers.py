@@ -8,8 +8,15 @@ from storage import Storage
 from html import TAG
 from html import xmlescape
 from languages import lazyT
-import contrib.simplejson as simplejson
 import contrib.rss2 as rss2
+
+try:
+    import json as json_parser                      # try stdlib (Python 2.6)
+except ImportError:
+    try:
+        import simplejson as json_parser            # try external module
+    except:
+        import contrib.simplejson as json_parser    # fallback to pure-Python module
 
 def custom_json(o):
     if hasattr(o,'custom_json') and callable(o.custom_json):
@@ -50,7 +57,7 @@ def xml(value, encoding='UTF-8', key='document'):
 
 
 def json(value,default=custom_json):
-    return simplejson.dumps(value,default=default)
+    return json_parser.dumps(value,default=default)
 
 
 def csv(value):
@@ -75,4 +82,6 @@ def rss(feed):
                                     ]
                     )
     return rss2.dumps(rss)
+
+
 

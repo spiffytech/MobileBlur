@@ -9,3 +9,4 @@ def dumps(doc):
     r=Renderer()
     r.Write(doc,s)
     return s.getvalue()
+

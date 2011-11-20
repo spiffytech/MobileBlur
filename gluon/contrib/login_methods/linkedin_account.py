@@ -48,3 +48,4 @@ class LinkedInAccount(object):
                         last_name = profile.last_name,
                         username = profile.id)
 
+

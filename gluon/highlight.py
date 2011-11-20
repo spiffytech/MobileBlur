@@ -23,13 +23,13 @@ class Highlighter(object):
         self,
         mode,
         link=None,
-        styles={},
+        styles=None,
         ):
         """
         Initialise highlighter:
             mode = language (PYTHON, WEB2PY,C, CPP, HTML, HTML_PLAIN)
         """
-
+        styles = styles or {}
         mode = mode.upper()
         if link and link[-1] != '/':
             link = link + '/'
@@ -166,7 +166,7 @@ class Highlighter(object):
               + r'from|True|False)(?![a-zA-Z0-9_])'),
              'color:#185369; font-weight: bold'),
             ('WEB2PY',
-             re.compile(r'(request|response|session|cache|redirect|local_import|HTTP|TR|XML|URL|BEAUTIFY|A|BODY|BR|B|CAT|CENTER|CODE|DIV|EM|EMBED|FIELDSET|LEGEND|FORM|H1|H2|H3|H4|H5|H6|IFRAME|HEAD|HR|HTML|I|IMG|INPUT|LABEL|LI|LINK|MARKMIN|MENU|META|OBJECT|OL|ON|OPTION|P|PRE|SCRIPT|SELECT|SPAN|STYLE|TABLE|THEAD|TBODY|TFOOT|TAG|TD|TEXTAREA|TH|TITLE|TT|T|UL|XHTML|IS_SLUG|IS_STRONG|IS_LOWER|IS_UPPER|IS_ALPHANUMERIC|IS_DATETIME|IS_DATETIME_IN_RANGE|IS_DATE|IS_DATE_IN_RANGE|IS_DECIMAL_IN_RANGE|IS_EMAIL|IS_EXPR|IS_FLOAT_IN_RANGE|IS_IMAGE|IS_INT_IN_RANGE|IS_IN_SET|IS_IPV4|IS_LIST_OF|IS_LENGTH|IS_MATCH|IS_EQUAL_TO|IS_EMPTY_OR|IS_NULL_OR|IS_NOT_EMPTY|IS_TIME|IS_UPLOAD_FILENAME|IS_URL|CLEANUP|CRYPT|IS_IN_DB|IS_NOT_IN_DB|DAL|Field|SQLFORM|SQLTABLE|xmlescape|embed64)(?![a-zA-Z0-9_])'
+             re.compile(r'(request|response|session|cache|redirect|local_import|HTTP|TR|XML|URL|BEAUTIFY|A|BODY|BR|B|CAT|CENTER|CODE|COL|COLGROUP|DIV|EM|EMBED|FIELDSET|LEGEND|FORM|H1|H2|H3|H4|H5|H6|IFRAME|HEAD|HR|HTML|I|IMG|INPUT|LABEL|LI|LINK|MARKMIN|MENU|META|OBJECT|OL|ON|OPTION|P|PRE|SCRIPT|SELECT|SPAN|STYLE|TABLE|THEAD|TBODY|TFOOT|TAG|TD|TEXTAREA|TH|TITLE|TT|T|UL|XHTML|IS_SLUG|IS_STRONG|IS_LOWER|IS_UPPER|IS_ALPHANUMERIC|IS_DATETIME|IS_DATETIME_IN_RANGE|IS_DATE|IS_DATE_IN_RANGE|IS_DECIMAL_IN_RANGE|IS_EMAIL|IS_EXPR|IS_FLOAT_IN_RANGE|IS_IMAGE|IS_INT_IN_RANGE|IS_IN_SET|IS_IPV4|IS_LIST_OF|IS_LENGTH|IS_MATCH|IS_EQUAL_TO|IS_EMPTY_OR|IS_NULL_OR|IS_NOT_EMPTY|IS_TIME|IS_UPLOAD_FILENAME|IS_URL|CLEANUP|CRYPT|IS_IN_DB|IS_NOT_IN_DB|DAL|Field|SQLFORM|SQLTABLE|xmlescape|embed64)(?![a-zA-Z0-9_])'
              ), 'link:%(link)s;text-decoration:None;color:#FF5C1F;'),
             ('MAGIC', re.compile(r'self|None'),
              'color:#185369; font-weight: bold'),
@@ -221,7 +221,7 @@ class Highlighter(object):
                             new_mode = \
                                 Highlighter.all_styles[mode][0](self,
                                     token, match, style)
-                        if new_mode != None:
+                        if not new_mode is None:
                             mode = new_mode
                         i += max(1, len(match.group()))
                         break
@@ -241,9 +241,9 @@ class Highlighter(object):
             style = self.styles[token]
         if self.span_style != style:
             if style != 'Keep':
-                if self.span_style != None:
+                if not self.span_style is None:
                     self.output.append('</span>')
-                if style != None:
+                if not style is None:
                     self.output.append('<span style="%s">' % style)
                 self.span_style = style
 
@@ -253,10 +253,12 @@ def highlight(
     language,
     link='/examples/globals/vars/',
     counter=1,
-    styles={},
+    styles=None,
     highlight_line=None,
-    attributes={},
+    attributes=None,
     ):
+    styles = styles or {}
+    attributes = attributes or {}
     if not 'CODE' in styles:
         code_style = """
         font-size: 11px;
@@ -314,7 +316,7 @@ def highlight(
 
     items = attributes.items()
     fa = ' '.join([key[1:].lower() for (key, value) in items if key[:1]
-                   == '_' and value == None] + ['%s="%s"'
+                   == '_' and value is None] + ['%s="%s"'
                    % (key[1:].lower(), str(value).replace('"', "'"))
                   for (key, value) in attributes.items() if key[:1]
                    == '_' and value])
@@ -331,4 +333,6 @@ if __name__ == '__main__':
     argfp.close()
     print '<html><body>' + highlight(data, sys.argv[2])\
          + '</body></html>'
+
+
 

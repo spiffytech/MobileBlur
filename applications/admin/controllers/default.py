@@ -588,8 +588,8 @@ def resolve():
             return 'minus'
 
     if request.vars:
-        c = ''.join([item[2:] for (i, item) in enumerate(d) if item[0] \
-                     == ' ' or 'line%i' % i in request.vars])
+        c = '\n'.join([item[2:].rstrip() for (i, item) in enumerate(d) if item[0] \
+                           == ' ' or 'line%i' % i in request.vars])
         safe_write(path, c)
         session.flash = 'files merged'
         redirect(URL('edit', args=request.args))
@@ -710,8 +710,8 @@ def design():
         functions[c] = items
 
     # Get all views
-    views = sorted(listdir(apath('%s/views/' % app, r=request), '[\w/\-]+\.\w+$'))
-    views = [x.replace('\\','/') for x in views]
+    views = sorted(listdir(apath('%s/views/' % app, r=request), '[\w/\-]+(\.\w+)+$'))
+    views = [x.replace('\\','/') for x in views if not x.endswith('.bak')]
     extend = {}
     include = {}
     for c in views:
@@ -1192,7 +1192,7 @@ def update_languages():
     app = get_app()
     update_all_languages(apath(app, r=request))
     session.flash = T('Language files (static strings) updated')
-    redirect(URL('design',args=app))
+    redirect(URL('design',args=app,anchor='languages'))
 
 def twitter():
     session.forget()
@@ -1217,6 +1217,7 @@ def user():
         return dict(form=T("Disabled"))
 
 def reload_routes():
-   """ Reload routes.py """
-   gluon.rewrite.load()
-   redirect(URL('site'))
+    """ Reload routes.py """
+    import gluon.rewrite
+    gluon.rewrite.load()
+    redirect(URL('site'))
