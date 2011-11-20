@@ -1,0 +1,11 @@
+{{left_sidebar_enabled=right_sidebar_enabled=False}}
+{{extend 'layout.html'}}
+
+<h1>Title: {{= feed["feed_title"] }}</h1>
+
+{{ for story in stories: }}
+    <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"])) }}"><h2>{{= story["story_title"] }}</h2></a>
+{{ pass }}
+
+{{block left_sidebar}}New Left Sidebar Content{{end}}
+{{block right_sidebar}}New Right Sidebar Content{{end}}

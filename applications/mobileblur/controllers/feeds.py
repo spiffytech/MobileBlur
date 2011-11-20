@@ -1,15 +1,9 @@
 # -*- coding: utf-8 -*-
-# this file is released under public domain and you can use without limitations
 
 from pprint import pprint
 
-newsblur = local_import("newsblur")
-
-username = ""
-password = ""
-threshold = 0
-thresholds = ["nt", "ps", "ng"]  # indices -1, 0, 1 for negative, neutral, ane positive inhelligence filters
-
 def view():
-    newsblur.login(username, password)
-    return 
+    stories = newsblur.feed(request.args[0])["stories"]
+    feeds = newsblur.feeds(flat=True)["feeds"]
+    feed = [feed for feed in feeds.itervalues() if feed["id"]==int(request.args[0])][0]
+    return dict(stories=stories, feed=feed)

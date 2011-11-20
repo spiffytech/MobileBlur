@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # this file is released under public domain and you can use without limitations
+from gluon.custom_import import track_changes; track_changes(True)
 
 #########################################################################
 ## This scaffolding model makes your app work on Google App Engine too
@@ -42,7 +43,7 @@ mail.settings.sender = 'you@gmail.com'         # your email
 mail.settings.login = 'username:password'      # your credentials or None
 
 auth.settings.hmac_key = '<your secret key>'   # before define_tables()
-auth.define_tables()                           # creates all needed tables
+auth.define_tables(username=True)                           # creates all needed tables
 auth.settings.mailer = mail                    # for user email verification
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
@@ -79,3 +80,10 @@ crud.settings.auth = None        # =auth to enforce authorization on crud
 ## >>> rows=db(db.mytable.myfield=='value').select(db.mytable.ALL)
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
+
+db.define_table("users",
+    Field("username"),
+    Field("password"),
+    Field("cookie")
+)
+login()
