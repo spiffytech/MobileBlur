@@ -1,7 +1,8 @@
 {{left_sidebar_enabled=right_sidebar_enabled=False}}
 {{extend 'layout.html'}}
 
-<h1>Title: {{= feed["feed_title"] }}</h1>
+<h1>{{= feed["feed_title"] }}</h1>
+<a href="{{= URL("mark_read", vars=dict(feed=feed["id"])) }}"> Mark feed as read</a>
 
 {{ for story in stories: }}
     <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"])) }}"><h2>{{= story["story_title"] }}</h2></a>

@@ -193,7 +193,7 @@ def mark_story_as_starred(story_id,feed_id):
 
 def mark_all_as_read(days=0):
     '''
-    Mark all stories in a feed or list of feeds as read.
+    Mark all stories in *all* feeds read.
     '''
     
     url = nb_url + 'reader/mark_all_as_read'
