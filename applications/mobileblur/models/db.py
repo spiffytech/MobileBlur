@@ -34,6 +34,7 @@ response.generic_patterns = ['*'] if request.is_local else []
 from gluon.tools import Mail, Auth, Crud, Service, PluginManager, prettydate
 mail = Mail()                                  # mailer
 auth = Auth(db)                                # authentication/authorization
+
 crud = Crud(db)                                # for CRUD helpers using auth
 service = Service()                            # for json, xml, jsonrpc, xmlrpc, amfrpc
 plugins = PluginManager()                      # for configuring plugins
@@ -86,4 +87,3 @@ db.define_table("users",
     Field("password"),
     Field("cookie")
 )
-login()
