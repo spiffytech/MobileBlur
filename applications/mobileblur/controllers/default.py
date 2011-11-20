@@ -1,4 +1,5 @@
 from pprint import pprint
+import simplejson
 
 def index():
     raw_feeds = newsblur.feeds(flat=True)["feeds"]
@@ -19,7 +20,7 @@ def login():
     )
     if login_form.accepts(request):
         results = newsblur.login(login_form.vars["username"], login_form.vars["password"])
-        response.cookies["nb_cookie"] = newsblur.cookies
+        response.cookies["nb_cookie"] = newsblur.cookies["newsblur_sessionid"]
         response.cookies["nb_cookie"]["path"] = "/"
         print "cookie =", newsblur.cookies
         redirect(URL("index"))
