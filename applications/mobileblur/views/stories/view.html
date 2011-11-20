@@ -2,6 +2,7 @@
 {{extend 'layout.html'}}
 
 <a href="{{= story["story_permalink"] }}"><h1>{{= story["story_title"] }}</h1></a>
+<a href="{{= URL("mark_read", vars=dict(story_id=story["id"], feed_id=feed_id)) }}">Mark story as read</a>
 
 {{= XML(story["story_content"]) }}
 

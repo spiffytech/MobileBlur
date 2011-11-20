@@ -23,7 +23,6 @@ def login():
             results = newsblur.login(login_form.vars["username"], login_form.vars["password"])
             response.cookies["nb_cookie"] = newsblur.cookies["newsblur_sessionid"]
             response.cookies["nb_cookie"]["path"] = "/"
-            print "cookie =", newsblur.cookies
             redirect(URL("index"))
         except Exception as ex:
             login_form.insert(-1, ex.message)

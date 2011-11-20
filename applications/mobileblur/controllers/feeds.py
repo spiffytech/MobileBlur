@@ -9,5 +9,6 @@ def view():
     return dict(stories=stories, feed=feed)
 
 def mark_read():
-    newsblur.mark_feed_as_read(request.vars["feed"])
+    if len(request.args) > 0:
+        newsblur.mark_feed_as_read(request.args[0])
     redirect(URL("default", "index"))
