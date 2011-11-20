@@ -12,9 +12,6 @@ __version__ = "0.1"
 nb_url = "http://www.newsblur.com/"
 cookies = None
 
-from gluon import current
-print current.db
-
 def login(username,password):
     '''
     Login as an existing user.
