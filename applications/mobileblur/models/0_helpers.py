@@ -4,7 +4,6 @@ newsblur = newsblur.NewsBlur()
 threshold = 0
 thresholds = ["nt", "ps", "ng"]  # indices -1, 0, 1 for negative, neutral, and positive intelligence filters
 
-print request.cookies
 if [request.application, request.controller, request.function] != [request.application, "default", "login"]:
     if "nb_cookie" not in request.cookies.keys():
         redirect(URL("default", "login"))
