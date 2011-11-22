@@ -528,7 +528,7 @@ header > h1 > a {
 #story-list {
 }
 
-#story-list > .story > a {
+#story-list > .story > a, .feed > a {
     text-decoration: none;
     font-weight: bold;
     margin-top: 0;
@@ -540,14 +540,13 @@ header > h1 > a {
 #story-list > .story > .read {
     color: #CC3333;
 }
-#story-list > .story > .unread {
+#story-list > .story > .unread, .feed > a {
     color: #CC0000;
 /*    color: #A8A8EE;*/
 }
 
-#story-list > .story {
+#story-list > .story, .feed {
     padding: .5%;
-    padding-top: 0;
     border-top: 1px solid black;
     margin-top: .33%;
 }
