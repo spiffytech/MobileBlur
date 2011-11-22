@@ -330,12 +330,6 @@ legend { font-weight: bold; }
 
 input:focus, textarea:focus { background: #fafafa; }
 
-p {text-indent:30px;}
-
-p, blockquote {    
-    margin-bottom: 10px;
-}
-
 h1,h2,h3,h4,h5,h6 { line-height: 170%; }
 h1 {font-size: 2.0em;}
 h2 {font-size: 1.8em;}
@@ -517,14 +511,18 @@ a.button:hover span.icon.user { background-position: 0 -869px }
 }
 
 body {
-    margin: 0 2% 0 2%;
-    background-color: #CC6600;
 }
 
 header {
     background-color: #cc0000;
+    padding: 1%;
     border-bottom: 1px solid black;
     color: white;
+}
+header > h1 > a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
 }
 
 #story-list {
@@ -532,11 +530,11 @@ header {
 
 #story-list > .story > a {
     text-decoration: none;
-    border-radius: 5px;
-    font-size: 2em;
     font-weight: bold;
-    background-color: #CC9933;
-    padding: 0 6px 0 6px;
+    margin-top: 0;
+}
+#story-list > .story > p {
+    font-size: .75em;
 }
 
 #story-list > .story > .read {
@@ -548,9 +546,20 @@ header {
 }
 
 #story-list > .story {
-    background-color: white;
-    padding: .25%;
-    border: 1px solid black;
-    border-radius: 5px;
+    padding: .5%;
+    padding-top: 0;
+    border-top: 1px solid black;
     margin-top: .33%;
+}
+
+footer {
+    background-color: #cc0000;
+    padding: 1%;
+    border-top: 1px solid black;
+    color: white;
+}
+footer > a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
 }
