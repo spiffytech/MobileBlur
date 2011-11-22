@@ -26,6 +26,7 @@ def login():
             redirect(URL("index"))
         except Exception as ex:
             login_form.insert(-1, ex.message)
+            login_form._class = "alert-message block-message error"
 
     return dict(login_form=login_form)
 

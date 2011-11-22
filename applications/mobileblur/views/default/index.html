@@ -1,12 +1,10 @@
-{{left_sidebar_enabled=right_sidebar_enabled=False}}
 {{extend 'layout.html'}}
 
 {{ for feed in feeds.itervalues(): }}
-    {{ if threshold == -1 and feed["ng"] > 0: }} <span class='ng'>[ {{= feed["ng"] }} ]</span> {{ pass }}
-    {{ if threshold <= 0 and feed["nt"] > 0: }} <span class='nt'>[ {{= feed["nt"] }} ]</span> {{ pass }}
-    {{if feed["ps"] > 0: }}<span class='ps'>[ {{= feed["ps"] }} ]</span> {{ pass }}
-    <a href="{{= URL(c="feeds", f="view", args=[feed["id"]]) }}">{{= feed["feed_title"] }}</a><br />
+    <div class="feed">
+        {{ if threshold == -1 and feed["ng"] > 0: }} <span class='ng'>{{= feed["ng"] }}</span> {{ pass }}
+        {{ if threshold <= 0 and feed["nt"] > 0: }} <span class='nt'>{{= feed["nt"] }}</span> {{ pass }}
+        {{if feed["ps"] > 0: }}<span class='ps'>{{= feed["ps"] }}</span> {{ pass }}
+        <a href="{{= URL(c="feeds", f="view", args=[feed["id"]]) }}">{{= feed["feed_title"] }}</a><br />
+    </div>
 {{ pass }}
-
-{{block left_sidebar}}New Left Sidebar Content{{end}}
-{{block right_sidebar}}New Right Sidebar Content{{end}}
