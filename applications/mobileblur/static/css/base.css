@@ -27,13 +27,13 @@ Update: Revision: 20101102 by Martin Mulone
 - left and right padding to quoted text
 - page layout alignment, width and padding (change this for spaces)
 - column widths (change this to use left_sidebar and right_sidebar)
-- backrgound images and colors (change this for colors)
+- background images and colors (change this for colors)
 - web2py specific (.flash, .error)
 
 Notice:
 - even if you use a different layout/css you may need classes .flash and .error
 - this is all color neutral except for #349C01 (header, links, lines)
-- there are two backrgound images: images/background.png and images/header.png
+- there are two background images: images/background.png and images/header.png
 
 License: This file is released under BSD and MIT
 
@@ -344,45 +344,6 @@ h4 {font-size: 1.2em;}
 h5 {font-size: 1.0em;}
 h6 {font-size: 0.8em;}
 
-/*********** page layout alignment, width and padding ***********/
-/*body {background-color: #000;}*/
-#container, #header, #page, #content, #statusbar,
-#footer, #wrapper { display:block; line-height: 170%; }
-#wrapper {width: 900px;}
-#container {
-    margin: 0 auto;
-    padding: 0;
-}
-#wrapper {margin: 0 auto;} 
-#wrapper {background-color: #fff; padding: 5px;} 
-#statusbar { margin: 5px 0px 20px 0px;}
-#footer {    
-    margin-top: 30px;    
-    padding: 5px;    
-}
-#statusbar, #footer {    
-    background: #eaeaea; 
-    border-top: 1px #aaa solid;    
-}
-#logo {
-    width: 68px;
-    height: 62px;
-    background: url(../images/logo.png);
-}
-#appname {
-    color: #cccccc;
-}
-
-#right_sidebar { width: 160px; float:right; display: none; }
-#left_sidebar { width: 160px; float:left; display: none; }
-#content { float: left; /*width: 740px;*//*width: 63%;*/ /*width: 640px; float:left;*/ } /* uncomment this if you are going to use sidebars */
- 
-.auth_navbar {
-   top: 0px;
-   float: right;
-   padding: 3px 10px 3px 10px; 
-}
-
 /*********** web2py specific ***********/
 div.flash {
     font-weight: bold;
@@ -555,9 +516,41 @@ a.button:hover span.icon.user { background-position: 0 -869px }
   h2, h3{ page-break-after: avoid; }
 }
 
-#story-list > .read > h2 {
-    color: #607890;
+body {
+    margin: 0 2% 0 2%;
+    background-color: #CC6600;
 }
-#story-list > .unread > h2 {
-    color: #306;
+
+header {
+    background-color: #cc0000;
+    border-bottom: 1px solid black;
+    color: white;
+}
+
+#story-list {
+}
+
+#story-list > .story > a {
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 2em;
+    font-weight: bold;
+    background-color: #CC9933;
+    padding: 0 6px 0 6px;
+}
+
+#story-list > .story > .read {
+    color: #CC3333;
+}
+#story-list > .story > .unread {
+    color: #CC0000;
+/*    color: #A8A8EE;*/
+}
+
+#story-list > .story {
+    background-color: white;
+    padding: .25%;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-top: .33%;
 }

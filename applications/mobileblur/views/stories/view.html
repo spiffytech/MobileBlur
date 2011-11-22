@@ -1,10 +1,10 @@
-{{left_sidebar_enabled=right_sidebar_enabled=False}}
 {{extend 'layout.html'}}
 
-<a href="{{= story["story_permalink"] }}"><h1>{{= story["story_title"] }}</h1></a>
-<a href="{{= URL("mark_read", vars=dict(story_id=story["id"], feed_id=feed_id)) }}">Mark story as read</a>
+<a href="{{= story["story_permalink"] }}">
+    <h2>{{= story["story_title"] }}</h2>
+</a>
+<a href="{{= URL("mark_read", vars=dict(story_id=story["id"], feed_id=feed_id)) }}" class="button">
+    Mark story as read
+</a>
 
 {{= XML(story["story_content"]) }}
-
-{{block left_sidebar}}New Left Sidebar Content{{end}}
-{{block right_sidebar}}New Right Sidebar Content{{end}}
