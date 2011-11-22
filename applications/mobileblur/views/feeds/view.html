@@ -1,7 +1,7 @@
 {{extend 'layout.html'}}
 
 {{ block header_bonus }}
-    <h2 style="float: left">{{= feed["feed_title"] }}</h2>
+    <h2>{{= feed["feed_title"] }}</h2>
     <a href="{{= URL("mark_read", args=[feed["id"]]) }}" class="button">Mark feed as read</a>
 {{ end }}
 
