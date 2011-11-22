@@ -21,6 +21,8 @@ def view():
         feed = [feed for feed in feeds.itervalues() if feed["id"]==int(request.args[0])][0]
         print time.time() - s
 
+    response.title = feed["feed_title"]
+
     return dict(stories=stories, feed=feed)
 
 

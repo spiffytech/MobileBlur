@@ -10,7 +10,7 @@
 	 Remove this if you use the .htaccess -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>{{ block title }}{{=response.title or request.application}}{{ end }}</title>
+    <title>{{ block title }}{{= " - ".join([response.title, request.application]) }}{{ end }}</title>
     
     <!-- http://dev.w3.org/html5/markup/meta.name.html -->
     <meta name="application-name" content="{{=request.application}}" />	
