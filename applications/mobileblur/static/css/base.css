@@ -552,6 +552,20 @@ header > h1 > a {
     margin-top: .33%;
 }
 
+span.ps, span.nt, span.ng {
+    padding: .05em;
+    border-radius: 5px;
+}
+span.ps {
+    background-color: #35C030;
+}
+span.nt {
+    background-color: yellow;
+}
+span.ng {
+    background-color: red;
+}
+
 footer {
     background-color: #cc0000;
     padding: 1%;

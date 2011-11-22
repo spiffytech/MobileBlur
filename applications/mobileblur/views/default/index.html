@@ -1,8 +1,8 @@
 {{extend 'layout.html'}}
 
 {{ for feed in feeds.itervalues(): }}
-    {{ if threshold == -1 and feed["ng"] > 0: }} <span class='ng'>[ {{= feed["ng"] }} ]</span> {{ pass }}
-    {{ if threshold <= 0 and feed["nt"] > 0: }} <span class='nt'>[ {{= feed["nt"] }} ]</span> {{ pass }}
-    {{if feed["ps"] > 0: }}<span class='ps'>[ {{= feed["ps"] }} ]</span> {{ pass }}
+    {{ if threshold == -1 and feed["ng"] > 0: }} <span class='ng'>{{= feed["ng"] }}</span> {{ pass }}
+    {{ if threshold <= 0 and feed["nt"] > 0: }} <span class='nt'>{{= feed["nt"] }}</span> {{ pass }}
+    {{if feed["ps"] > 0: }}<span class='ps'>{{= feed["ps"] }}</span> {{ pass }}
     <a href="{{= URL(c="feeds", f="view", args=[feed["id"]]) }}">{{= feed["feed_title"] }}</a><br />
 {{ pass }}
