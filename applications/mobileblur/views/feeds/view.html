@@ -10,9 +10,14 @@
 import time 
 s = time.time()
 }}
-    {{ for story in stories: }}
+    {{ for story in stories: 
+        if sum([v for k,v in story["intelligence"].iteritems()]) < threshold:
+            continue
+    }}
+
+        {{ print story["read_status"] }}
         <div class="story">
-            <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"])) }}" class="{{= "unread" if story["read_status"] == 1 else "read" }}">
+            <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"])) }}" class="{{= "unread" if story["read_status"] == 0 else "read" }}">
                 {{= story["story_title"] }}
             </a>
             <p>{{= story["story_date"] }}</p>
