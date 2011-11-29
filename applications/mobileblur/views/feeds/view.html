@@ -10,7 +10,8 @@
 import time 
 s = time.time()
 }}
-    {{ for story in stories: 
+    {{ 
+        for story in stories: 
         if sum([v for k,v in story["intelligence"].iteritems()]) < threshold:
             continue
     }}

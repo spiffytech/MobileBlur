@@ -25,7 +25,7 @@
 	  initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
 	  maximum-scale = 1.0 retains dimensions instead of zooming in if page width < device width
       -->
-    <meta name="viewport" content="width=device-width, initial-scale=2, minimum-scale=2, maximum-scale=5.0">
+    <meta name="viewport">
     
     <!-- Place favicon.ico and apple-touch-icon.png in the root of your domain and delete these references -->
     <link rel="shortcut icon" href="{{=URL('static','favicon.ico')}}" type="image/x-icon">
@@ -60,6 +60,7 @@
     style_content = 'style="width: %s"' % width_content
     }}
 <!--    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">-->
+    <link rel="stylesheet" href="{{= URL("static", "css/1140.css") }}">
   </head>
   
   <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->	
@@ -78,7 +79,7 @@
       {{ block header_bonus }}{{end}}
 	</header>
 	
-    <section id="content" {{=XML(style_content)}} >
+    <section id="content" class-"container" {{=XML(style_content)}} >
         {{include}}	
     </section>
 
