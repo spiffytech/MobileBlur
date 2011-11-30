@@ -1,14 +1,13 @@
 {{extend 'layout.html'}}
 
-<section id="story">
-    <header>
-        <a href="{{= story["story_permalink"] }}">
-            {{= story["story_title"] }}
-        </a>
-    </header>
+{{ block header_bonus }}
+    <a href="{{= story["story_permalink"] }}">
+        <h2>{{= story["story_title"] }}</h2>
+    </a>
     <a href="{{= URL("mark_read", vars=dict(story_id=story["id"], feed_id=feed_id)) }}" class="button">
         Mark story as read
     </a>
-
+{{ end }}
+<section id="story">
     {{= XML(story["story_content"]) }}
 </section>

@@ -532,8 +532,13 @@ header > h1 > a {
     font-weight: bold;
 }
 
-header > h2 {
+#story > header > a {
+    color: white;
+}
+
+header > a> h2 {
 /*    border-top: 1px solid white;*/
+    color: white;
 }
 
 #story-list {
