@@ -516,11 +516,12 @@ a.button:hover span.icon.user { background-position: 0 -869px }
 }
 
 body {
-    background-color: #f2c84b;
+/*    background-color: #f2c84b;*/
+    color: #493F3E
 }
 
 header {
-    background-color: #f24405;
+    background-color: #95392E;
     padding: 1%;
     border-bottom: 1px solid #d91604;
     color: white;
@@ -536,7 +537,7 @@ header > h2 {
 }
 
 #story-list {
-    background-color: #f2c84b;
+/*    background-color: #f2c84b;*/
 }
 
 #story-list > .story > a, .feed > a {
@@ -549,10 +550,10 @@ header > h2 {
 }
 
 #story-list > .story > .read {
-    color: #023859;
+    color: #D99B48;
 }
 #story-list > .story > .unread, .feed > a {
-    color: #0396a6;
+    color: #C57E3C;
 }
 
 #story-list > .story, .feed {
@@ -566,17 +567,17 @@ span.ps, span.nt, span.ng {
     border-radius: 5px;
 }
 span.ps {
-    background-color: #35C030;
+    background-color: #ABAA7A;
 }
 span.nt {
-    background-color: yellow;
+    background-color: #D99B48;
 }
 span.ng {
     background-color: red;
 }
 
 footer {
-    background-color: #f24405;
+    background-color: #95392E;
     padding: 1%;
     border-top: 1px solid #d91604;
     color: white;
