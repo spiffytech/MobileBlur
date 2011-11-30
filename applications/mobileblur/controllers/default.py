@@ -23,9 +23,16 @@ def login():
             results = newsblur.login(login_form.vars["username"], login_form.vars["password"])
             response.cookies["nb_cookie"] = newsblur.cookies["newsblur_sessionid"]
             response.cookies["nb_cookie"]["path"] = "/"
-            print "cookie =", newsblur.cookies
             redirect(URL("index"))
         except Exception as ex:
             login_form.insert(-1, ex.message)
+            login_form._class = "alert-message block-message error"
 
     return dict(login_form=login_form)
+
+
+def logout():
+    response.cookies["nb_cookie"] = ""
+    response.cookies["nb_cookie"]["expires"] = -10
+    response.cookies["nb_cookie"]["path"] = "/"
+    redirect(URL("index"))

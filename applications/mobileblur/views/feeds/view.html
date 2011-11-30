@@ -1,12 +1,28 @@
-{{left_sidebar_enabled=right_sidebar_enabled=False}}
 {{extend 'layout.html'}}
 
-<h1>{{= feed["feed_title"] }}</h1>
-<a href="{{= URL("mark_read", vars=dict(feed=feed["id"])) }}"> Mark feed as read</a>
+{{ block header_bonus }}
+    <h2>{{= feed["feed_title"] }}</h2>
+    <a href="{{= URL("mark_read", args=[feed["id"]]) }}" class="button">Mark feed as read</a>
+{{ end }}
 
-{{ for story in stories: }}
-    <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"])) }}"><h2>{{= story["story_title"] }}</h2></a>
-{{ pass }}
+<section id="story-list">
+{{
+import time 
+s = time.time()
+}}
+    {{ 
+        for story in stories: 
+        if sum([v for k,v in story["intelligence"].iteritems()]) < threshold:
+            continue
+    }}
 
-{{block left_sidebar}}New Left Sidebar Content{{end}}
-{{block right_sidebar}}New Right Sidebar Content{{end}}
+        {{ print story["read_status"] }}
+        <div class="story">
+            <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"])) }}" class="{{= "unread" if story["read_status"] == 0 else "read" }}">
+                {{= story["story_title"] }}
+            </a>
+            <p>{{= story["story_date"] }}</p>
+        </div>
+    {{ pass }}
+{{ print time.time() - s }}
+</section>

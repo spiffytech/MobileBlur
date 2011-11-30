@@ -23,8 +23,6 @@ class NewsBlur():
 
         url = nb_url + 'api/login'
         results = requests.post(url, data={"username": username, "password": password})
-        print "results.cookies =", results.cookies
-        print type(results.cookies)
         self.cookies = results.cookies
         results = simplejson.loads(results.content)
         if results["authenticated"] is False:

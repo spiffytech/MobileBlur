@@ -27,13 +27,13 @@ Update: Revision: 20101102 by Martin Mulone
 - left and right padding to quoted text
 - page layout alignment, width and padding (change this for spaces)
 - column widths (change this to use left_sidebar and right_sidebar)
-- backrgound images and colors (change this for colors)
+- background images and colors (change this for colors)
 - web2py specific (.flash, .error)
 
 Notice:
 - even if you use a different layout/css you may need classes .flash and .error
 - this is all color neutral except for #349C01 (header, links, lines)
-- there are two backrgound images: images/background.png and images/header.png
+- there are two background images: images/background.png and images/header.png
 
 License: This file is released under BSD and MIT
 
@@ -145,9 +145,10 @@ html { overflow-y: scroll; }
  
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: none; }
-
+/*
 a, a:active, a:visited { color:#607890; }
 a:hover { color:#036; }
+*/
 
 ul, ol { margin-left: 1.8em; }
 ol { list-style-type: decimal; }
@@ -329,12 +330,6 @@ legend { font-weight: bold; }
 
 input:focus, textarea:focus { background: #fafafa; }
 
-p {text-indent:30px;}
-
-p, blockquote {    
-    margin-bottom: 10px;
-}
-
 h1,h2,h3,h4,h5,h6 { line-height: 170%; }
 h1 {font-size: 2.0em;}
 h2 {font-size: 1.8em;}
@@ -342,45 +337,6 @@ h3 {font-size: 1.4em;}
 h4 {font-size: 1.2em;}
 h5 {font-size: 1.0em;}
 h6 {font-size: 0.8em;}
-
-/*********** page layout alignment, width and padding ***********/
-/*body {background-color: #000;}*/
-#container, #header, #page, #content, #statusbar,
-#footer, #wrapper { display:block; line-height: 170%; }
-#wrapper {width: 900px;}
-#container {
-    margin: 0 auto;
-    padding: 0;
-}
-#wrapper {margin: 0 auto;} 
-#wrapper {background-color: #fff; padding: 5px;} 
-#statusbar { margin: 5px 0px 20px 0px;}
-#footer {    
-    margin-top: 30px;    
-    padding: 5px;    
-}
-#statusbar, #footer {    
-    background: #eaeaea; 
-    border-top: 1px #aaa solid;    
-}
-#logo {
-    width: 68px;
-    height: 62px;
-    background: url(../images/logo.png);
-}
-#appname {
-    color: #cccccc;
-}
-
-#right_sidebar { width: 160px; float:right; display: none; }
-#left_sidebar { width: 160px; float:left; display: none; }
-#content { float: left; /*width: 740px;*//*width: 63%;*/ /*width: 640px; float:left;*/ } /* uncomment this if you are going to use sidebars */
- 
-.auth_navbar {
-   top: 0px;
-   float: right;
-   padding: 3px 10px 3px 10px; 
-}
 
 /*********** web2py specific ***********/
 div.flash {
@@ -535,6 +491,11 @@ a.button:hover span.icon.user { background-position: 0 -869px }
   html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } */
 }
 
+@media handheld {
+    body {
+    }
+}
+
 
 /* 
  * print styles
@@ -554,3 +515,80 @@ a.button:hover span.icon.user { background-position: 0 -869px }
   h2, h3{ page-break-after: avoid; }
 }
 
+body {
+/*    background-color: #f2c84b;*/
+    color: #493F3E
+}
+
+header {
+    background-color: #95392E;
+    padding: 1%;
+    border-bottom: 1px solid #95392E;
+    color: white;
+}
+header > h1 > a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+#story > header > a {
+    color: white;
+}
+
+header > a> h2 {
+/*    border-top: 1px solid white;*/
+    color: white;
+}
+
+#story-list {
+/*    background-color: #f2c84b;*/
+}
+
+#story-list > .story > a, .feed > a {
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 0;
+}
+#story-list > .story > p {
+    font-size: .75em;
+}
+
+#story-list > .story > .read {
+    color: #D99B48;
+}
+#story-list > .story > .unread, .feed > a {
+    color: #C57E3C;
+}
+
+#story-list > .story, .feed {
+    padding: .5%;
+    border-top: 1px solid #95392E;
+    margin-top: .33%;
+}
+
+span.ps, span.nt, span.ng {
+    padding: .05em;
+    border-radius: 5px;
+}
+span.ps {
+    background-color: #ABAA7A;
+}
+span.nt {
+    background-color: #D99B48;
+}
+span.ng {
+    background-color: red;
+}
+
+footer {
+    background-color: #95392E;
+    padding: 1%;
+    border-top: 1px solid #95392E;
+    color: white;
+}
+footer > a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
