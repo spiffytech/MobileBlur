@@ -523,7 +523,7 @@ body {
 header {
     background-color: #95392E;
     padding: 1%;
-    border-bottom: 1px solid #d91604;
+    border-bottom: 1px solid #95392E;
     color: white;
 }
 header > h1 > a {
@@ -558,7 +558,7 @@ header > h2 {
 
 #story-list > .story, .feed {
     padding: .5%;
-    border-top: 1px solid #d91604;
+    border-top: 1px solid #95392E;
     margin-top: .33%;
 }
 
@@ -579,7 +579,7 @@ span.ng {
 footer {
     background-color: #95392E;
     padding: 1%;
-    border-top: 1px solid #d91604;
+    border-top: 1px solid #95392E;
     color: white;
 }
 footer > a {
