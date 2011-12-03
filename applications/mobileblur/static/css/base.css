@@ -516,8 +516,10 @@ a.button:hover span.icon.user { background-position: 0 -869px }
 }
 
 body {
-/*    background-color: #f2c84b;*/
     color: #493F3E
+}
+#content {
+    padding: 0 0.5% 0 0.5%;
 }
 
 a, a:hover {
@@ -526,7 +528,6 @@ a, a:hover {
 
 header {
     background-color: #95392E;
-    padding: 1%;
     border-bottom: 1px solid #95392E;
     color: white;
 }
@@ -550,6 +551,7 @@ header h2 {
 }
 
 #story-list a, .feed {
+    padding: 0.5% 0 0.5% 0;
     font-weight: bold;
     margin-top: 0;
 }
@@ -577,7 +579,7 @@ header h2 {
 
 #story-list .story, .feed {
     text-decoration: none;
-    padding: .5%;
+    padding: .5 0 .5% 0%;
     border-top: 1px solid #95392E;
     margin-top: .33%;
 }
@@ -598,7 +600,6 @@ span.ng {
 
 footer {
     background-color: #95392E;
-    padding: 1%;
     border-top: 1px solid #95392E;
     color: white;
 }
