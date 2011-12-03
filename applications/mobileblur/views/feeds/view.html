@@ -6,23 +6,17 @@
 {{ end }}
 
 <section id="story-list">
-{{
-import time 
-s = time.time()
-}}
     {{ 
         for story in stories: 
         if sum([v for k,v in story["intelligence"].iteritems()]) < threshold:
             continue
     }}
 
-        {{ print story["read_status"] }}
-        <div class="story">
-            <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"])) }}" class="{{= "unread" if story["read_status"] == 0 else "read" }}">
-                {{= story["story_title"] }}
-            </a>
-            <p>{{= story["story_date"] }}</p>
-        </div>
+        <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"])) }}" }}">
+            <div class="story">
+                <p class="story-title {{= "unread" if story["read_status"] == 0 else "read" }}">{{= story["story_title"] }}</p>
+                <p class="story-date">{{= story["story_date"] }}</p>
+            </div>
+        </a>
     {{ pass }}
-{{ print time.time() - s }}
 </section>

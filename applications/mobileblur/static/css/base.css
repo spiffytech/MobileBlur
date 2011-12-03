@@ -516,13 +516,18 @@ a.button:hover span.icon.user { background-position: 0 -869px }
 }
 
 body {
-/*    background-color: #f2c84b;*/
     color: #493F3E
+}
+#content {
+    padding: 0 0.5% 0 0.5%;
+}
+
+a, a:hover {
+    text-decoration: none;
 }
 
 header {
     background-color: #95392E;
-    padding: 1%;
     border-bottom: 1px solid #95392E;
     color: white;
 }
@@ -536,7 +541,7 @@ header > h1 > a {
     color: white;
 }
 
-header > a> h2 {
+header h2 {
 /*    border-top: 1px solid white;*/
     color: white;
 }
@@ -545,24 +550,36 @@ header > a> h2 {
 /*    background-color: #f2c84b;*/
 }
 
-#story-list > .story > a, .feed > a {
-    text-decoration: none;
+#story-list a, .feed {
+    padding: 0.5% 0 0.5% 0;
     font-weight: bold;
     margin-top: 0;
 }
-#story-list > .story > p {
+
+.story-date {
     font-size: .75em;
+    color: #493F3E;
+    font-weight: normal;
 }
 
-#story-list > .story > .read {
+.feed {
+    color: white;
+    text-decoration: none;
+}
+
+.read {
     color: #D99B48;
 }
-#story-list > .story > .unread, .feed > a {
+.unread, .feed .feed-title {
     color: #C57E3C;
 }
+.ng, .nt, .ps {
+    color: #493F3E;
+}
 
-#story-list > .story, .feed {
-    padding: .5%;
+#story-list .story, .feed {
+    text-decoration: none;
+    padding: .5 0 .5% 0%;
     border-top: 1px solid #95392E;
     margin-top: .33%;
 }
@@ -583,11 +600,10 @@ span.ng {
 
 footer {
     background-color: #95392E;
-    padding: 1%;
     border-top: 1px solid #95392E;
     color: white;
 }
-footer > a {
+footer a {
     text-decoration: none;
     color: white;
     font-weight: bold;

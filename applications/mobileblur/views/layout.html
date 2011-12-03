@@ -59,8 +59,6 @@
     else: right_sidebar_style = 'style="display: none;"'
     style_content = 'style="width: %s"' % width_content
     }}
-<!--    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">-->
-    <link rel="stylesheet" href="{{= URL("static", "css/1140.css") }}">
   </head>
   
   <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->	
@@ -79,7 +77,7 @@
       {{ block header_bonus }}{{end}}
 	</header>
 	
-    <section id="content" class-"container" {{=XML(style_content)}} >
+    <section id="content"{{=XML(style_content)}} >
         {{include}}	
     </section>
 
