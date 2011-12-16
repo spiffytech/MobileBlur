@@ -36,3 +36,22 @@ def logout():
     response.cookies["nb_cookie"]["expires"] = -10
     response.cookies["nb_cookie"]["path"] = "/"
     redirect(URL("index"))
+
+
+def settings():
+    threshold_form = SQLFORM.factory(
+        Field(
+            "threshold", 
+            "integer", 
+            requires=IS_INT_IN_RANGE(
+                -1,2, 
+                error_message="The value must be -1, 0, or 1"
+            ),
+            default=threshold
+        )
+    )
+    if threshold_form.process().accepted:
+        response.cookies["threshold"] = threshold_form.vars.threshold
+        redirect(URL("index"))
+
+    return dict(threshold_form=threshold_form)
