@@ -6,11 +6,12 @@ import time
 def view():
     print ""
     s = time.time()
-    feed = newsblur.feed(request.args[0])
+    feed_id = request.args[0]
+    page = request.vars["page"] if request.vars.has_key("page") else 1
+    page = int(page)
+    feed = newsblur.feed(feed_id, page=page)
     stories = feed["stories"]
     print time.time() - s
-
-    print feed.keys()
 
     if not feed.has_key("feed_title"):
         s = time.time()
@@ -23,7 +24,7 @@ def view():
 
     response.title = feed["feed_title"]
 
-    return dict(stories=stories, feed=feed)
+    return dict(stories=stories, feed=feed, feed_id=feed_id, page=page)
 
 
 def mark_read():

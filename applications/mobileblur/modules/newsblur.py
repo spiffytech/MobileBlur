@@ -71,7 +71,7 @@ class NewsBlur():
         
         url = nb_url + 'reader/feeds'
         payload = {'include_favicons':include_favicons,'flat':flat}
-        results = requests.get(url, data=payload, cookies=self.cookies)
+        results = requests.get(url, params=payload, cookies=self.cookies)
         return simplejson.loads(results.content)
 
 
@@ -84,7 +84,7 @@ class NewsBlur():
         
         url = nb_url + 'reader/favicons'
         payload = {'feeds':feeds}
-        results = requests.get(url, data=payload, cookies=self.cookies)
+        results = requests.get(url, params=payload, cookies=self.cookies)
         return simplejson.loads(results.content)
         
     def id(self, id_no):
@@ -94,7 +94,7 @@ class NewsBlur():
         
         url = nb_url + 'reader/page/' % id_no
         payload = {}
-        results = requests.get(url, data=payload, cookies=self.cookies)
+        results = requests.get(url, params=payload, cookies=self.cookies)
         return simplejson.loads(results.content)
 
     def refresh_feeds(self, ):
@@ -115,7 +115,7 @@ class NewsBlur():
 
         url = nb_url + 'reader/feeds_trainer'
         payload = {'feed_id':feed_id}
-        results = requests.get(url, data=payload, cookies=self.cookies)
+        results = requests.get(url, params=payload, cookies=self.cookies)
         return simplejson.loads(results.content)
 
     def statistics(self, id_no):
@@ -137,16 +137,17 @@ class NewsBlur():
 
         url = nb_url + 'rss_feeds/feed_autocomplete?%'
         payload = {'term':term}
-        results = requests.get(url, data=payload, cookies=self.cookies)
+        results = requests.get(url, params=payload, cookies=self.cookies)
         return simplejson.loads(results.content)
 
-    def feed(self, id):
+    def feed(self, id, page=1):
         '''
         Retrieve stories from a single feed.
         '''
 
         url = nb_url + 'reader/feed/%s' % id
-        results = requests.get(url, cookies=self.cookies)
+        payload = {"page": page}
+        results = requests.get(url, params=payload, cookies=self.cookies)
         return simplejson.loads(results.content)
 
     def starred_stories(self, page=1):
@@ -156,7 +157,7 @@ class NewsBlur():
         
         url = nb_url + 'reader/starred_stories'
         payload = {'page':page}
-        results = requests.get(url, data=payload, cookies=self.cookies)
+        results = requests.get(url, params=payload, cookies=self.cookies)
         return simplejson.loads(results.content)
 
     def river_stories(self, feeds,page=1,read_stories_count=0):

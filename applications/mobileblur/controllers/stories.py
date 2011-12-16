@@ -3,8 +3,9 @@
 from pprint import pprint
 
 def view():
+    page = request.vars["page"] if request.vars.has_key("page") else 1
     requested_story_id = request.vars["story"]
-    stories = newsblur.feed(request.vars["feed_id"])["stories"]
+    stories = newsblur.feed(request.vars["feed_id"], page=page)["stories"]
     
     previous_story = None
     requested_story = None
@@ -12,12 +13,15 @@ def view():
     for story in range(len(stories)):
         if stories[story]["id"] == requested_story_id:
             requested_story = stories[story]
-            try:
+            if story != len(stories)-1:
                 previous_story = stories[story+1]
-            except IndexError:
-                pass
+            else:
+                previous_story = newsblur.feed(request.vars["feed_id"], page=page+1)["stories"][0]
             if story != 0:
+                pass
                 next_story = stories[story-1]
+            elif page > 1:
+                next_story = newsblur.feed(request.vars["feed_id"], page=page-1)["stories"][-1]
 
             break
 
@@ -25,7 +29,7 @@ def view():
         previous_story=previous_story,
         requested_story=requested_story, 
         next_story=next_story,
-        feed_id=request.vars["feed_id"]
+        feed_id=request.vars["feed_id"],
     )
 
 def mark_read():
