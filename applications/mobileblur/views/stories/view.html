@@ -1,13 +1,22 @@
 {{extend 'layout.html'}}
 
 {{ block header_bonus }}
-    <a href="{{= story["story_permalink"] }}">
-        <h2>{{= story["story_title"] }}</h2>
+    <a href="{{= requested_story["story_permalink"] }}">
+        <h2>{{= requested_story["story_title"] }}</h2>
     </a>
-    <a href="{{= URL("mark_read", vars=dict(story_id=story["id"], feed_id=feed_id)) }}" class="button">
+    <a href="{{= URL("mark_read", vars=dict(story_id=requested_story["id"], feed_id=feed_id)) }}" class="button">
         Mark story as read
     </a>
 {{ end }}
 <section id="story">
-    {{= XML(story["story_content"]) }}
+    {{= XML(requested_story["story_content"]) }}
 </section>
+
+{{ block footer_bonus }}
+    {{ if previous_story is not None: }}
+        <p>Previous story: <a href="{{= URL(c="stories", f="view", vars=dict(story=previous_story["id"], feed_id=feed_id)) }}">{{= previous_story["story_title"] }}</a></p>
+    {{ pass }}
+    {{ if next_story is not None: }}
+        <p>Next story: <a href="{{= URL(c="stories", f="view", vars=dict(story=next_story["id"], feed_id=feed_id)) }}">{{= next_story["story_title"] }}</a></p>
+    {{ pass }}
+{{ end }}
