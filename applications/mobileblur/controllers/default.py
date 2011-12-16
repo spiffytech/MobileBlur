@@ -43,11 +43,9 @@ def settings():
         Field(
             "threshold", 
             "integer", 
-            requires=IS_INT_IN_RANGE(
-                -1,2, 
-                error_message="The value must be -1, 0, or 1"
-            ),
-            default=threshold
+            requires=IS_IN_SET([-1,0,2]),
+            default=threshold,
+            widget=SQLFORM.widgets.radio.widget
         )
     )
     if threshold_form.process().accepted:
