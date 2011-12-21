@@ -2,8 +2,9 @@ newsblur = local_import("newsblur")
 newsblur = newsblur.NewsBlur()
 
 if not request.cookies.has_key("threshold"):
-    response.cookies["threshold"] = 0
     threshold = 0
+    response.cookies["threshold"] = threshold
+    response.cookies["threshold"]["path"] = "/"
 else:
     threshold = int(request.cookies["threshold"].value)
 thresholds = ["nt", "ps", "ng"]  # indices -1, 0, 1 for negative, neutral, and positive intelligence filters

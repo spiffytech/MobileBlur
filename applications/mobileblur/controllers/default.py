@@ -43,7 +43,7 @@ def settings():
         Field(
             "threshold", 
             "integer", 
-            requires=IS_IN_SET([-1,0,2]),
+            requires=IS_IN_SET([-1,0,1]),
             default=threshold,
             widget=SQLFORM.widgets.radio.widget
         ),
@@ -51,6 +51,7 @@ def settings():
     )
     if threshold_form.process(formname="threshold_form").accepted:
         response.cookies["threshold"] = threshold_form.vars.threshold
+        response.cookies["threshold"]["path"] = "/"
         redirect(URL("index"))
 
     add_feed_form = SQLFORM.factory(
