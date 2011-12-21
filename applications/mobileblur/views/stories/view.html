@@ -14,9 +14,9 @@
 
 {{ block footer_bonus }}
     {{ if previous_story is not None: }}
-        <p>Previous story: <a href="{{= URL(c="stories", f="view", vars=dict(story=previous_story["id"], feed_id=feed_id)) }}">{{= previous_story["story_title"] }}</a></p>
+        <p>Older story: <a href="{{= URL(c="stories", f="view", vars=dict(story=previous_story["id"], feed_id=feed_id)) }}">{{= previous_story["story_title"] }}</a></p>
     {{ pass }}
     {{ if next_story is not None: }}
-        <p>Next story: <a href="{{= URL(c="stories", f="view", vars=dict(story=next_story["id"], feed_id=feed_id)) }}">{{= next_story["story_title"] }}</a></p>
+        <p>Newer story: <a href="{{= URL(c="stories", f="view", vars=dict(story=next_story["id"], feed_id=feed_id)) }}">{{= next_story["story_title"] }}</a></p>
     {{ pass }}
 {{ end }}

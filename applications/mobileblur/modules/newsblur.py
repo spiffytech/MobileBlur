@@ -203,15 +203,17 @@ class NewsBlur():
         results = requests.post(url, data=payload, cookies=self.cookies)
         return simplejson.loads(results.content)
 
-    def add_url(self, url,folder='[Top Level]'):
+    def add_url(self, feed_url,folder='[Top Level]'):
         '''
         Add a feed by its URL. 
         Can be either the RSS feed or the website itself.
         '''
-        
+
         url = nb_url + 'reader/add_url'
-        payload = {'url':url,'folder':folder}
+        feed_url = feed_url.strip("/")
+        payload = {'url': feed_url, 'folder': folder}
         results = requests.post(url, data=payload, cookies=self.cookies)
+        print results.content
         return simplejson.loads(results.content)
 
 
