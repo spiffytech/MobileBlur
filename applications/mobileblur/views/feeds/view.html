@@ -12,7 +12,7 @@
             continue
     }}
 
-        <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"], page=page)) }}">
+        <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"], feed_name=feed["feed_title"])) }}" }}">
             <div class="story">
                 <p class="story-title {{= "unread" if story["read_status"] == 0 else "read" }}">{{= story["story_title"] }}</p>
                 <p class="story-date">{{= story["story_date"] }}</p>
@@ -20,12 +20,3 @@
         </a>
     {{ pass }}
 </section>
-
-{{ block footer_bonus }}
-    <p>{{ if page > 1: }}
-        <a href="{{= URL(args=[feed_id], vars={"page": page-1}) }}">← Newer stories</a>
-    &nbsp; || &nbsp;
-    {{pass}}
-    <a href="{{= URL(args=[feed_id], vars={"page": page+1}) }}">Older stories →</a>
-    </p>
-{{ end }}
