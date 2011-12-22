@@ -5,7 +5,8 @@ from pprint import pprint
 def view():
     page = int(request.vars["page"]) if request.vars.has_key("page") else 1
     requested_story_id = request.vars["story"]
-    stories = newsblur.feed(request.vars["feed_id"], page=page)["stories"]
+    feed = newsblur.feed(request.vars["feed_id"], page=page)
+    stories = feed["stories"]
     
     previous_story = None
     requested_story = None
@@ -29,8 +30,8 @@ def view():
         previous_story=previous_story,
         requested_story=requested_story, 
         next_story=next_story,
-        feed_id=request.vars["feed_id"],
-        feed_name=request.vars["feed_name"],
+        feed_id=feed["feed_id"],
+        feed_title=request.vars["feed_title"],
     )
 
 def mark_read():
