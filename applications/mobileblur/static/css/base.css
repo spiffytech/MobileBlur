@@ -526,28 +526,16 @@ a, a:hover {
     text-decoration: none;
 }
 
-header {
+body > header {
     background-color: #95392E;
     border-bottom: 1px solid #95392E;
     color: white;
+    font-weight: bold;
 }
-header > h1 > a {
+body > header a {
     text-decoration: none;
     color: white;
     font-weight: bold;
-}
-
-#story > header > a {
-    color: white;
-}
-
-header h2 {
-/*    border-top: 1px solid white;*/
-    color: white;
-}
-
-#story-list {
-/*    background-color: #f2c84b;*/
 }
 
 #story-list a, .feed {
@@ -563,7 +551,6 @@ header h2 {
 }
 
 .feed {
-    color: white;
     text-decoration: none;
 }
 
@@ -598,12 +585,12 @@ span.ng {
     background-color: red;
 }
 
-footer {
+body > footer {
     background-color: #95392E;
     border-top: 1px solid #95392E;
     color: white;
 }
-footer a {
+body > footer a {
     text-decoration: none;
     color: white;
     font-weight: bold;
