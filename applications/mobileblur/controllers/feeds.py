@@ -23,6 +23,7 @@ def view():
 
     response.title = feed["feed_title"]
 
+    stories = intelligence_filter(stories)
     return dict(stories=stories, feed=feed, feed_id=feed_id, page=page)
 
 

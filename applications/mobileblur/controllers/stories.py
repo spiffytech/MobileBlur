@@ -14,15 +14,22 @@ def view():
     for story in range(len(stories)):
         if stories[story]["id"] == requested_story_id:
             requested_story = stories[story]
+
             if story != len(stories)-1:
-                previous_story = stories[story+1]
+                stories_page = stories[story+1:]
             else:
-                previous_story = newsblur.feed(request.vars["feed_id"], page=page+1)["stories"][0]
+                stories_page = newsblur.feed(request.vars["feed_id"], page=page+1)["stories"]
+            filtered_stories = intelligence_filter(stories_page)
+            if len(filtered_stories) > 0:
+                previous_story = filtered_stories[0]
+
             if story != 0:
-                pass
-                next_story = stories[story-1]
+                stories_page = stories[:story]
             elif page > 1:
-                next_story = newsblur.feed(request.vars["feed_id"], page=page-1)["stories"][-1]
+                stories_page = newsblur.feed(request.vars["feed_id"], page=page+1)["stories"]
+            filtered_stories = intelligence_filter(stories_page)
+            if len(filtered_stories) > 0:
+                next_story = filtered_stories[-1]
 
             break
 

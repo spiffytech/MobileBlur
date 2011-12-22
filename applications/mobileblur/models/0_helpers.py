@@ -14,3 +14,6 @@ if [request.application, request.controller, request.function] != [request.appli
         redirect(URL("default", "login"))
     else:
         newsblur.cookies["newsblur_sessionid"] = request.cookies["nb_cookie"].value
+
+passes_intelligence = lambda story: True if sum([v for k,v in story["intelligence"].iteritems()]) >= threshold else False
+intelligence_filter = lambda stories: [s for s in stories if passes_intelligence(s)]

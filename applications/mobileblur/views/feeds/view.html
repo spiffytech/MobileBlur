@@ -8,8 +8,6 @@
 <section id="story-list">
     {{ 
         for story in stories: 
-        if sum([v for k,v in story["intelligence"].iteritems()]) < threshold:
-            continue
     }}
 
         <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"], feed_title=feed["feed_title"])) }}" }}">
