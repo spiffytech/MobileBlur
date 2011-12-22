@@ -36,3 +36,34 @@ def logout():
     response.cookies["nb_cookie"]["expires"] = -10
     response.cookies["nb_cookie"]["path"] = "/"
     redirect(URL("index"))
+
+
+def settings():
+    threshold_form = SQLFORM.factory(
+        Field(
+            "threshold", 
+            "integer", 
+            requires=IS_IN_SET([-1,0,1]),
+            default=threshold,
+            widget=SQLFORM.widgets.radio.widget
+        ),
+        _name="threshold_form"
+    )
+    if threshold_form.process(formname="threshold_form").accepted:
+        response.cookies["threshold"] = threshold_form.vars.threshold
+        response.cookies["threshold"]["path"] = "/"
+        redirect(URL("index"))
+
+    add_feed_form = SQLFORM.factory(
+        Field("feed_url", requires=IS_URL()),
+        _name="add_feed_form"
+    )
+    if add_feed_form.process(formname="add_feed_form").accepted:
+        resp = newsblur.add_url(add_feed_form.vars.feed_url)
+        if resp["result"] == "ok":
+            response.flash = "Successfully added feed"
+            redirect(URL("index"))
+        else:
+            response.flash = "Something at Newsblur went wrong while adding that feed"
+
+    return dict(threshold_form=threshold_form, add_feed_form=add_feed_form)
