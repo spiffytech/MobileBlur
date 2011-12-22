@@ -14,10 +14,10 @@
 </section>
 
 {{ block footer_bonus }}
-    {{ if previous_story is not None: }}
-        <p>→ Older story: <a href="{{= URL(c="stories", f="view", vars=dict(story=previous_story["id"], feed_id=feed_id, feed_title=feed_title)) }}">{{= previous_story["story_title"] }}</a></p>
-    {{ pass }}
     {{ if next_story is not None: }}
         <p>← Newer story: <a href="{{= URL(c="stories", f="view", vars=dict(story=next_story["id"], feed_id=feed_id, feed_title=feed_title)) }}">{{= next_story["story_title"] }}</a></p>
+    {{ pass }}
+    {{ if previous_story is not None: }}
+        <p>→ Older story: <a href="{{= URL(c="stories", f="view", vars=dict(story=previous_story["id"], feed_id=feed_id, feed_title=feed_title)) }}">{{= previous_story["story_title"] }}</a></p>
     {{ pass }}
 {{ end }}
