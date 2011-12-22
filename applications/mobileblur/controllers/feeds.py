@@ -7,8 +7,7 @@ def view():
     print ""
     s = time.time()
     feed_id = request.args[0]
-    page = request.vars["page"] if request.vars.has_key("page") else 1
-    page = int(page)
+    page = int(request.vars["page"]) if request.vars.has_key("page") else 1
     feed = newsblur.feed(feed_id, page=page)
     stories = feed["stories"]
     print time.time() - s
