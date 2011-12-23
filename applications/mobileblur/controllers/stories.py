@@ -26,7 +26,9 @@ def view():
             if story != 0:
                 stories_page = stories[:story]
             elif page > 1:
-                stories_page = newsblur.feed(request.vars["feed_id"], page=page+1)["stories"]
+                stories_page = newsblur.feed(request.vars["feed_id"], page=page-1)["stories"]
+            else:
+                stories_page = []
             filtered_stories = intelligence_filter(stories_page)
             if len(filtered_stories) > 0:
                 next_story = filtered_stories[-1]
