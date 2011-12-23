@@ -515,7 +515,10 @@ a.button:hover span.icon.user { background-position: 0 -869px }
   h2, h3{ page-break-after: avoid; }
 }
 
+html {
+}
 body {
+    font-size: 150.01% !important;
     color: #493F3E
 }
 #content {
@@ -545,7 +548,7 @@ body > header a {
 }
 
 .story-date {
-    font-size: .75em;
+    font-size: 75%;
     color: #493F3E;
     font-weight: normal;
 }
