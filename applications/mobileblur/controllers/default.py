@@ -3,13 +3,14 @@ import simplejson
 
 def index():
     raw_feeds = newsblur.feeds(flat=True)["feeds"]
-    feeds = {}
+    feeds = []
     for feed in raw_feeds.itervalues():
         for i in range(threshold, 2):
             if feed[thresholds[i]] > 0:
-                feeds[feed["feed_title"]] = feed
+                feeds.append(feed)
                 break
 
+    feeds.sort(key=lambda f: str.lower(f["feed_title"]))
     return dict(feeds=feeds, threshold=threshold)
 
 

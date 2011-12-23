@@ -1,6 +1,6 @@
 {{extend 'layout.html'}}
 
-{{ for feed in feeds.itervalues(): }}
+{{ for feed in feeds: }}
     <a href="{{= URL(c="feeds", f="view", args=[feed["id"]]) }}" class="list-item">
         <div>
             {{ if threshold == -1 and feed["ng"] > 0: }} <span class='ng'>{{= feed["ng"] }}</span> {{ pass }}
