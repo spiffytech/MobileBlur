@@ -10,3 +10,6 @@ parameters_*.py
 *.swp
 *.swo
 *.swn
+cron.master
+mobileblur.fossil
+_FOSSIL_
