@@ -28,3 +28,9 @@ def release(version):
             result = sudo("service httpd restart")
             if result.failed and confirm ("Apache didn't start up again! Revert to last release?"):
                 print run("git reset --hard HEAD^")
+
+
+def push():
+    branches = ["master", "develop"]
+    for branch in branches:
+        local("git push github %s" % branch)
