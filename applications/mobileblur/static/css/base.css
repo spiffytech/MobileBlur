@@ -330,7 +330,9 @@ legend { font-weight: bold; }
 
 input:focus, textarea:focus { background: #fafafa; }
 
-h1,h2,h3,h4,h5,h6 { line-height: 170%; }
+h1,h2,h3,h4,h5,h6 { 
+    margin-bottom: .5em;
+}
 h1 {font-size: 2.0em;}
 h2 {font-size: 1.8em;}
 h3 {font-size: 1.4em;}
@@ -559,6 +561,15 @@ body > header a {
     text-decoration: none;
     color: white;
     font-weight: bold;
+}
+body > header > h1 {
+    border-bottom: 1px solid white;
+}
+body > header > h2 {
+    border-bottom: 1px dashed white;
+}
+body > header > h3 {
+    border-bottom: 1px dotted white;
 }
 
 .list-item > div {
