@@ -522,7 +522,7 @@ body {
     color: #493F3E
 }
 #content {
-    padding: 0 0.5% 0 0.5%;
+    margin: 0 1em 0 1em;
 }
 
 a, a:hover {
@@ -531,7 +531,6 @@ a, a:hover {
 
 body > header {
     background-color: #95392E;
-    border-bottom: 1px solid #95392E;
     color: white;
     font-weight: bold;
 }
@@ -542,11 +541,14 @@ body > header a {
 }
 
 .list-item > div {
-    padding: 4% 0 4% 0;
+    padding: .9em 0 .9em 0;
     border-top: 1px solid #95392E;
     margin-top: 0;
     font-weight: bold;
     color: #C57E3C;
+}
+.list-item:first-of-type > div {
+    border: none;
 }
 
 .story-date {
