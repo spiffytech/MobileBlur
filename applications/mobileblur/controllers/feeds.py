@@ -6,10 +6,20 @@ import time
 def view():
     print ""
     s = time.time()
+
+    min_story_count = 10
     feed_id = request.args[0]
     page = int(request.vars["page"]) if request.vars.has_key("page") else 1
-    feed = newsblur.feed(feed_id, page=page)
-    stories = feed["stories"]
+
+    feed = None
+    stories = []
+    while len(stories) < min_story_count:
+        feed = newsblur.feed(feed_id, page=page)
+        if len(feed["stories"]) == 0:
+            break
+        stories.extend(intelligence_filter(feed["stories"]))
+        page += 1
+    
     print time.time() - s
 
     if not feed.has_key("feed_title"):
@@ -23,8 +33,7 @@ def view():
 
     response.title = feed["feed_title"]
 
-    stories = intelligence_filter(stories)
-    return dict(stories=stories, feed=feed, feed_id=feed_id, page=page)
+    return dict(stories=stories, feed=feed, feed_id=feed_id)
 
 
 def mark_read():
