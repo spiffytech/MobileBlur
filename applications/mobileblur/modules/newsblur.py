@@ -148,7 +148,10 @@ class NewsBlur():
         url = nb_url + 'reader/feed/%s' % id
         payload = {"page": page}
         results = requests.get(url, params=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        content = simplejson.loads(results.content)
+        for story in range(len(content["stories"])):
+            content["stories"][story]["page"] = page
+        return content
 
     def starred_stories(self, page=1):
         '''
