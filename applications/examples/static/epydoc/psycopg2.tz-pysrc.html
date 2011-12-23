@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>psycopg2.tz</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="web2py.gluon-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.web2py.com">web2py Web Framework</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="psycopg2-module.html">Package&nbsp;psycopg2</a> ::
+        Module&nbsp;tz
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="psycopg2.tz-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="psycopg2.tz-module.html">Module psycopg2.tz</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""tzinfo implementations for psycopg2</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">This module holds two different tzinfo implementations that can be used as</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">the 'tzinfo' argument to datetime constructors, directly passed to psycopg</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">functions or used to set the .tzinfo_factory attribute in cursors. </tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># psycopg/tz.py - tzinfo implementation</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Copyright (C) 2003-2004 Federico Di Gregorio  &lt;fog@debian.org&gt;</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># This program is free software; you can redistribute it and/or modify</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># it under the terms of the GNU General Public License as published by the</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Free Software Foundation; either version 2, or (at your option) any later</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># version.</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># This program is distributed in the hope that it will be useful, but</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTIBILITY</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># for more details.</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Class datetime.datetime=datetime.datetime-class.html"><a title="datetime.datetime" class="py-name" href="#" onclick="return doclink('link-0', 'datetime', 'link-0');">datetime</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class datetime.time=datetime.time-class.html"><a title="datetime.time" class="py-name" href="#" onclick="return doclink('link-1', 'time', 'link-1');">time</a></tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt id="link-2" class="py-name" targets="Variable psycopg2.tz.ZERO=psycopg2.tz-module.html#ZERO"><a title="psycopg2.tz.ZERO" class="py-name" href="#" onclick="return doclink('link-2', 'ZERO', 'link-2');">ZERO</a></tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name"><a title="datetime.datetime" class="py-name" href="#" onclick="return doclink('link-3', 'datetime', 'link-0');">datetime</a></tt><tt class="py-op">.</tt><tt class="py-name">timedelta</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="FixedOffsetTimezone"></a><div id="FixedOffsetTimezone-def"><a name="L27"></a><tt class="py-lineno"> 27</tt> <a class="py-toggle" href="#" id="FixedOffsetTimezone-toggle" onclick="return toggle('FixedOffsetTimezone');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="psycopg2.tz.FixedOffsetTimezone-class.html">FixedOffsetTimezone</a><tt class="py-op">(</tt><tt class="py-base-class">datetime</tt><tt class="py-op">.</tt><tt class="py-base-class">tzinfo</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FixedOffsetTimezone-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FixedOffsetTimezone-expanded"><a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">    <tt class="py-docstring">"""Fixed offset in minutes east from UTC.</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">    This is exactly the implementation found in Python 2.3.x documentation,</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">    with a small change to the __init__ method to allow for pickling and a</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">    default name in the form 'sHH:MM' ('s' is the sign.)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">    <tt id="link-4" class="py-name" targets="Variable psycopg2.tz.FixedOffsetTimezone._name=psycopg2.tz.FixedOffsetTimezone-class.html#_name"><a title="psycopg2.tz.FixedOffsetTimezone._name" class="py-name" href="#" onclick="return doclink('link-4', '_name', 'link-4');">_name</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Variable psycopg2.tz.FixedOffsetTimezone._offset=psycopg2.tz.FixedOffsetTimezone-class.html#_offset"><a title="psycopg2.tz.FixedOffsetTimezone._offset" class="py-name" href="#" onclick="return doclink('link-5', '_offset', 'link-5');">_offset</a></tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name"><a title="psycopg2.tz.ZERO" class="py-name" href="#" onclick="return doclink('link-6', 'ZERO', 'link-2');">ZERO</a></tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">     </tt>
+<a name="FixedOffsetTimezone.__init__"></a><div id="FixedOffsetTimezone.__init__-def"><a name="L37"></a><tt class="py-lineno"> 37</tt> <a class="py-toggle" href="#" id="FixedOffsetTimezone.__init__-toggle" onclick="return toggle('FixedOffsetTimezone.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="psycopg2.tz.FixedOffsetTimezone-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">offset</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FixedOffsetTimezone.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FixedOffsetTimezone.__init__-expanded"><a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">offset</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="psycopg2.tz.FixedOffsetTimezone._offset" class="py-name" href="#" onclick="return doclink('link-7', '_offset', 'link-5');">_offset</a></tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="datetime.datetime" class="py-name" href="#" onclick="return doclink('link-8', 'datetime', 'link-0');">datetime</a></tt><tt class="py-op">.</tt><tt class="py-name">timedelta</tt><tt class="py-op">(</tt><tt id="link-9" class="py-name" targets="Method web2py.gluon.dal.Expression.minutes()=web2py.gluon.dal.Expression-class.html#minutes"><a title="web2py.gluon.dal.Expression.minutes" class="py-name" href="#" onclick="return doclink('link-9', 'minutes', 'link-9');">minutes</a></tt> <tt class="py-op">=</tt> <tt class="py-name">offset</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-10" class="py-name" targets="Variable web2py.gluon.import_all.name=web2py.gluon.import_all-module.html#name"><a title="web2py.gluon.import_all.name" class="py-name" href="#" onclick="return doclink('link-10', 'name', 'link-10');">name</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="psycopg2.tz.FixedOffsetTimezone._name" class="py-name" href="#" onclick="return doclink('link-11', '_name', 'link-4');">_name</a></tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name"><a title="web2py.gluon.import_all.name" class="py-name" href="#" onclick="return doclink('link-12', 'name', 'link-10');">name</a></tt> </tt>
+</div><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"> </tt>
+<a name="FixedOffsetTimezone.utcoffset"></a><div id="FixedOffsetTimezone.utcoffset-def"><a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="FixedOffsetTimezone.utcoffset-toggle" onclick="return toggle('FixedOffsetTimezone.utcoffset');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="psycopg2.tz.FixedOffsetTimezone-class.html#utcoffset">utcoffset</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">dt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FixedOffsetTimezone.utcoffset-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FixedOffsetTimezone.utcoffset-expanded"><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="psycopg2.tz.FixedOffsetTimezone._offset" class="py-name" href="#" onclick="return doclink('link-13', '_offset', 'link-5');">_offset</a></tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="FixedOffsetTimezone.tzname"></a><div id="FixedOffsetTimezone.tzname-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="FixedOffsetTimezone.tzname-toggle" onclick="return toggle('FixedOffsetTimezone.tzname');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="psycopg2.tz.FixedOffsetTimezone-class.html#tzname">tzname</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">dt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FixedOffsetTimezone.tzname-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FixedOffsetTimezone.tzname-expanded"><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="psycopg2.tz.FixedOffsetTimezone._name" class="py-name" href="#" onclick="return doclink('link-14', '_name', 'link-4');">_name</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="psycopg2.tz.FixedOffsetTimezone._name" class="py-name" href="#" onclick="return doclink('link-15', '_name', 'link-4');">_name</a></tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">            <tt id="link-16" class="py-name" targets="Method web2py.gluon.dal.Expression.seconds()=web2py.gluon.dal.Expression-class.html#seconds"><a title="web2py.gluon.dal.Expression.seconds" class="py-name" href="#" onclick="return doclink('link-16', 'seconds', 'link-16');">seconds</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="psycopg2.tz.FixedOffsetTimezone._offset" class="py-name" href="#" onclick="return doclink('link-17', '_offset', 'link-5');">_offset</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="web2py.gluon.dal.Expression.seconds" class="py-name" href="#" onclick="return doclink('link-18', 'seconds', 'link-16');">seconds</a></tt> <tt class="py-op">+</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="psycopg2.tz.FixedOffsetTimezone._offset" class="py-name" href="#" onclick="return doclink('link-19', '_offset', 'link-5');">_offset</a></tt><tt class="py-op">.</tt><tt class="py-name">days</tt> <tt class="py-op">*</tt> <tt class="py-number">86400</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">            <tt class="py-name">hours</tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name"><a title="web2py.gluon.dal.Expression.seconds" class="py-name" href="#" onclick="return doclink('link-20', 'seconds', 'link-16');">seconds</a></tt> <tt class="py-op">=</tt> <tt class="py-name">divmod</tt><tt class="py-op">(</tt><tt id="link-21" class="py-name"><a title="web2py.gluon.dal.Expression.seconds" class="py-name" href="#" onclick="return doclink('link-21', 'seconds', 'link-16');">seconds</a></tt><tt class="py-op">,</tt> <tt class="py-number">3600</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">            <tt id="link-22" class="py-name"><a title="web2py.gluon.dal.Expression.minutes" class="py-name" href="#" onclick="return doclink('link-22', 'minutes', 'link-9');">minutes</a></tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="web2py.gluon.dal.Expression.seconds" class="py-name" href="#" onclick="return doclink('link-23', 'seconds', 'link-16');">seconds</a></tt><tt class="py-op">/</tt><tt class="py-number">60</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-24" class="py-name"><a title="web2py.gluon.dal.Expression.minutes" class="py-name" href="#" onclick="return doclink('link-24', 'minutes', 'link-9');">minutes</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-string">"%+03d:%d"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">hours</tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name"><a title="web2py.gluon.dal.Expression.minutes" class="py-name" href="#" onclick="return doclink('link-25', 'minutes', 'link-9');">minutes</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-string">"%+03d"</tt> <tt class="py-op">%</tt> <tt class="py-name">hours</tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">             </tt>
+<a name="FixedOffsetTimezone.dst"></a><div id="FixedOffsetTimezone.dst-def"><a name="L58"></a><tt class="py-lineno"> 58</tt> <a class="py-toggle" href="#" id="FixedOffsetTimezone.dst-toggle" onclick="return toggle('FixedOffsetTimezone.dst');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="psycopg2.tz.FixedOffsetTimezone-class.html#dst">dst</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">dt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FixedOffsetTimezone.dst-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FixedOffsetTimezone.dst-expanded"><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-26" class="py-name"><a title="psycopg2.tz.ZERO" class="py-name" href="#" onclick="return doclink('link-26', 'ZERO', 'link-2');">ZERO</a></tt> </tt>
+</div></div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt id="link-27" class="py-name" targets="Variable psycopg2.tz.STDOFFSET=psycopg2.tz-module.html#STDOFFSET"><a title="psycopg2.tz.STDOFFSET" class="py-name" href="#" onclick="return doclink('link-27', 'STDOFFSET', 'link-27');">STDOFFSET</a></tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="datetime.datetime" class="py-name" href="#" onclick="return doclink('link-28', 'datetime', 'link-0');">datetime</a></tt><tt class="py-op">.</tt><tt class="py-name">timedelta</tt><tt class="py-op">(</tt><tt id="link-29" class="py-name"><a title="web2py.gluon.dal.Expression.seconds" class="py-name" href="#" onclick="return doclink('link-29', 'seconds', 'link-16');">seconds</a></tt> <tt class="py-op">=</tt> <tt class="py-op">-</tt><tt id="link-30" class="py-name"><a title="datetime.time" class="py-name" href="#" onclick="return doclink('link-30', 'time', 'link-1');">time</a></tt><tt class="py-op">.</tt><tt class="py-name">timezone</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-31" class="py-name"><a title="datetime.time" class="py-name" href="#" onclick="return doclink('link-31', 'time', 'link-1');">time</a></tt><tt class="py-op">.</tt><tt class="py-name">daylight</tt><tt class="py-op">:</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt id="link-32" class="py-name" targets="Variable psycopg2.tz.DSTOFFSET=psycopg2.tz-module.html#DSTOFFSET"><a title="psycopg2.tz.DSTOFFSET" class="py-name" href="#" onclick="return doclink('link-32', 'DSTOFFSET', 'link-32');">DSTOFFSET</a></tt> <tt class="py-op">=</tt> <tt id="link-33" class="py-name"><a title="datetime.datetime" class="py-name" href="#" onclick="return doclink('link-33', 'datetime', 'link-0');">datetime</a></tt><tt class="py-op">.</tt><tt class="py-name">timedelta</tt><tt class="py-op">(</tt><tt id="link-34" class="py-name"><a title="web2py.gluon.dal.Expression.seconds" class="py-name" href="#" onclick="return doclink('link-34', 'seconds', 'link-16');">seconds</a></tt> <tt class="py-op">=</tt> <tt class="py-op">-</tt><tt id="link-35" class="py-name"><a title="datetime.time" class="py-name" href="#" onclick="return doclink('link-35', 'time', 'link-1');">time</a></tt><tt class="py-op">.</tt><tt class="py-name">altzone</tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt id="link-36" class="py-name"><a title="psycopg2.tz.DSTOFFSET" class="py-name" href="#" onclick="return doclink('link-36', 'DSTOFFSET', 'link-32');">DSTOFFSET</a></tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="psycopg2.tz.STDOFFSET" class="py-name" href="#" onclick="return doclink('link-37', 'STDOFFSET', 'link-27');">STDOFFSET</a></tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt id="link-38" class="py-name" targets="Variable psycopg2.tz.DSTDIFF=psycopg2.tz-module.html#DSTDIFF"><a title="psycopg2.tz.DSTDIFF" class="py-name" href="#" onclick="return doclink('link-38', 'DSTDIFF', 'link-38');">DSTDIFF</a></tt> <tt class="py-op">=</tt> <tt id="link-39" class="py-name"><a title="psycopg2.tz.DSTOFFSET" class="py-name" href="#" onclick="return doclink('link-39', 'DSTOFFSET', 'link-32');">DSTOFFSET</a></tt> <tt class="py-op">-</tt> <tt id="link-40" class="py-name"><a title="psycopg2.tz.STDOFFSET" class="py-name" href="#" onclick="return doclink('link-40', 'STDOFFSET', 'link-27');">STDOFFSET</a></tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"> </tt>
+<a name="LocalTimezone"></a><div id="LocalTimezone-def"><a name="L69"></a><tt class="py-lineno"> 69</tt> <a class="py-toggle" href="#" id="LocalTimezone-toggle" onclick="return toggle('LocalTimezone');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="psycopg2.tz.LocalTimezone-class.html">LocalTimezone</a><tt class="py-op">(</tt><tt class="py-base-class">datetime</tt><tt class="py-op">.</tt><tt class="py-base-class">tzinfo</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LocalTimezone-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="LocalTimezone-expanded"><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-docstring">"""Platform idea of local timezone.</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring">    This is the exact implementation from the Pyhton 2.3 documentation.</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">     </tt>
+<a name="LocalTimezone.utcoffset"></a><div id="LocalTimezone.utcoffset-def"><a name="L75"></a><tt class="py-lineno"> 75</tt> <a class="py-toggle" href="#" id="LocalTimezone.utcoffset-toggle" onclick="return toggle('LocalTimezone.utcoffset');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="psycopg2.tz.LocalTimezone-class.html#utcoffset">utcoffset</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">dt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LocalTimezone.utcoffset-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="LocalTimezone.utcoffset-expanded"><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_isdst</tt><tt class="py-op">(</tt><tt class="py-name">dt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-41" class="py-name"><a title="psycopg2.tz.DSTOFFSET" class="py-name" href="#" onclick="return doclink('link-41', 'DSTOFFSET', 'link-32');">DSTOFFSET</a></tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-42" class="py-name"><a title="psycopg2.tz.STDOFFSET" class="py-name" href="#" onclick="return doclink('link-42', 'STDOFFSET', 'link-27');">STDOFFSET</a></tt> </tt>
+</div><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"> </tt>
+<a name="LocalTimezone.dst"></a><div id="LocalTimezone.dst-def"><a name="L81"></a><tt class="py-lineno"> 81</tt> <a class="py-toggle" href="#" id="LocalTimezone.dst-toggle" onclick="return toggle('LocalTimezone.dst');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="psycopg2.tz.LocalTimezone-class.html#dst">dst</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">dt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LocalTimezone.dst-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="LocalTimezone.dst-expanded"><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_isdst</tt><tt class="py-op">(</tt><tt class="py-name">dt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-43" class="py-name"><a title="psycopg2.tz.DSTDIFF" class="py-name" href="#" onclick="return doclink('link-43', 'DSTDIFF', 'link-38');">DSTDIFF</a></tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-44" class="py-name"><a title="psycopg2.tz.ZERO" class="py-name" href="#" onclick="return doclink('link-44', 'ZERO', 'link-2');">ZERO</a></tt> </tt>
+</div><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"> </tt>
+<a name="LocalTimezone.tzname"></a><div id="LocalTimezone.tzname-def"><a name="L87"></a><tt class="py-lineno"> 87</tt> <a class="py-toggle" href="#" id="LocalTimezone.tzname-toggle" onclick="return toggle('LocalTimezone.tzname');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="psycopg2.tz.LocalTimezone-class.html#tzname">tzname</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">dt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LocalTimezone.tzname-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="LocalTimezone.tzname-expanded"><a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-45" class="py-name"><a title="datetime.time" class="py-name" href="#" onclick="return doclink('link-45', 'time', 'link-1');">time</a></tt><tt class="py-op">.</tt><tt class="py-name">tzname</tt><tt class="py-op">[</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_isdst</tt><tt class="py-op">(</tt><tt class="py-name">dt</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="LocalTimezone._isdst"></a><div id="LocalTimezone._isdst-def"><a name="L90"></a><tt class="py-lineno"> 90</tt> <a class="py-toggle" href="#" id="LocalTimezone._isdst-toggle" onclick="return toggle('LocalTimezone._isdst');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="psycopg2.tz.LocalTimezone-class.html#_isdst">_isdst</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">dt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LocalTimezone._isdst-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="LocalTimezone._isdst-expanded"><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-name">tt</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">dt</tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Method web2py.gluon.dal.Expression.year()=web2py.gluon.dal.Expression-class.html#year"><a title="web2py.gluon.dal.Expression.year" class="py-name" href="#" onclick="return doclink('link-46', 'year', 'link-46');">year</a></tt><tt class="py-op">,</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Method web2py.gluon.dal.Expression.month()=web2py.gluon.dal.Expression-class.html#month"><a title="web2py.gluon.dal.Expression.month" class="py-name" href="#" onclick="return doclink('link-47', 'month', 'link-47');">month</a></tt><tt class="py-op">,</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method web2py.gluon.dal.Expression.day()=web2py.gluon.dal.Expression-class.html#day"><a title="web2py.gluon.dal.Expression.day" class="py-name" href="#" onclick="return doclink('link-48', 'day', 'link-48');">day</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">              <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name" targets="Method web2py.gluon.dal.Expression.hour()=web2py.gluon.dal.Expression-class.html#hour"><a title="web2py.gluon.dal.Expression.hour" class="py-name" href="#" onclick="return doclink('link-49', 'hour', 'link-49');">hour</a></tt><tt class="py-op">,</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">minute</tt><tt class="py-op">,</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">second</tt><tt class="py-op">,</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">              <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">weekday</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-name">stamp</tt> <tt class="py-op">=</tt> <tt id="link-50" class="py-name"><a title="datetime.time" class="py-name" href="#" onclick="return doclink('link-50', 'time', 'link-1');">time</a></tt><tt class="py-op">.</tt><tt class="py-name">mktime</tt><tt class="py-op">(</tt><tt class="py-name">tt</tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-name">tt</tt> <tt class="py-op">=</tt> <tt id="link-51" class="py-name"><a title="datetime.time" class="py-name" href="#" onclick="return doclink('link-51', 'time', 'link-1');">time</a></tt><tt class="py-op">.</tt><tt class="py-name">localtime</tt><tt class="py-op">(</tt><tt class="py-name">stamp</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">tt</tt><tt class="py-op">.</tt><tt class="py-name">tm_isdst</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt> </tt>
+</div></div><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt id="link-52" class="py-name" targets="Variable psycopg2.tz.LOCAL=psycopg2.tz-module.html#LOCAL"><a title="psycopg2.tz.LOCAL" class="py-name" href="#" onclick="return doclink('link-52', 'LOCAL', 'link-52');">LOCAL</a></tt> <tt class="py-op">=</tt> <tt id="link-53" class="py-name" targets="Class psycopg2.tz.LocalTimezone=psycopg2.tz.LocalTimezone-class.html"><a title="psycopg2.tz.LocalTimezone" class="py-name" href="#" onclick="return doclink('link-53', 'LocalTimezone', 'link-53');">LocalTimezone</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-comment"># TODO: pre-generate some interesting time zones?</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="web2py.gluon-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.web2py.com">web2py Web Framework</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:05 2011
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>
