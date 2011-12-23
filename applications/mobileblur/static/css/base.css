@@ -518,7 +518,7 @@ a.button:hover span.icon.user { background-position: 0 -869px }
 html {
 }
 body {
-    font-size: 150.01% !important;
+    font-size: 130.01% !important;
     color: #493F3E
 }
 #content {
@@ -541,10 +541,12 @@ body > header a {
     font-weight: bold;
 }
 
-#story-list a, .feed {
-    padding: 0.5% 0 0.5% 0;
-    font-weight: bold;
+.list-item > div {
+    padding: 4% 0 4% 0;
+    border-top: 1px solid #95392E;
     margin-top: 0;
+    font-weight: bold;
+    color: #C57E3C;
 }
 
 .story-date {
@@ -553,25 +555,14 @@ body > header a {
     font-weight: normal;
 }
 
-.feed {
-    text-decoration: none;
-}
-
 .read {
     color: #D99B48;
 }
-.unread, .feed .feed-title {
+.unread, .feed-title {
     color: #C57E3C;
 }
 .ng, .nt, .ps {
     color: #493F3E;
-}
-
-#story-list .story, .feed {
-    text-decoration: none;
-    padding: .5 0 .5% 0%;
-    border-top: 1px solid #95392E;
-    margin-top: .33%;
 }
 
 span.ps, span.nt, span.ng {
