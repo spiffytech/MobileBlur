@@ -521,9 +521,9 @@ body {
     font-size: 130.01% !important;
     color: #493F3E
 }
-#content {
+/*#content > * {
     margin: 0 1em 0 1em;
-}
+}*/
 
 a, a:hover {
     text-decoration: none;
@@ -541,7 +541,7 @@ body > header a {
 }
 
 .list-item > div {
-    padding: .9em 0 .9em 0;
+    padding: .9em .5em .9em .5em;
     border-top: 1px solid #95392E;
     margin-top: 0;
     font-weight: bold;
@@ -549,6 +549,10 @@ body > header a {
 }
 .list-item:first-of-type > div {
     border: none;
+}
+
+#story-content {
+    margin: 0 .5em 0 .5em;
 }
 
 .story-date {
