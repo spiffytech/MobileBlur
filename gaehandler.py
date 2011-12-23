@@ -10,11 +10,9 @@ License: LGPLv3 (http://www.gnu.org/licenses/lgpl.html)
 ##############################################################################
 # Configuration parameters for Google App Engine
 ##############################################################################
-KEEP_CACHED = False    # request a dummy url every 10secs to force caching app
 LOG_STATS = False      # web2py level log statistics
 APPSTATS = True         # GAE level usage statistics and profiling
 DEBUG = False          # debug mode
-AUTO_RETRY = True      # force gae to retry commit on failure
 #
 # Read more about APPSTATS here
 #   http://googleappengine.blogspot.com/2010/03/easy-performance-profiling-with.html
@@ -41,7 +39,6 @@ sys.modules['cPickle'] = sys.modules['pickle']
 
 
 from gluon.settings import global_settings
-from google.appengine.api.labs import taskqueue
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
@@ -79,12 +76,6 @@ logging.basicConfig(level=logging.INFO)
 
 def wsgiapp(env, res):
     """Return the wsgiapp"""
-    if env['PATH_INFO'] == '/_ah/queue/default':
-        if KEEP_CACHED:
-            delta = datetime.timedelta(seconds=10)
-            taskqueue.add(eta=datetime.datetime.now() + delta)
-        res('200 OK',[('Content-Type','text/plain')])
-        return ['']
     env['PATH_INFO'] = env['PATH_INFO'].encode('utf8')
 
     #this deals with a problem where GAE development server seems to forget
@@ -92,25 +83,21 @@ def wsgiapp(env, res):
     if global_settings.web2py_runtime == 'gae:development':
         gluon.admin.create_missing_folders()
 
+    from gluon.custom_import import custom_import_install
+    web2py_path = global_settings.applications_parent # backward compatibility
+    custom_import_install(web2py_path)
+
     return gluon.main.wsgibase(env, res)
 
 
 if LOG_STATS or DEBUG:
     wsgiapp = log_stats(wsgiapp)
 
-
-if AUTO_RETRY:
-    from gluon.contrib.gae_retry import autoretry_datastore_timeouts
-    autoretry_datastore_timeouts()
-
-
 def main():
     """Run the wsgi app"""
-    if APPSTATS:
-        run_wsgi_app(wsgiapp)
-    else:
-        wsgiref.handlers.CGIHandler().run(wsgiapp)
+    run_wsgi_app(wsgiapp)
 
 if __name__ == '__main__':
     main()
+
 

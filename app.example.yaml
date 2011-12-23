@@ -6,18 +6,20 @@
 application: web2py
 version: 1
 api_version: 1
+
+# use this line for Python 2.5
+#
 runtime: python
 
-default_expiration: "24h"
+# use these lines for Python 2.7
+# upload app with: appcfg.py update web2py (where 'web2py' is web2py's root directory)
+#
+# runtime: python27
+# threadsafe: true    # true for WSGI & concurrent requests (Python 2.7 only)
 
-derived_file_type:
-- python_precompiled
+default_expiration: "24h"   # for static files
 
 handlers:
-
-- url: /_ah/stats.*
-  script: $PYTHON_LIB/google/appengine/ext/appstats/ui.py
-  login: admin
 
 - url: /(?P<a>.+?)/static/(?P<b>.+)
   static_files: applications/\1/static/\2
@@ -32,16 +34,9 @@ handlers:
   static_files: applications/welcome/static/robots.txt
   upload: applications/welcome/static/robots.txt
 
-- url: /_ah/admin/.*
-  script: $PYTHON_LIB/google/appengine/ext/admin
-  login: admin
-
-- url: /_ah/queue/default
-  script: gaehandler.py
-  login: admin
-
 - url: .*
-  script: gaehandler.py
+  script: gaehandler.py         # CGI
+#  script: gaehandler.wsgiapp    # WSGI (Python 2.7 only)
   secure: optional
 
 admin_console:
@@ -86,3 +81,6 @@ skip_files: |
 builtins:
 - remote_api: on
 - datastore_admin: on
+- appstats: on
+- admin_redirect: on
+- deferred: on
