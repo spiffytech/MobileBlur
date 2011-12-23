@@ -372,7 +372,27 @@ div.error {
  * 
  * *******************/
 
-a.button { display: inline-block; padding: 3px 5px 3px 5px; font-family: 'lucida grande', tahoma, verdana, arial, sans-serif; font-size: 12px; color: #3C3C3D; text-shadow: 1px 1px 0 #FFFFFF; background: #ECECEC url('../images/css3buttons_backgrounds.png') 0 0 no-repeat; white-space: nowrap; overflow: visible; cursor: pointer; text-decoration: none; border: 1px solid #CACACA; -webkit-border-radius: 2px; -moz-border-radius: 2px; -webkit-background-clip: padding-box; border-radius: 2px; outline: none; position: relative; zoom: 1; *display: inline; }
+a.button { display: inline-block;
+    padding: .25em .5em .25em .5em;
+    font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+    font-size: 1em;
+    color: #3C3C3D;
+    text-shadow: 1px 1px 0 #FFFFFF;
+    background: #ECECEC url('../images/css3buttons_backgrounds.png') 0 0 no-repeat;
+    white-space: nowrap;
+    overflow: visible;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid #CACACA;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-background-clip: padding-box;
+    border-radius: 2px;
+    outline: none;
+    position: relative;
+    zoom: 1;
+    *display: inline;
+}
 a.button.primary { font-weight: bold }
 a.button:hover { color: #FFFFFF; border-color: #388AD4; text-decoration: none; text-shadow: -1px -1px 0 rgba(0,0,0,0.3); background-position: 0 -40px; background-color: #2D7DC5; }
 a.button:active,
@@ -515,12 +535,15 @@ a.button:hover span.icon.user { background-position: 0 -869px }
   h2, h3{ page-break-after: avoid; }
 }
 
+html {
+}
 body {
+    font-size: 130.01% !important;
     color: #493F3E
 }
-#content {
-    padding: 0 0.5% 0 0.5%;
-}
+/*#content > * {
+    margin: 0 1em 0 1em;
+}*/
 
 a, a:hover {
     text-decoration: none;
@@ -528,9 +551,9 @@ a, a:hover {
 
 body > header {
     background-color: #95392E;
-    border-bottom: 1px solid #95392E;
     color: white;
     font-weight: bold;
+    padding: 0 .5em .75em .5em;
 }
 body > header a {
     text-decoration: none;
@@ -538,37 +561,35 @@ body > header a {
     font-weight: bold;
 }
 
-#story-list a, .feed {
-    padding: 0.5% 0 0.5% 0;
-    font-weight: bold;
+.list-item > div {
+    padding: .9em .5em .9em .5em;
+    border-top: 1px solid #95392E;
     margin-top: 0;
+    font-weight: bold;
+    color: #C57E3C;
+}
+.list-item:first-of-type > div {
+    border: none;
+}
+
+#story-content {
+    padding: 0 .5em 0 .5em;
 }
 
 .story-date {
-    font-size: .75em;
+    font-size: 75%;
     color: #493F3E;
     font-weight: normal;
-}
-
-.feed {
-    text-decoration: none;
 }
 
 .read {
     color: #D99B48;
 }
-.unread, .feed .feed-title {
+.unread, .feed-title {
     color: #C57E3C;
 }
 .ng, .nt, .ps {
     color: #493F3E;
-}
-
-#story-list .story, .feed {
-    text-decoration: none;
-    padding: .5 0 .5% 0%;
-    border-top: 1px solid #95392E;
-    margin-top: .33%;
 }
 
 span.ps, span.nt, span.ng {
@@ -587,6 +608,7 @@ span.ng {
 
 body > footer {
     background-color: #95392E;
+    padding: 0 .5em 0 .5em;
     border-top: 1px solid #95392E;
     color: white;
 }
