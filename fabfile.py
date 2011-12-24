@@ -31,7 +31,7 @@ def release(version):
 
 
 def push():
-    local("git push github master develop")
+    local("git push --tags github master develop")
 
 
 def update_web2py(version):
