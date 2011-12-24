@@ -47,3 +47,4 @@ def update_web2py(version):
     print "\n\nGo restart the web2py server and make sure the site behaves properly"
     if confirm("Does the site still act OK?"):
         local("git flow feature finish web2py_%s" % version)
+        local("rm -rf web2py_src.zip")  # Do this after we confirm the site works, so we don't have to redownload if something's broken
