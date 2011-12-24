@@ -51,3 +51,19 @@ def view():
 def mark_read():
     results = newsblur.mark_story_as_read(request.vars["story_id"], request.vars["feed_id"])
     redirect(URL("feeds", "view", args=[request.vars["feed_id"]]))
+
+
+def intelligence():
+    feed_id = request.vars["feed_id"]
+    requested_story_id = request.vars["story_id"]
+    page = request.vars["page"]
+
+    feed = newsblur.feed(feed_id, page=page)
+    stories = feed["stories"]
+    for story in range(len(stories)):
+        if stories[story]["id"] == requested_story_id:
+            requested_story = stories[story]
+    tags = requested_story["story_tags"]
+    authors = requested_story["story_authors"]
+    title = requested_story["story_title"]
+    return dict(locals())

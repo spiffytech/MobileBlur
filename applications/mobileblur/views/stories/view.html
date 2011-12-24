@@ -23,4 +23,7 @@
     {{ if previous_story is not None: }}
         <p>→ Older story: <a href="{{= URL(c="stories", f="view", vars=dict(story=previous_story["id"], feed_id=feed_id, feed_title=feed_title, page=previous_story["page"])) }}">{{= previous_story["story_title"] }}</a></p>
     {{ pass }}
+
+    <p><a href="{{= URL("intelligence", vars=dict(feed_id=feed_id, story_id=requested_story["id"], page=requested_story["page"])) }}">Intelligence</a></p>
+
 {{ end }}
