@@ -1,5 +1,9 @@
 from pprint import pprint
+import random
 import simplejson
+import time
+
+random.seed(time.time())
 
 def index():
     raw_feeds = newsblur.feeds(flat=True)["feeds"]
@@ -15,17 +19,28 @@ def index():
 
 
 def login():
+    demo = False
+    demo_accounts = ["mbtest1", "mbtest2", "mbtest3", "mbtest4"]
+#    demo_accounts = ["mbtest1"]
+
     login_form = SQLFORM.factory(
         Field("username", requires=IS_NOT_EMPTY()),
-        Field("password", "password", requires=IS_NOT_EMPTY())
+        Field("password", "password")
     )
-    if login_form.accepts(request):
+
+    if len(request.args) > 0 and request.args[0] == "demo":
+        demo = True
+        account = random.choice(demo_accounts)
+        login_form.vars["username"] = account
+        login_form.vars["password"] = account
+
+    if login_form.accepts(request) or demo is True:
         try:
             results = newsblur.login(login_form.vars["username"], login_form.vars["password"])
             response.cookies["nb_cookie"] = newsblur.cookies["newsblur_sessionid"]
             response.cookies["nb_cookie"]["path"] = "/"
             redirect(URL("index"))
-        except Exception as ex:
+        except ValueError as ex:
             login_form.insert(-1, ex.message)
             login_form._class = "alert-message block-message error"
 
