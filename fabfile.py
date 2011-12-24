@@ -31,9 +31,7 @@ def release(version):
 
 
 def push():
-    branches = ["master", "develop"]
-    for branch in branches:
-        local("git push github %s" % branch)
+    local("git push github master develop")
 
 
 def update_web2py(version):
