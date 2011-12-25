@@ -35,14 +35,19 @@ def view():
 
             break
 
+    feed_title = request.vars["feed_title"]
+    response.title = (requested_story["story_title"][:15] + "...") if len(requested_story["story_title"]) > 15 else requested_story["story_title"]
+    response.title += " on "
+    response.title += (feed_title[:15] + "...") if len(feed_title) > 15 else feed_title
+    
     return dict(
         previous_story=previous_story,
         requested_story=requested_story, 
         next_story=next_story,
         feed_id=feed["feed_id"],
-        feed_title=request.vars["feed_title"],
+        feed_title=feed_title,
     )
 
 def mark_read():
     results = newsblur.mark_story_as_read(request.vars["story_id"], request.vars["feed_id"])
-    redirect(URL("feeds", "view", args=[request.vars["feed_id"]]))
+    redirect(URL("feeds", "view", args=[request.vars["feed_id"]], vars={"page": request.vars["page"]}))

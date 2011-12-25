@@ -1,5 +1,3 @@
-session.forget()  # We don't need to store user sessions
-
 newsblur = local_import("newsblur")
 newsblur = newsblur.NewsBlur()
 

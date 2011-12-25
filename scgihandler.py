@@ -54,13 +54,16 @@ import gluon.main
 # uncomment one of the two imports below depending on the SCGIWSGI server installed
 #import paste.util.scgiserver as scgi
 from wsgitools.scgi.forkpool import SCGIServer
+from wsgitools.filters import WSGIFilterMiddleware, GzipWSGIFilter
+
+wsgiapp=WSGIFilterMiddleware(gluon.main.wsgibase, GzipWSGIFilter)
 
 if LOGGING:
-    application = gluon.main.appfactory(wsgiapp=gluon.main.wsgibase,
+    application = gluon.main.appfactory(wsgiapp=wsgiapp,
                                         logfilename='httpserver.log',
                                         profilerfilename=None)
 else:
-    application = gluon.main.wsgibase
+    application = wsgiapp
 
 if SOFTCRON:
     from gluon.settings import global_settings
@@ -68,5 +71,5 @@ if SOFTCRON:
 
 # uncomment one of the two rows below depending on the SCGIWSGI server installed
 #scgi.serve_application(application, '', 4000).run()
-SCGIServer(application, port=4000).run()
+SCGIServer(application, port=4000).enable_sighandler().run()
 

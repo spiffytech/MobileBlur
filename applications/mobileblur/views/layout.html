@@ -85,7 +85,9 @@
         {{ block footer_bonus }}{{end}}
         <a href="{{= URL("default", "settings") }}">Settings</a><br />
         <a href="{{= URL("default", "logout") }}">Log out</a><br />
-        <a href="mailto:spiffytech@spiffyte.ch?subject=[Mobileblur] ">Send me feedback!</a>
+        {{ if [request.application, request.controller, request.function] != [request.application, "default", "login"]: }}
+            <a href="mailto:spiffytech@spiffyte.ch?subject=[Mobileblur] ">Send me feedback!</a>
+        {{ pass }}
     </footer>
     
     <!--[if lt IE 7 ]>
