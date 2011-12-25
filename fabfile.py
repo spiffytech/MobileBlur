@@ -8,12 +8,13 @@ def test():
     print local("git flow help")
 
 def release(version):
-    if local("git branch | grep '*'") != "* release/%s" % version:
+    if local("git branch | grep '*'", capture=True) != "* release/%s" % version:
         print local("git flow release start %s" % version)
-        if not confirm("A release has been started and staged locally. Does it behave like it should?"):
-            abort("Aborting...")
     else:
         print "Already on branch release/%s" % version
+
+    if not confirm("A release has been started and staged locally. Does it behave like it should?"):
+        abort("Aborting...")
 
     print local("git flow release finish %s" % version)
     print local("git push github master")
