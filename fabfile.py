@@ -17,11 +17,11 @@ def workflow(version, hotfix):
     release_or_hotfix = "hotfix" if hotfix is True else "release"
 
     if local("git branch | grep '*'", capture=True) != "* %s/%s" % (release_or_hotfix, version):
-        print local("git flow %s start %s" % (release_or_hotfix, version)
+        print local("git flow %s start %s" % (release_or_hotfix, version))
     else:
         print "Already on branch %s/%s" % (release_or_hotfix, version)
 
-    if not confirm("A %s has been started and staged locally. Does it behave like it should?" % release_or_hotfix):
+    if not confirm("A %s has been started and staged locally. Does it behave like it should?" % (release_or_hotfix)):
         abort("Aborting...")
 
     print local("git flow %s finish %s" % (release_or_hotfix, version))
