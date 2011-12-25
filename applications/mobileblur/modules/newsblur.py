@@ -26,7 +26,7 @@ class NewsBlur():
         self.cookies = results.cookies
         results = simplejson.loads(results.content)
         if results["authenticated"] is False:
-            raise Exception("The newsblur credentials you provided are invalid")
+            raise ValueError("The newsblur credentials you provided are invalid")
         return results
 
     def logout(self, ):
