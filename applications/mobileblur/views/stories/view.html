@@ -8,8 +8,8 @@
         <a href="{{= requested_story["story_permalink"] }}">{{= requested_story["story_title"] }}</a>
     </h3>
 
-    <a href="{{= URL("mark_read", vars=dict(story_id=requested_story["id"], feed_id=feed_id, page=requested_story["page"])) }}" class="button">
-        Mark story as read
+    <a href="{{= URL("mark_unread", vars=dict(story_id=requested_story["id"], feed_id=feed_id, page=requested_story["page"])) }}" class="button">
+        Leave story unread
     </a>
 {{ end }}
 <section id="story-content">
