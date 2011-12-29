@@ -186,6 +186,18 @@ class NewsBlur():
         results = requests.post(url, data=payload, cookies=self.cookies)
         return simplejson.loads(results.content)
 
+    def mark_story_as_unread(self, story_id,feed_id):
+        '''
+        Mark stories as read.
+        Multiple story ids can be sent at once.
+        Each story must be from the same feed.
+        '''
+
+        url = nb_url + 'reader/mark_story_as_unread'
+        payload = {'story_id':story_id,'feed_id':feed_id}
+        results = requests.post(url, data=payload, cookies=self.cookies)
+        return simplejson.loads(results.content)
+
     def mark_story_as_starred(self, story_id,feed_id):
         '''
         Mark a story as starred (saved).
