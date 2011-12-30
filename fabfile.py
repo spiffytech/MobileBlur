@@ -13,6 +13,7 @@ def release(version):
 def hotfix(version):
     workflow(version, hotfix=True)
 
+
 def workflow(version, hotfix):
     release_or_hotfix = "hotfix" if hotfix is True else "release"
 
@@ -25,9 +26,13 @@ def workflow(version, hotfix):
         abort("Aborting...")
 
     print local("git flow %s finish %s" % (release_or_hotfix, version))
-    print local("git push github master")
 
-    with cd("apache/mobileblur.spiffyte.ch/docroot"):
+    push()
+    _update_remote_docroot("apache/mobileblur.spiffyte.ch/docroot")
+
+
+def _update_remote_docroot(docroot):
+    with cd(docroot):
         print run("git pull")
         with settings(warn_only = True):
             result = run("httpd -t")
@@ -37,6 +42,11 @@ def workflow(version, hotfix):
             result = sudo("service httpd restart")
             if result.failed and confirm ("Apache didn't start up again! Revert to last release?"):
                 print run("git reset --hard HEAD^")
+
+
+def stage():
+    push()
+    _update_remote_docroot("apache/mobileblur-staging.spiffyte.ch/docroot")
 
 
 def push():
