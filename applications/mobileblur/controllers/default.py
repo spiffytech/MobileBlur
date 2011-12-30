@@ -59,7 +59,11 @@ def settings():
         Field(
             "threshold", 
             "integer", 
-            requires=IS_IN_SET([-1,0,1]),
+            requires=IS_IN_SET([
+                (-1, "Negative"),
+                (0, "Neutral"),
+                (1, "Positive")
+            ]),
             default=threshold,
             widget=SQLFORM.widgets.radio.widget
         ),
