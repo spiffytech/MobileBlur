@@ -8,18 +8,31 @@ def test():
     print local("git flow help")
 
 def release(version):
-    if local("git branch | grep '*'", capture=True) != "* release/%s" % version:
-        print local("git flow release start %s" % version)
-    else:
-        print "Already on branch release/%s" % version
+    workflow(version, hotfix=False)
 
-    if not confirm("A release has been started and staged locally. Does it behave like it should?"):
+def hotfix(version):
+    workflow(version, hotfix=True)
+
+
+def workflow(version, hotfix):
+    release_or_hotfix = "hotfix" if hotfix is True else "release"
+
+    if local("git branch | grep '*'", capture=True) != "* %s/%s" % (release_or_hotfix, version):
+        print local("git flow %s start %s" % (release_or_hotfix, version))
+    else:
+        print "Already on branch %s/%s" % (release_or_hotfix, version)
+
+    if not confirm("A %s has been started and staged locally. Does it behave like it should?" % (release_or_hotfix)):
         abort("Aborting...")
 
-    print local("git flow release finish %s" % version)
-    print local("git push github master")
+    print local("git flow %s finish %s" % (release_or_hotfix, version))
 
-    with cd("apache/mobileblur.spiffyte.ch/docroot"):
+    push()
+    _update_remote_docroot("apache/mobileblur.spiffyte.ch/docroot")
+
+
+def _update_remote_docroot(docroot):
+    with cd(docroot):
         print run("git pull")
         with settings(warn_only = True):
             result = run("httpd -t")
@@ -29,6 +42,11 @@ def release(version):
             result = sudo("service httpd restart")
             if result.failed and confirm ("Apache didn't start up again! Revert to last release?"):
                 print run("git reset --hard HEAD^")
+
+
+def stage():
+    push()
+    _update_remote_docroot("apache/mobileblur-staging.spiffyte.ch/docroot")
 
 
 def push():

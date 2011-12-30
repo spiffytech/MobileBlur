@@ -5,7 +5,8 @@ from pprint import pprint
 def view():
     page = int(request.vars["page"]) if request.vars.has_key("page") else 1
     requested_story_id = request.vars["story"]
-    feed = newsblur.feed(request.vars["feed_id"], page=page)
+    feed_id = request.vars["feed_id"]
+    feed = newsblur.feed(feed_id, page=page)
     stories = feed["stories"]
     
     previous_story = None
@@ -18,7 +19,7 @@ def view():
             if story != len(stories)-1:
                 stories_page = stories[story+1:]
             else:
-                stories_page = newsblur.feed(request.vars["feed_id"], page=page+1)["stories"]
+                stories_page = newsblur.feed(feed_id, page=page+1)["stories"]
             filtered_stories = intelligence_filter(stories_page)
             if len(filtered_stories) > 0:
                 previous_story = filtered_stories[0]
@@ -26,7 +27,7 @@ def view():
             if story != 0:
                 stories_page = stories[:story]
             elif page > 1:
-                stories_page = newsblur.feed(request.vars["feed_id"], page=page-1)["stories"]
+                stories_page = newsblur.feed(feed_id, page=page-1)["stories"]
             else:
                 stories_page = []
             filtered_stories = intelligence_filter(stories_page)
@@ -34,6 +35,9 @@ def view():
                 next_story = filtered_stories[-1]
 
             break
+
+    newsblur.mark_story_as_read(requested_story_id, feed_id)
+
 
     feed_title = request.vars["feed_title"]
     response.title = (requested_story["story_title"][:15] + "...") if len(requested_story["story_title"]) > 15 else requested_story["story_title"]
@@ -48,6 +52,6 @@ def view():
         feed_title=feed_title,
     )
 
-def mark_read():
-    results = newsblur.mark_story_as_read(request.vars["story_id"], request.vars["feed_id"])
+def mark_unread():
+    results = newsblur.mark_story_as_unread(request.vars["story_id"], request.vars["feed_id"])
     redirect(URL("feeds", "view", args=[request.vars["feed_id"]], vars={"page": request.vars["page"]}))

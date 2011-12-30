@@ -537,6 +537,9 @@ a.button:hover span.icon.user { background-position: 0 -869px }
   h2, h3{ page-break-after: avoid; }
 }
 
+
+/* Color scheme: http://www.colourlovers.com/palette/1875109/Spice_islands */
+
 html {
 }
 body {
@@ -594,7 +597,7 @@ body > header > h3 {
 }
 
 .read {
-    color: #D99B48;
+    color: #493F3E;
 }
 .unread, .feed-title {
     color: #C57E3C;
