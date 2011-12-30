@@ -3,7 +3,7 @@
 *.bak
 *cache*
 *databases*
-*sessions*
+*sessions
 *errors*
 *httpserver.*
 parameters_*.py
