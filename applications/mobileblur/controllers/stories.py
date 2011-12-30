@@ -16,11 +16,11 @@ def view():
         if stories[story]["id"] == requested_story_id:
             requested_story = stories[story]
 
-            if story != len(stories)-1:
-                stories_page = stories[story+1:]
-            else:
-                stories_page = newsblur.feed(feed_id, page=page+1)["stories"]
+            stories_page = stories[story+1:]
             filtered_stories = intelligence_filter(stories_page)
+            if len(filtered_stories) == 0:
+                stories_page = newsblur.feed(feed_id, page=page+1)["stories"]
+                filtered_stories = intelligence_filter(stories_page)
             if len(filtered_stories) > 0:
                 previous_story = filtered_stories[0]
 
