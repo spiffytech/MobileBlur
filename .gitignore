@@ -1,11 +1,7 @@
 *.pyc
 *.pyo
 *.bak
-*cache*
-*databases*
-*sessions
-*errors*
-*httpserver.*
+httpserver.*
 parameters_*.py
 *.swp
 *.swo
@@ -13,5 +9,9 @@ parameters_*.py
 *.swm
 *.swl
 cron.master
-mobileblur.fossil
 _FOSSIL_
+*.fossil
+applications/*/cache/*
+applications/*/databases/*
+applications/*/sessions/*
+applications/*/errors/*
