@@ -74,7 +74,11 @@
     
 	<header>
 	  {{block header}} <!-- this is default header -->
-          <h1><a href="{{= URL("mobileblur", "default", "index") }}">MobileBlur</a></h1>
+          <a href="{{= URL("mobileblur", "default", "index") }}">
+              <h1>
+                MobileBlur
+              </h1>
+          </a>
 	  {{end}}
       {{ block header_bonus }}{{end}}
 	</header>
