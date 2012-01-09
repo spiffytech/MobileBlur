@@ -565,13 +565,13 @@ body > header a {
     color: white;
     font-weight: bold;
 }
-body > header > h1 {
+body > header h1 {
     border-bottom: 1px solid white;
 }
-body > header > h2 {
+body > header h2 {
     border-bottom: 1px dashed white;
 }
-body > header > h3 {
+body > header h3 {
     border-bottom: 1px dotted white;
 }
 

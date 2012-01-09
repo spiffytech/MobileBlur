@@ -16,6 +16,7 @@ def view():
         if stories[story]["id"] == requested_story_id:
             requested_story = stories[story]
 
+            # Determine the next oldest story
             stories_page = stories[story+1:]
             filtered_stories = intelligence_filter(stories_page)
             if len(filtered_stories) == 0:
@@ -24,12 +25,14 @@ def view():
             if len(filtered_stories) > 0:
                 previous_story = filtered_stories[0]
 
+            # Determine the next newest story
             stories_page = stories[:story]
             filtered_stories = intelligence_filter(stories_page)
             if len(filtered_stories) == 0:
-                stories_page = newsblur.feed(feed_id, page=page-1)["stories"]
+                page = page - 1
+                stories_page = newsblur.feed(feed_id, page=page)["stories"]
                 filtered_stories = intelligence_filter(stories_page)
-            if len(filtered_stories) > 0 and filtered_stories[-1]["id"] != previous_story["id"]:  # Fetching page 0 returns page 1, complicating things
+            if len(filtered_stories) > 0 and page != 0:  # Fetching page 0 returns page 1, complicating things
                 next_story = filtered_stories[-1]
 
             break

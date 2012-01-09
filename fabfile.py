@@ -33,7 +33,9 @@ def workflow(version, hotfix):
 
 def _update_remote_docroot(docroot):
     with cd(docroot):
-        print run("git pull")
+        run("git reset --hard HEAD")
+        run("git pull")
+        run("sudo chown -R apache:apache .")
         with settings(warn_only = True):
             result = run("httpd -t")
             if result.failed and not ("Apache has errors. Continue anyway?"):
@@ -57,9 +59,8 @@ def update_web2py(version):
     local("git flow feature start web2py_%s" % version)
     local("wget http://www.web2py.com/examples/static/web2py_src.zip")
     local("dtrx -n web2py_src.zip")
-    local("mv web2py_src/web2py/* .")
-    local("rmdir web2py_src/web2py")
-    local("rmdir web2py_src")
+    local("rsync -avh --progress web2py_src/web2py/* .")
+    local("rm -rf web2py_src")
     local("git status")
     print "\n\nGo restart the web2py server and make sure the site behaves properly"
     if confirm("Does the site still act OK?"):
