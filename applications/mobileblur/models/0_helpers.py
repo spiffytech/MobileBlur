@@ -1,8 +1,4 @@
 import sys
-def my_handler(t,v,tr):
-    raise HTTP(300, "Newsblur is having problems. Try again later.")
-sys.excepthook = my_handler
-raise RuntimeError("test")
 
 newsblur = local_import("newsblur")
 newsblur = newsblur.NewsBlur()
