@@ -30,7 +30,7 @@ class NewsBlur():
             raise NewsblurException("Can't reach Newsblur right now")
 
         if results.status_code != 200:
-            raise NewsblurException("Newsblur returned error code " + str(results.status_code) + ", " + r.content)
+            raise NewsblurException("Newsblur returned error code " + str(results.status_code) + ", " + results.content)
 
         decoded_results = simplejson.loads(results.content)
         return decoded_results
@@ -39,9 +39,14 @@ class NewsBlur():
     def _nb_post(self, url, payload=None):
         if payload is None:
             payload = {}
-        results = requests.post(nb_url + url, data=payload, cookies=self.cookies)
+
+        try:
+            results = requests.post(nb_url + url, data=payload, cookies=self.cookies)
+        except:
+            raise NewsblurException("Can't reach Newsblur right now")
+
         if results.status_code != 200:
-            raise NewsblurException("Newsblur returned error code " + str(results.status_code) + ", " + r.content)
+            raise NewsblurException("Newsblur returned error code " + str(results.status_code) + ", " + results.content)
         self.cookies = results.cookies
 
         decoded_results = simplejson.loads(results.content)
