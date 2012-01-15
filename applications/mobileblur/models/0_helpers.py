@@ -1,14 +1,14 @@
 import sys
 
+nb_module = local_import("newsblur")
+newsblur = nb_module.NewsBlur()
+
 def my_handler(f):
     try:
         return f()
-    except Exception:
+    except nb_module.NewsblurException:
         redirect("http://spiffyte.ch")
 response._caller = my_handler
-
-newsblur = local_import("newsblur")
-newsblur = newsblur.NewsBlur()
 
 if not request.cookies.has_key("threshold"):
     threshold = 0
