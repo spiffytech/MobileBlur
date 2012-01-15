@@ -33,9 +33,9 @@ def workflow(version, hotfix):
 
 def _update_remote_docroot(docroot):
     with cd(docroot):
-        run("git reset --hard HEAD")
-        run("git pull")
-        run("sudo chown -R apache:apache .")
+        sudo("git reset --hard HEAD")
+        sudo("git pull")
+        sudo("sudo chown -R apache:apache .")
         with settings(warn_only = True):
             result = run("httpd -t")
             if result.failed and not ("Apache has errors. Continue anyway?"):
@@ -43,7 +43,7 @@ def _update_remote_docroot(docroot):
 
             result = sudo("service httpd restart")
             if result.failed and confirm ("Apache didn't start up again! Revert to last release?"):
-                print run("git reset --hard HEAD^")
+                print sudo("git reset --hard HEAD^")
 
 
 def stage():
