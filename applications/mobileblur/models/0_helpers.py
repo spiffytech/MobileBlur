@@ -1,5 +1,12 @@
 import sys
 
+def my_handler(f):
+    try:
+        return f()
+    except Exception:
+        redirect("http://spiffyte.ch")
+response._caller = my_handler
+
 newsblur = local_import("newsblur")
 newsblur = newsblur.NewsBlur()
 
