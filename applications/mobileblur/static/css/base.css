@@ -634,3 +634,7 @@ body > footer a {
     color: white;
     font-weight: bold;
 }
+
+#site-controls {
+    height: 40px;
+}
