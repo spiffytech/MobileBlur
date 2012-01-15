@@ -550,6 +550,9 @@ body {
     margin: 0 1em 0 1em;
 }*/
 
+#content {
+}
+
 a, a:hover {
     text-decoration: none;
 }
