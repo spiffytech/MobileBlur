@@ -609,6 +609,10 @@ body > header h3 {
     color: #493F3E;
 }
 
+#site-content {
+    min-height: 50px;
+}
+
 span.ps, span.nt, span.ng {
     padding: .05em;
     border-radius: 5px;
@@ -633,8 +637,4 @@ body > footer a {
     text-decoration: none;
     color: white;
     font-weight: bold;
-}
-
-#site-controls {
-    height: 40px;
 }
