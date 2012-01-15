@@ -25,6 +25,9 @@
         <p><a href="{{= URL(c="stories", f="view", vars=dict(story=next_story["id"], feed_id=feed_id, feed_title=feed_title, page=next_story["page"])) }}">← Newer story: {{= next_story["story_title"] }}</a></p>
     {{ pass }}
     {{ if previous_story is not None: }}
+        <br />
         <p><a href="{{= URL(c="stories", f="view", vars=dict(story=previous_story["id"], feed_id=feed_id, feed_title=feed_title, page=previous_story["page"])) }}">→ Older story: {{= previous_story["story_title"] }}</a></p>
     {{ pass }}
+    
+    <hr />
 {{ end }}
