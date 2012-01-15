@@ -1,5 +1,14 @@
-newsblur = local_import("newsblur")
-newsblur = newsblur.NewsBlur()
+import sys
+
+nb_module = local_import("newsblur")
+newsblur = nb_module.NewsBlur()
+
+def controller_error_handler(f):
+    try:
+        return f()
+    except nb_module.NewsblurException:
+        redirect(URL("errors", "index"))
+response._caller = controller_error_handler
 
 if not request.cookies.has_key("threshold"):
     threshold = 0
@@ -9,7 +18,7 @@ else:
     threshold = int(request.cookies["threshold"].value)
 thresholds = ["nt", "ps", "ng"]  # indices -1, 0, 1 for negative, neutral, and positive intelligence filters
 
-if [request.application, request.controller, request.function] != [request.application, "default", "login"]:
+if [request.application, request.controller, request.function] not in [[request.application, "default", "login"], [request.application, "errors", "index"]]:
     if "nb_cookie" not in request.cookies.keys():
         redirect(URL("default", "login"))
     else:

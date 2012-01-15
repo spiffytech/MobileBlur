@@ -550,6 +550,9 @@ body {
     margin: 0 1em 0 1em;
 }*/
 
+#content {
+}
+
 a, a:hover {
     text-decoration: none;
 }
@@ -604,6 +607,10 @@ body > header h3 {
 }
 .ng, .nt, .ps {
     color: #493F3E;
+}
+
+#site-content {
+    min-height: 50px;
 }
 
 span.ps, span.nt, span.ng {
