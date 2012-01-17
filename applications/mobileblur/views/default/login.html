@@ -1,23 +1,36 @@
 {{extend 'layout.html'}}
 
-<h3>Enter your Newsblur login credentials</h3>
-
-{{= login_form }}
-
 <style>
 p {
     margin: 0 .5em 0 .5em;
 }
+#nb-login {
+    width: 50%;
+    float: left;
+    border-right: 1px solid #493F3E;
+}
+#demo-login + section {
+    clear: both;
+}
 </style>
 
-<p>You may also log in with a demo account <a href="{{= URL(args=["demo"]) }}">here</a></p>
+<div id="nb-login">
+    <h3>Log in with your Newsblur credentials</h3>
+    {{= login_form }}
+</div>
 
-<p>MobileBlur is a phone- and tablet-friendly interface to the Newsblur RSS reader. It's designed to be easy to use on devices with small screens and slow processors.</p>
+<div id="demo-login">
+    <p>You may also log in with a demo account <a href="{{= URL(args=["demo"]) }}">here</a></p>
+</div>
 
-<p>If you like MobileBlur, please let me know with the feedback link below! If you want something added/improved, please let me know and I'll consider it.</p>
+<section>
+    <p>MobileBlur is a phone- and tablet-friendly interface to the Newsblur RSS reader. It's designed to be easy to use on devices with small screens and slow processors.</p>
 
-<hr />
+    <p>If you like MobileBlur, please let me know with the feedback link below! If you want something added/improved, please let me know and I'll consider it.</p>
 
-<p>MobileBlur takes your security seriously. MobileBlur relies on browser cookies to access your Newsblur account while you're navigating MobileBlur. It does not store anything that could be used to access your Newsblur account at any other time.</p>
+    <hr />
 
-<p>The MobileBlur source code is available <a href="https://github.com/spiffytech/MobileBlur/">here</a> if you'd like it.</p>
+    <p>MobileBlur takes your security seriously. MobileBlur relies on browser cookies to access your Newsblur account while you're navigating MobileBlur. It does not store anything that could be used to access your Newsblur account at any other time.</p>
+
+    <p>The MobileBlur source code is available <a href="https://github.com/spiffytech/MobileBlur/">here</a> if you'd like it.</p>
+</section>
