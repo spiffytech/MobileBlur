@@ -314,8 +314,6 @@ select[multiple=multiple] {
 
 input[type=submit], input[type=button], button {
     margin: 0px;
-    /*width: 85px;*/
-    height: 22px;    
     background: #eaeaea;
     color: #555;
     border: 1px solid #dedede;
