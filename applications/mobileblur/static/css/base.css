@@ -295,7 +295,6 @@ blockquote {
 
 input[type=text], input[type=password], textarea, select {
     margin: 2px 15px 2px 5px;
-    width: 280px;      
     background: #fff;
     color: #555;
     border: 1px solid #dedede; 
@@ -315,8 +314,6 @@ select[multiple=multiple] {
 
 input[type=submit], input[type=button], button {
     margin: 0px;
-    /*width: 85px;*/
-    height: 22px;    
     background: #eaeaea;
     color: #555;
     border: 1px solid #dedede;
@@ -506,6 +503,7 @@ a.button:hover span.icon.user { background-position: 0 -869px }
 /* Grade-A Mobile Browsers (Opera Mobile, iPhone Safari, Android Chrome)  
    Consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
 @media screen and (max-device-width: 480px) {
+}
   
   
   /* Uncomment if you don't want iOS and WinMobile to mobile-optimize the text for you
@@ -610,6 +608,7 @@ body > header h3 {
 }
 
 #site-content {
+    padding: .5em 0 .5em 0;
     min-height: 50px;
 }
 

@@ -61,6 +61,12 @@
     else: right_sidebar_style = 'style="display: none;"'
     style_content = 'style="width: %s"' % width_content
     }}
+
+    <script>
+        $(document).ready(function() {
+            $('.flash').delay(5000).fadeOut();
+        });
+    </script> 
   </head>
   
   <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->	
@@ -90,15 +96,15 @@
     <footer>
         {{ block footer_bonus }}{{end}}
         <section id="site-content">
-            <a href="{{= URL("default", "logout") }}" style="float: right">
-                <!-- Taken from Marie Coons, http://thenounproject.com/noun/squirrel/#icon-No837 -->
-                <img src="{{= URL("static", "images/squirrel.png") }}" title="Log out">
-            </a>
-            <a href="{{= URL("default", "settings") }}" style="float: left; margin-right: 1em;">
-                <!-- Taken from The Noun Project, http://thenounproject.com/noun/gears/#icon-No179 -->
-                <img src="{{= URL("static", "images/gears.png") }}" title="Settings">
-            </a>
             {{ if [request.application, request.controller, request.function] != [request.application, "default", "login"]: }}
+                <a href="{{= URL("default", "logout") }}" style="float: right">
+                    <!-- Taken from Marie Coons, http://thenounproject.com/noun/squirrel/#icon-No837 -->
+                    <img src="{{= URL("static", "images/squirrel.png") }}" title="Log out">
+                </a>
+                <a href="{{= URL("default", "settings") }}" style="float: left; margin-right: 1em;">
+                    <!-- Taken from The Noun Project, http://thenounproject.com/noun/gears/#icon-No179 -->
+                    <img src="{{= URL("static", "images/gears.png") }}" title="Settings">
+                </a>
                 <a href="mailto:spiffytech@spiffyte.ch?subject=[Mobileblur] ">
                     <!-- Taken from The Noun Project, http://thenounproject.com/noun/mail/#icon-No91 -->
                     <img src="{{= URL("static", "images/envelope.png") }}" title="Send me feedback!">
