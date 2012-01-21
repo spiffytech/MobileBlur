@@ -503,6 +503,7 @@ a.button:hover span.icon.user { background-position: 0 -869px }
 /* Grade-A Mobile Browsers (Opera Mobile, iPhone Safari, Android Chrome)  
    Consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
 @media screen and (max-device-width: 480px) {
+}
   
   
   /* Uncomment if you don't want iOS and WinMobile to mobile-optimize the text for you
