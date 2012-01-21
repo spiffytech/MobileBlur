@@ -5,10 +5,27 @@ p {
     margin: 0 .5em 0 .5em;
 }
 #nb-login {
-    width: 50%;
-    float: left;
     border-right: 1px solid #493F3E;
 }
+
+#demo-login {
+    width: 50%;
+    height: 2em;
+    margin: auto;
+    text-align: center;
+    font-size: 150%;
+    background-color: #C57E3C;
+    border-radius: 5px;
+    display: table;
+}
+#demo-login a {
+    color: #493F3E;
+}
+#position {
+    display: table-cell;
+    vertical-align: middle;
+}
+
 #demo-login + section {
     clear: both;
 }
@@ -20,7 +37,11 @@ p {
 </div>
 
 <div id="demo-login">
-    <p>You may also log in with a demo account <a href="{{= URL(args=["demo"]) }}">here</a></p>
+    <div id="position">
+        <div id="position2">
+            <a href="{{= URL(args=["demo"]) }}">Demo</a>
+        </div>
+    </div>
 </div>
 
 <section>
