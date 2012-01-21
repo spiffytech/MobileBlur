@@ -39,4 +39,5 @@ def view():
 def mark_read():
     if len(request.args) > 0:
         newsblur.mark_feed_as_read(request.args[0])
+    session.flash = "Feed marked as read"
     redirect(URL("default", "index"))

@@ -55,4 +55,5 @@ def view():
 
 def mark_unread():
     results = newsblur.mark_story_as_unread(request.vars["story_id"], request.vars["feed_id"])
+    session.flash = "Story left unread"
     redirect(URL("feeds", "view", args=[request.vars["feed_id"]], vars={"page": request.vars["page"]}))

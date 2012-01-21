@@ -61,6 +61,12 @@
     else: right_sidebar_style = 'style="display: none;"'
     style_content = 'style="width: %s"' % width_content
     }}
+
+    <script>
+        $(document).ready(function() {
+            $('.flash').delay(5000).fadeOut();
+        });
+    </script> 
   </head>
   
   <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->	
