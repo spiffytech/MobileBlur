@@ -295,7 +295,6 @@ blockquote {
 
 input[type=text], input[type=password], textarea, select {
     margin: 2px 15px 2px 5px;
-    width: 280px;      
     background: #fff;
     color: #555;
     border: 1px solid #dedede; 

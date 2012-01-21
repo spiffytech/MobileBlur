@@ -3,11 +3,12 @@
 *.bak
 httpserver.*
 parameters_*.py
-*.swp
-*.swo
-*.swn
-*.swm
+*.swk
 *.swl
+*.swm
+*.swn
+*.swo
+*.swp
 cron.master
 _FOSSIL_
 *.fossil
