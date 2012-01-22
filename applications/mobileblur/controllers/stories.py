@@ -60,14 +60,56 @@ def intelligence():
     page = request.vars["page"]
 
     feed = newsblur.feed(feed_id, page=page)
+    classifiers = feed["classifiers"]
     stories = feed["stories"]
     for story in range(len(stories)):
         if stories[story]["id"] == requested_story_id:
             requested_story = stories[story]
     tags = requested_story["story_tags"]
-    authors = requested_story["story_authors"]
+
+    items = []
+    items.append(H4("Title"))
     title = requested_story["story_title"]
-    return dict(locals())
+    items.extend([
+        INPUT(_name="title", _value=title),
+        LABEL("Like"),
+        INPUT(_type="radio", _name="title", _value="Like"),
+        LABEL("Dislike"),
+        INPUT(_type="radio", _name="title", _value="Dislike"),
+        BR()
+    ])
+
+    items.append(H4("Tags"))
+    for tag in tags:
+        try:
+            rating = classifiers["tags"][tag]
+            value = "Like" if rating == 1 else "Dislike"
+        except KeyError:
+            value = ""
+        t = [
+            LABEL(tag + ": "),
+            LABEL("Like"),
+            INPUT(_type="radio", _name=tag+"][tag", _value="Like", value=value),
+            LABEL("Dislike"),
+            INPUT(_type="radio", _name=tag+"][tag", _value="Dislike", value=value),
+            BR()
+        ]
+        items.extend(t)
+
+    authors = requested_story["story_authors"]
+    items.append(H4("Authors"))
+    items.extend([
+        INPUT(_name="authors", _value=authors),
+        LABEL("Like"),
+        INPUT(_type="radio", _name="author", _value="Like"),
+        LABEL("Dislike"),
+        INPUT(_type="radio", _name="author", _value="Dislike"),
+        BR()
+    ])
+
+    intel_form = FORM(*items)
+
+    return dict(requested_story=feed, intel_form=intel_form)
 
 
 def mark_unread():
