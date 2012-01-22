@@ -1,23 +1,60 @@
 {{extend 'layout.html'}}
 
-<h3>Enter your Newsblur login credentials</h3>
-
-{{= login_form }}
-
 <style>
-p {
-    margin: 0 .5em 0 .5em;
-}
+    section p, section h3{
+        margin: 0 .5em 1em .5em;
+        max-width: 100%
+    }
+    #nb-login {
+        border-right: 1px solid #493F3E;
+    }
+
+    #demo-login {
+        width: 50%;
+        height: 2em;
+        margin: auto;
+        text-align: center;
+        font-size: 150%;
+        background-color: #C57E3C;
+        border-radius: 5px;
+        display: table;
+    }
+    #demo-login a {
+        color: #493F3E;
+    }
+    #position {
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    #demo-login + section {
+        clear: both;
+    }
 </style>
 
-<p>You may also log in with a demo account <a href="{{= URL(args=["demo"]) }}">here</a></p>
-
-<p>MobileBlur is a phone- and tablet-friendly interface to the Newsblur RSS reader. It's designed to be easy to use on devices with small screens and slow processors.</p>
-
-<p>If you like MobileBlur, please let me know with the feedback link below! If you want something added/improved, please let me know and I'll consider it.</p>
-
+<section>
+    <div id="nb-login">
+        <h3>Log in with your Newsblur credentials</h3>
+        {{= login_form }}
+    </div>
 <hr />
+    <div id="demo-login">
+        <div id="position">
+            <div id="position2">
+                <a href="{{= URL(args=["demo"]) }}">Demo</a>
+            </div>
+        </div>
+    </div>
+</section>
+<hr />
+<section>
+    <p>MobileBlur is a phone- and tablet-friendly interface to the Newsblur RSS reader. It's designed to be easy to use on devices with small screens and slow processors.</p>
 
-<p>MobileBlur takes your security seriously. MobileBlur relies on browser cookies to access your Newsblur account while you're navigating MobileBlur. It does not store anything that could be used to access your Newsblur account at any other time.</p>
+    <p>If you like MobileBlur, please let me know with the feedback link below! If you want something added/improved, please let me know and I'll consider it.</p>
 
-<p>The MobileBlur source code is available <a href="https://github.com/spiffytech/MobileBlur/">here</a> if you'd like it.</p>
+    <hr />
+
+    <p>MobileBlur takes your security seriously. MobileBlur relies on browser cookies to access your Newsblur account while you're navigating MobileBlur. It does not store anything that could be used to access your Newsblur account at any other time.</p>
+
+    <p>The MobileBlur source code is available <a href="https://github.com/spiffytech/MobileBlur/">here</a> if you'd like it.</p>
+</section>

@@ -12,7 +12,7 @@
 
         <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"], feed_title=feed["feed_title"], page=story["page"])) }}" class="list-item">
             <div>
-                <p class="story-title {{= "unread" if story["read_status"] == 0 else "read" }}">{{= story["story_title"] }}</p>
+                <p class="story-title {{= "unread" if not story.has_key("read_status") or story["read_status"] == 0 else "read" }}">{{= story["story_title"] }}</p>
                 <p class="story-date">{{= story["story_date"] }}</p>
             </div>
         </a>
@@ -25,4 +25,6 @@
     {{pass}}
 
     <p><a href="{{= URL(args=[feed_id], vars={"page": stories[-1]["page"]+1}) }}">→ Older stories</a></p>
+
+    <hr />
 {{ end }}

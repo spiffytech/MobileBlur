@@ -5,7 +5,8 @@ from pprint import pprint
 def view():
     page = int(request.vars["page"]) if request.vars.has_key("page") else 1
     requested_story_id = request.vars["story"]
-    feed = newsblur.feed(request.vars["feed_id"], page=page)
+    feed_id = request.vars["feed_id"]
+    feed = newsblur.feed(feed_id, page=page)
     stories = feed["stories"]
     
     previous_story = None
@@ -15,25 +16,29 @@ def view():
         if stories[story]["id"] == requested_story_id:
             requested_story = stories[story]
 
-            if story != len(stories)-1:
-                stories_page = stories[story+1:]
-            else:
-                stories_page = newsblur.feed(request.vars["feed_id"], page=page+1)["stories"]
+            # Determine the next oldest story
+            stories_page = stories[story+1:]
             filtered_stories = intelligence_filter(stories_page)
+            if len(filtered_stories) == 0:
+                stories_page = newsblur.feed(feed_id, page=page+1)["stories"]
+                filtered_stories = intelligence_filter(stories_page)
             if len(filtered_stories) > 0:
                 previous_story = filtered_stories[0]
 
-            if story != 0:
-                stories_page = stories[:story]
-            elif page > 1:
-                stories_page = newsblur.feed(request.vars["feed_id"], page=page-1)["stories"]
-            else:
-                stories_page = []
+            # Determine the next newest story
+            stories_page = stories[:story]
             filtered_stories = intelligence_filter(stories_page)
-            if len(filtered_stories) > 0:
+            if len(filtered_stories) == 0:
+                page = page - 1
+                stories_page = newsblur.feed(feed_id, page=page)["stories"]
+                filtered_stories = intelligence_filter(stories_page)
+            if len(filtered_stories) > 0 and page != 0:  # Fetching page 0 returns page 1, complicating things
                 next_story = filtered_stories[-1]
 
             break
+
+    newsblur.mark_story_as_read(requested_story_id, feed_id)
+
 
     feed_title = request.vars["feed_title"]
     response.title = (requested_story["story_title"][:15] + "...") if len(requested_story["story_title"]) > 15 else requested_story["story_title"]
@@ -47,10 +52,6 @@ def view():
         feed_id=feed["feed_id"],
         feed_title=feed_title,
     )
-
-def mark_read():
-    results = newsblur.mark_story_as_read(request.vars["story_id"], request.vars["feed_id"])
-    redirect(URL("feeds", "view", args=[request.vars["feed_id"]]))
 
 
 def intelligence():
@@ -67,3 +68,9 @@ def intelligence():
     authors = requested_story["story_authors"]
     title = requested_story["story_title"]
     return dict(locals())
+
+
+def mark_unread():
+    results = newsblur.mark_story_as_unread(request.vars["story_id"], request.vars["feed_id"])
+    session.flash = "Story left unread"
+    redirect(URL("feeds", "view", args=[request.vars["feed_id"]], vars={"page": request.vars["page"]}))

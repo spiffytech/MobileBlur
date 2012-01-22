@@ -8,18 +8,34 @@ def test():
     print local("git flow help")
 
 def release(version):
-    if local("git branch | grep '*'") != "* release/%s" % version:
-        print local("git flow release start %s" % version)
-        if not confirm("A release has been started and staged locally. Does it behave like it should?"):
-            abort("Aborting...")
+    workflow(version, hotfix=False)
+
+def hotfix(version):
+    workflow(version, hotfix=True)
+
+
+def workflow(version, hotfix):
+    release_or_hotfix = "hotfix" if hotfix is True else "release"
+
+    if local("git branch | grep '*'", capture=True) != "* %s/%s" % (release_or_hotfix, version):
+        print local("git flow %s start %s" % (release_or_hotfix, version))
     else:
-        print "Already on branch release/%s" % version
+        print "Already on branch %s/%s" % (release_or_hotfix, version)
 
-    print local("git flow release finish %s" % version)
-    print local("git push github master")
+    if not confirm("A %s has been started and staged locally. Does it behave like it should?" % (release_or_hotfix)):
+        abort("Aborting...")
 
-    with cd("apache/mobileblur.spiffyte.ch/docroot"):
-        print run("git pull")
+    print local("git flow %s finish %s" % (release_or_hotfix, version))
+
+    push()
+    _update_remote_docroot("apache/mobileblur.spiffyte.ch/docroot")
+
+
+def _update_remote_docroot(docroot):
+    with cd(docroot):
+        sudo("git reset --hard HEAD")
+        sudo("git pull")
+        sudo("sudo chown -R apache:apache .")
         with settings(warn_only = True):
             result = run("httpd -t")
             if result.failed and not ("Apache has errors. Continue anyway?"):
@@ -27,7 +43,12 @@ def release(version):
 
             result = sudo("service httpd restart")
             if result.failed and confirm ("Apache didn't start up again! Revert to last release?"):
-                print run("git reset --hard HEAD^")
+                print sudo("git reset --hard HEAD^")
+
+
+def stage():
+    push()
+    _update_remote_docroot("apache/mobileblur-staging.spiffyte.ch/docroot")
 
 
 def push():
@@ -38,9 +59,8 @@ def update_web2py(version):
     local("git flow feature start web2py_%s" % version)
     local("wget http://www.web2py.com/examples/static/web2py_src.zip")
     local("dtrx -n web2py_src.zip")
-    local("mv web2py_src/web2py/* .")
-    local("rmdir web2py_src/web2py")
-    local("rmdir web2py_src")
+    local("rsync -avh --progress web2py_src/web2py/* .")
+    local("rm -rf web2py_src")
     local("git status")
     print "\n\nGo restart the web2py server and make sure the site behaves properly"
     if confirm("Does the site still act OK?"):

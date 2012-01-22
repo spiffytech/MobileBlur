@@ -295,7 +295,6 @@ blockquote {
 
 input[type=text], input[type=password], textarea, select {
     margin: 2px 15px 2px 5px;
-    width: 280px;      
     background: #fff;
     color: #555;
     border: 1px solid #dedede; 
@@ -315,8 +314,6 @@ select[multiple=multiple] {
 
 input[type=submit], input[type=button], button {
     margin: 0px;
-    /*width: 85px;*/
-    height: 22px;    
     background: #eaeaea;
     color: #555;
     border: 1px solid #dedede;
@@ -506,6 +503,7 @@ a.button:hover span.icon.user { background-position: 0 -869px }
 /* Grade-A Mobile Browsers (Opera Mobile, iPhone Safari, Android Chrome)  
    Consider this: www.cloudfour.com/css-media-query-for-mobile-is-fools-gold/ */
 @media screen and (max-device-width: 480px) {
+}
   
   
   /* Uncomment if you don't want iOS and WinMobile to mobile-optimize the text for you
@@ -537,6 +535,9 @@ a.button:hover span.icon.user { background-position: 0 -869px }
   h2, h3{ page-break-after: avoid; }
 }
 
+
+/* Color scheme: http://www.colourlovers.com/palette/1875109/Spice_islands */
+
 html {
 }
 body {
@@ -546,6 +547,9 @@ body {
 /*#content > * {
     margin: 0 1em 0 1em;
 }*/
+
+#content {
+}
 
 a, a:hover {
     text-decoration: none;
@@ -562,13 +566,13 @@ body > header a {
     color: white;
     font-weight: bold;
 }
-body > header > h1 {
+body > header h1 {
     border-bottom: 1px solid white;
 }
-body > header > h2 {
+body > header h2 {
     border-bottom: 1px dashed white;
 }
-body > header > h3 {
+body > header h3 {
     border-bottom: 1px dotted white;
 }
 
@@ -594,13 +598,18 @@ body > header > h3 {
 }
 
 .read {
-    color: #D99B48;
+    color: #493F3E;
 }
 .unread, .feed-title {
     color: #C57E3C;
 }
 .ng, .nt, .ps {
     color: #493F3E;
+}
+
+#site-content {
+    padding: .5em 0 .5em 0;
+    min-height: 50px;
 }
 
 span.ps, span.nt, span.ng {

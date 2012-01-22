@@ -6,50 +6,90 @@ import simplejson
 import requests
 
 __author__ = 'Dananjaya Ramanayake <dananjaya86@gmail.com>, spiffytech <spiffytechgmail.com>'
-__version__ = "0.1"
+__version__ = "1.0"
 
 nb_url = "http://www.newsblur.com/"
+
+
+class NewsblurException(IOError):
+    pass
+
 
 class NewsBlur():
     def __init__(self):
         self.cookies = {}
 
-    def login(self, username,password):
+    
+    def _nb_get(self, url, payload=None):
+        if payload is None:
+            payload = {}
+
+        try:
+            results = requests.get(nb_url + url, params=payload, cookies=self.cookies)
+        except:
+            raise NewsblurException("Can't reach Newsblur right now")
+
+        if results.status_code != 200:
+            raise NewsblurException("Newsblur returned error code " + str(results.status_code) + ", " + results.content)
+
+        decoded_results = simplejson.loads(results.content)
+        return decoded_results
+        
+
+    def _nb_post(self, url, payload=None):
+        if payload is None:
+            payload = {}
+
+        try:
+            results = requests.post(nb_url + url, data=payload, cookies=self.cookies)
+        except:
+            raise NewsblurException("Can't reach Newsblur right now")
+
+        if results.status_code != 200:
+            raise NewsblurException("Newsblur returned error code " + str(results.status_code) + ", " + results.content)
+        self.cookies = results.cookies
+
+        decoded_results = simplejson.loads(results.content)
+        return decoded_results
+
+
+    def login(self, username, password):
         '''
         Login as an existing user.
         If a user has no password set, you cannot just send any old password. 
         Required parameters, username and password, must be of string type.
         '''
 
-        url = nb_url + 'api/login'
-        results = requests.post(url, data={"username": username, "password": password})
-        self.cookies = results.cookies
-        results = simplejson.loads(results.content)
+        url = "api/login"
+
+        results = self._nb_post(url, payload={"username": username, "password": password})
         if results["authenticated"] is False:
-            raise Exception("The newsblur credentials you provided are invalid")
+            raise ValueError("The newsblur credentials you provided are invalid")
+
         return results
 
-    def logout(self, ):
+    def logout(self):
         '''
         Logout the currently logged in user.
         '''
 
-        url = nb_url + 'api/logout'
-        results = requests.get(url, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "api/logout"
+        results = self._nb_get(url)
+        return results
 
-    def signup(self, username,password,email):
+    def signup(self, username, password, email):
         '''
         Create a new user.
         All three required parameters must be of type string.
         '''
 
-        url = nb_url + 'api/signup'
-        payload = {'signup_username':username,'signup_password':password,'signup_email':email}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "api/signup"
+        payload = {"signup_username": username, "signup_password": password, "signup_email": email}
+        results = self._nb_post(url, payload=payload)
+        return results
 
-    def search_feed(self, address,offset=1):
+
+    def search_feed(self, address, offset=1):
         '''
         
         Retrieve information about a feed from its website or RSS address.
@@ -58,21 +98,22 @@ class NewsBlur():
         
         '''
 
-        url = nb_url + 'rss_feeds/search_feed'
-        payload = {'address':address,'offset':offset}
-        results = results.get(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "rss_feeds/search_feed"
+        payload = {"address": address, "offset": offset}
+        results = self._nb_get(url, payload=payload)
+        return results
 
-    def feeds(self, include_favicons=True,flat=False):
+
+    def feeds(self, include_favicons=True, flat=False):
         '''
         Retrieve a list of feeds to which a user is actively subscribed.
         Includes the 3 unread counts (positive, neutral, negative), as well as optional favicons.
         '''
-        
-        url = nb_url + 'reader/feeds'
-        payload = {'include_favicons':include_favicons,'flat':flat}
-        results = requests.get(url, params=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+
+        url = "reader/feeds"
+        payload = {"include_favicons": include_favicons, "flat": flat}
+        results = self._nb_get(url, payload=payload)
+        return results
 
 
     def favicons(self, feeds=[1,2,3]):
@@ -82,20 +123,21 @@ class NewsBlur():
         Useful for mobile devices, but requires a second request. 
         '''
         
-        url = nb_url + 'reader/favicons'
-        payload = {'feeds':feeds}
-        results = requests.get(url, params=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/favicons"
+        payload = {"feeds": feeds}
+        results = self._nb_get(url, payload=payload)
+        return results
         
+
     def id(self, id_no):
         '''
         Retrieve the original page from a single feed.
         '''
         
-        url = nb_url + 'reader/page/' % id_no
-        payload = {}
-        results = requests.get(url, params=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/page/%d" % id_no
+        results = self._nb_get(url)
+        return results
+        
 
     def refresh_feeds(self, ):
         '''
@@ -103,9 +145,10 @@ class NewsBlur():
         Poll for these counts no more than once a minute.
         '''
 
-        url = nb_url + 'reader/refresh_feeds'
-        results = requests.get(url, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/refresh_feeds"
+        results = self._nb_get(url)
+        return results
+
 
     def feeds_trainer(self, feed_id):
         '''
@@ -113,10 +156,11 @@ class NewsBlur():
         Also includes user's own classifiers.
         '''
 
-        url = nb_url + 'reader/feeds_trainer'
-        payload = {'feed_id':feed_id}
-        results = requests.get(url, params=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/feeds_trainer"
+        payload = {"feed_id": feed_id}
+        results = self._nb_get(url, payload=payload)
+        return results
+
 
     def statistics(self, id_no):
         '''
@@ -124,9 +168,10 @@ class NewsBlur():
         Omit the feed_id to get all classifiers for all subscriptions.
         '''
 
-        url = nb_url + 'rss_feeds/statistics/%d' % id_no
-        results = requests.get(url, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "rss_feeds/statistics/%d" % id_no
+        results = self._nb_get(url)
+        return results
+
 
     def feed_autocomplete(self, term):
         '''
@@ -135,141 +180,167 @@ class NewsBlur():
         Will only show sites with 2+ subscribers.
         '''
 
-        url = nb_url + 'rss_feeds/feed_autocomplete?%'
-        payload = {'term':term}
-        results = requests.get(url, params=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "rss_feeds/feed_autocomplete"
+        payload = {"term": term}
+        results = self._nb_get(url, payload=payload)
+        return results
+
 
     def feed(self, id, page=1):
         '''
         Retrieve stories from a single feed.
         '''
 
-        url = nb_url + 'reader/feed/%s' % id
+        url = "reader/feed/%s" % id
         payload = {"page": page}
-        results = requests.get(url, params=payload, cookies=self.cookies)
-        content = simplejson.loads(results.content)
+        
+        results = self._nb_get(url, payload=payload)
+        content = results
+
         for story in range(len(content["stories"])):
             content["stories"][story]["page"] = page
         return content
+
 
     def starred_stories(self, page=1):
         '''
         Retrieve a user's starred stories.
         '''
         
-        url = nb_url + 'reader/starred_stories'
-        payload = {'page':page}
-        results = requests.get(url, params=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/starred_stories"
+        payload = {"page": page}
+        results = self._nb_get(url, payload=payload)
+        return results
 
-    def river_stories(self, feeds,page=1,read_stories_count=0):
+
+    def river_stories(self, feeds, page=1, read_stories_count=0):
         '''
         Retrieve stories from a collection of feeds. This is known as the River of News.
         Stories are ordered in reverse chronological order.
         '''
 
-        url = nb_url + 'reader/river_stories'
-        payload = {'feeds':feeds,'page':page,'read_stories_count':read_stories_count}
-        results = urllib2.urlopen(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/river_stories"
+        payload = {"feeds": feeds, "page": page, "read_stories_count": read_stories_count}
+        results = self._nb_get(url, payload=payload)
+        return results
 
-    def mark_story_as_read(self, story_id,feed_id):
+
+    def mark_story_as_read(self, story_id, feed_id):
         '''
         Mark stories as read.
         Multiple story ids can be sent at once.
         Each story must be from the same feed.
         '''
 
-        url = nb_url + 'reader/mark_story_as_read'
-        payload = {'story_id':story_id,'feed_id':feed_id}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/mark_story_as_read"
+        payload = {"story_id": story_id, "feed_id": feed_id}
+        results = self._nb_post(url, payload=payload)
+        return results
 
-    def mark_story_as_starred(self, story_id,feed_id):
+
+    def mark_story_as_unread(self, story_id, feed_id):
+        '''
+        Mark stories as read.
+        Multiple story ids can be sent at once.
+        Each story must be from the same feed.
+        '''
+
+        url = "reader/mark_story_as_unread"
+        payload = {"story_id": story_id, "feed_id": feed_id}
+        results = self._nb_post(url, payload=payload)
+        return results
+
+
+    def mark_story_as_starred(self, story_id, feed_id):
         '''
         Mark a story as starred (saved).
         '''
         
-        url = nb_url + 'reader/mark_story_as_starred'
-        payload = {'story_id':story_id,'feed_id':feed_id}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/mark_story_as_starred"
+        payload = {"story_id": story_id, "feed_id": feed_id}
+        results = self._nb_post(url, payload=payload)
+        return results
+
 
     def mark_all_as_read(self, days=0):
         '''
         Mark all stories in *all* feeds read.
         '''
         
-        url = nb_url + 'reader/mark_all_as_read'
-        payload = {'days':days}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/mark_all_as_read"
+        payload = {"days": days}
+        results = self._nb_post(url, payload=payload)
+        return results
 
-    def add_url(self, feed_url,folder='[Top Level]'):
+
+    def add_url(self, feed_url, folder='[Top Level]'):
         '''
         Add a feed by its URL. 
         Can be either the RSS feed or the website itself.
         '''
 
-        url = nb_url + 'reader/add_url'
+        url = "reader/add_url"
         feed_url = feed_url.strip("/")
-        payload = {'url': feed_url, 'folder': folder}
-        results = requests.post(url, data=payload, cookies=self.cookies)
+        payload = {"url": feed_url, "folder": folder}
+        results = self._nb_post(url, payload=payload)
         print results.content
-        return simplejson.loads(results.content)
+        return results
 
 
-    def add_folder(self, folder,parent_folder='[Top Level]'):
+    def add_folder(self, folder, parent_folder='[Top Level]'):
         '''
         Add a new folder.
         '''
         
-        url = nb_url + 'reader/add_folder'
-        payload = {'folder':folder,'parent_folder':parent_folder}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/add_folder"
+        payload = {"folder": folder, "parent_folder": parent_folder}
+        results = self._nb_post(url, payload=payload)
+        return results
 
-    def rename_feed(self, feed_title,feed_id):
+
+    def rename_feed(self, feed_title, feed_id):
         '''
         Rename a feed title. Only the current user will see the new title.
         '''
         
-        url = nb_url + 'reader/rename_feed'
-        payload = {'feed_title':feed_title,'feed_id':feed_id}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/rename_feed"
+        payload = {"feed_title": feed_title, "feed_id": feed_id}
+        results = self._nb_post(url, payload=payload)
+        return results
 
-    def delete_feed(self, feed_id,in_folder):
+
+    def delete_feed(self, feed_id, in_folder):
         '''
         Unsubscribe from a feed. Removes it from the folder.
         Set the in_folder parameter to remove a feed from the correct folder, in case the user is subscribed to the feed in multiple folders.
         '''    
 
-        url = nb_url + 'reader/delete_feed'
-        payload = {'feed_id':feed_id,'in_folder':in_folder}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/delete_feed"
+        payload = {"feed_id": feed_id, "in_folder": in_folder}
+        results = self._nb_post(url, payload=payload)
+        return results
 
-    def rename_folder(self, folder_to_rename,new_folder_name,in_folder):
+
+    def rename_folder(self, folder_to_rename, new_folder_name, in_folder):
         '''
         Rename a folder.
         '''
         
-        url = nb_url + 'reader/rename_folder'
-        payload = {'folder_to_rename':folder_to_rename,'new_folder_name':new_folder_name,'in_folder':in_folder}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/rename_folder"
+        payload = {"folder_to_rename": folder_to_rename, "new_folder_name": new_folder_name, "in_folder": in_folder}
+        results = self._nb_post(url, payload=payload)
+        return results
 
-    def delete_folder(self, folder_to_delete,in_folder,feed_id):
+
+    def delete_folder(self, folder_to_delete, in_folder, feed_id):
         '''
         Delete a folder and unsubscribe from all feeds inside.
         '''
         
-        url = nb_url + 'reader/delete_folder'
-        payload = {'folder_to_delete':folder_to_delete,'in_folder':in_folder,'feed_id':feed_id}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/delete_folder"
+        payload = {"folder_to_delete": folder_to_delete, "in_folder": in_folder, "feed_id": feed_id}
+        results = requests.post(url, data=payload)
+        return results
 
 
     def mark_feed_as_read(self, feed_id):
@@ -277,10 +348,10 @@ class NewsBlur():
         Mark a list of feeds as read.
         '''
         
-        url = nb_url + 'reader/mark_feed_as_read'
-        payload = {'feed_id':feed_id}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/mark_feed_as_read"
+        payload = {"feed_id": feed_id}
+        results = self._nb_post(url, payload=payload)
+        return results
 
 
     def save_feed_order(self, folders):
@@ -289,10 +360,10 @@ class NewsBlur():
         The entire folder structure needs to be serialized.
         '''
 
-        url = nb_url + 'reader/save_feed_order'
-        payload = {'folders':folders}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "reader/save_feed_order"
+        payload = {"folders": folders}
+        results = self._nb_post(url, payload=payload)
+        return results
 
 
     def classifier(self, id_no):
@@ -302,23 +373,23 @@ class NewsBlur():
         Use /reader/feeds_trainer for popular classifiers.
         '''
 
-        url = nb_url + 'classifier/%d' % id_no
-        results = requests.get(url)
-        return simplejson.loads(results.content)
+        url = "classifier/%d' % id_n"
+        results = self._nb_get(url)
+        return results
 
 
-    def classifier_save(self, like_type,dislike_type,remove_like_type,remove_dislike_type):
+    def classifier_save(self, like_type, dislike_type, remove_like_type, remove_dislike_type):
         '''
         Save intelligence classifiers (tags, titles, authors, and the feed) for a feed.
         '''
         
-        url = nb_url + 'classifier/save'
-        payload = {'like_[TYPE]':like_type,
-                       'dislike_[TYPE]':dislike_type,
-                        'remove_like_[TYPE]':remove_like_type,
-                       'remove_dislike_[TYPE]':remove_dislike_type}
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        url = "classifier/save"
+        payload = {"like_[TYPE]":like_type,
+                       "dislike_[TYPE]": dislike_type,
+                        "remove_like_[TYPE]": remove_like_type,
+                       "remove_dislike_[TYPE]": remove_dislike_type}
+        results = self._nb_post(url, payload=payload)
+        return results
 
 
     def opml_export(self, ):
@@ -327,9 +398,9 @@ class NewsBlur():
         Contains folders and feeds in XML; useful for importing in another RSS reader.
         '''
         
-        url = nb_url + 'import/opml_export'
-        results = requests.get(url)
-        return simplejson.loads(results.content)
+        url = "import/opml_export"
+        results = self._nb_get(url)
+        return results
 
 
 
@@ -338,9 +409,9 @@ class NewsBlur():
         Upload an OPML file.
         '''
         
-        url = nb_url + 'import/opml_upload'
+        url = "import/opml_upload"
         f = open(opml_file)
-        payload = {'file':f}
+        payload = {"file": f}
         f.close()
-        results = requests.post(url, data=payload, cookies=self.cookies)
-        return simplejson.loads(results.content)
+        results = self._nb_post(url, payload=payload)
+        return results
