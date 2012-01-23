@@ -110,35 +110,29 @@ def intelligence():
     intel_form = FORM(*items)
 
     if intel_form.accepts(request, session):
-        likes = {
-            "title": [],
-            "tag": [],
-            "author": [],
+        ratings = {
+            "Like": {
+                "title": [],
+                "tag": [],
+                "author": [],
+            },
+            "Dislike": {
+                "title": [],
+                "tag": [],
+                "author": [],
+            }
         }
+        for rating_k in ratings:
+            for form_k, form_v in intel_form.vars.iteritems():
+                if form_k.endswith("][tag"):
+                    if form_v == rating_k:
+                        ratings[rating_k]["tag"].append(form_k[:-5])  # 5 = len("][tag")
+            if intel_form.vars["title_rating"] == rating_k:
+                ratings[rating_k]["title"].append(intel_form.vars["title"])
+            if intel_form.vars["author_rating"] == rating_k:
+                ratings[rating_k]["author"].append(intel_form.vars["author"])
         import ipdb
         ipdb.set_trace()
-        for k, v in intel_form.vars.iteritems():
-            if k.endswith("][tag"):
-                if v == "Like":
-                    likes["tag"].append(k[:-5])  # 5 = len("][tag")
-        if intel_form.vars["title_rating"] == "Like":
-            likes["title"].append(intel_form.vars["title"])
-        if intel_form.vars["author_rating"] == "Like":
-            likes["author"].append(intel_form.vars["author"])
-
-        dislikes = {
-            "title": [],
-            "tag": [],
-            "author": [],
-        }
-        for k, v in intel_form.vars.iteritems():
-            if k.endswith("][tag"):
-                if v == "Dislike":
-                    dislikes["tag"].append(k[:-5])
-        if intel_form.vars["title_rating"] == "Like":
-            dislikes["title"].append(intel_form.vars["title"])
-        if intel_form.vars["author_rating"] == "Like":
-            dislikes["author"].append(intel_form.vars["author"])
 
     return dict(requested_story=feed, intel_form=intel_form)
 
