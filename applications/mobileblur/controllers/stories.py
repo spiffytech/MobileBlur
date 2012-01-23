@@ -68,19 +68,17 @@ def intelligence():
     tags = requested_story["story_tags"]
 
     items = []
-    items.append(H4("Title"))
+    items.append(TR(H4("Title")))
     title = requested_story["story_title"]
     items.append(
-        TABLE(
-            TR(
-                TD(INPUT(_name="title", _value=title)),
-                TD(LABEL("Like"), INPUT(_type="radio", _name="title_rating", _value="Like")),
-                TD(LABEL("Dislike"), INPUT(_type="radio", _name="title_rating", _value="Dislike")),
-            ),
-        )
+        TR(
+            TD(INPUT(_name="title", _value=title)),
+            TD(LABEL("Like"), INPUT(_type="radio", _name="title_rating", _value="Like")),
+            TD(LABEL("Dislike"), INPUT(_type="radio", _name="title_rating", _value="Dislike")),
+        ),
     )
 
-    items.append(H4("Tags"))
+    items.append(TR(H4("Tags")))
     formatted_tags = []
     for tag in tags:
         try:
@@ -94,21 +92,19 @@ def intelligence():
             TD(LABEL("Dislike"), INPUT(_type="radio", _name=tag+"][tag", _value="Dislike", value=value))
         )
         formatted_tags.append(t)
-    items.append(TABLE(*formatted_tags))
+    items.extend(formatted_tags)
 
     author = requested_story["story_authors"]
-    items.append(H4("Author"))
+    items.append(TR(H4("Author")))
     items.append(
-        TABLE(
-            TR(
-                TD(INPUT(_name="author", _value=author)),
-                TD(LABEL("Like"), INPUT(_type="radio", _name="author_rating", _value="Like")),
-                TD(LABEL("Dislike"), INPUT(_type="radio", _name="author_rating", _value="Dislike")),
-            )
+        TR(
+            TD(INPUT(_name="author", _value=author)),
+            TD(LABEL("Like"), INPUT(_type="radio", _name="author_rating", _value="Like")),
+            TD(LABEL("Dislike"), INPUT(_type="radio", _name="author_rating", _value="Dislike")),
         )
     )
     items.append(INPUT(_type="submit"))
-    intel_form = FORM(*items)
+    intel_form = FORM(TABLE(*items))
 
     if intel_form.process().accepted:
         ratings = {
