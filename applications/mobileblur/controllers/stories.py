@@ -70,46 +70,47 @@ def intelligence():
     items = []
     items.append(H4("Title"))
     title = requested_story["story_title"]
-    items.extend([
-        INPUT(_name="title", _value=title),
-        LABEL("Like"),
-        INPUT(_type="radio", _name="title_rating", _value="Like"),
-        LABEL("Dislike"),
-        INPUT(_type="radio", _name="title_rating", _value="Dislike"),
-        BR()
-    ])
+    items.append(
+        TABLE(
+            TR(
+                TD(INPUT(_name="title", _value=title)),
+                TD(LABEL("Like"), INPUT(_type="radio", _name="title_rating", _value="Like")),
+                TD(LABEL("Dislike"), INPUT(_type="radio", _name="title_rating", _value="Dislike")),
+            ),
+        )
+    )
 
     items.append(H4("Tags"))
+    formatted_tags = []
     for tag in tags:
         try:
             rating = classifiers["tags"][tag]
             value = "Like" if rating == 1 else "Dislike"
         except KeyError:
             value = ""
-        t = [
-            LABEL(tag + ": "),
-            LABEL("Like"),
-            INPUT(_type="radio", _name=tag+"][tag", _value="Like", value=value),
-            LABEL("Dislike"),
-            INPUT(_type="radio", _name=tag+"][tag", _value="Dislike", value=value),
-            BR()
-        ]
-        items.extend(t)
+        t = TR(
+            TD(LABEL(tag + ": ")),
+            TD(LABEL("Like"), INPUT(_type="radio", _name=tag+"][tag", _value="Like", value=value)),
+            TD(LABEL("Dislike"), INPUT(_type="radio", _name=tag+"][tag", _value="Dislike", value=value))
+        )
+        formatted_tags.append(t)
+    items.append(TABLE(*formatted_tags))
 
     author = requested_story["story_authors"]
     items.append(H4("Author"))
-    items.extend([
-        INPUT(_name="author", _value=author),
-        LABEL("Like"),
-        INPUT(_type="radio", _name="author_rating", _value="Like"),
-        LABEL("Dislike"),
-        INPUT(_type="radio", _name="author_rating", _value="Dislike"),
-        BR()
-    ])
+    items.append(
+        TABLE(
+            TR(
+                TD(INPUT(_name="author", _value=author)),
+                TD(LABEL("Like"), INPUT(_type="radio", _name="author_rating", _value="Like")),
+                TD(LABEL("Dislike"), INPUT(_type="radio", _name="author_rating", _value="Dislike")),
+            )
+        )
+    )
     items.append(INPUT(_type="submit"))
     intel_form = FORM(*items)
 
-    if intel_form.accepts(request, session):
+    if intel_form.process().accepted:
         ratings = {
             "Like": {
                 "title": [],
