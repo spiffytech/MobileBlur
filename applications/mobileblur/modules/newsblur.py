@@ -378,7 +378,7 @@ class NewsBlur():
         return results
 
 
-    def classifier_save(self, likes, dislikes, remove_likes, remove_dislikes):
+    def classifier_save(self, feed_id, likes, dislikes):
         '''
         Save intelligence classifiers (tags, titles, authors, and the feed) for a feed.
 
@@ -396,6 +396,8 @@ class NewsBlur():
             payload["like_" + _type] = likes[_type]
         for _type in dislikes:
             payload["dislike_" + _type] = dislikes[_type]
+
+        payload["feed_id"] = feed_id
         
         url = "classifier/save"
         results = self._nb_post(url, payload=payload)

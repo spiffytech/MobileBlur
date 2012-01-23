@@ -106,7 +106,7 @@ def intelligence():
     items.append(INPUT(_type="submit"))
     intel_form = FORM(TABLE(*items))
 
-    if intel_form.process().accepted:
+    if intel_form.accepts(request,session):
         ratings = {
             "Like": {
                 "title": [],
@@ -128,10 +128,12 @@ def intelligence():
                 ratings[rating_k]["title"].append(intel_form.vars["title"])
             if intel_form.vars["author_rating"] == rating_k:
                 ratings[rating_k]["author"].append(intel_form.vars["author"])
-        import ipdb
-        ipdb.set_trace()
 
-    return dict(requested_story=feed, intel_form=intel_form)
+            results = newsblur.classifier_save(feed_id=feed_id, likes=ratings["Like"], dislikes=ratings["Dislike"])
+            session.flash = "Intelligence filters saved"
+            redirect(URL("default", "index"))
+
+    return dict(intel_form=intel_form)
 
 
 def mark_unread():
