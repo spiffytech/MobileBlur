@@ -73,9 +73,9 @@ def intelligence():
     items.extend([
         INPUT(_name="title", _value=title),
         LABEL("Like"),
-        INPUT(_type="radio", _name="title", _value="Like"),
+        INPUT(_type="radio", _name="title_rating", _value="Like"),
         LABEL("Dislike"),
-        INPUT(_type="radio", _name="title", _value="Dislike"),
+        INPUT(_type="radio", _name="title_rating", _value="Dislike"),
         BR()
     ])
 
@@ -96,18 +96,49 @@ def intelligence():
         ]
         items.extend(t)
 
-    authors = requested_story["story_authors"]
-    items.append(H4("Authors"))
+    author = requested_story["story_authors"]
+    items.append(H4("Author"))
     items.extend([
-        INPUT(_name="authors", _value=authors),
+        INPUT(_name="author", _value=author),
         LABEL("Like"),
-        INPUT(_type="radio", _name="author", _value="Like"),
+        INPUT(_type="radio", _name="author_rating", _value="Like"),
         LABEL("Dislike"),
-        INPUT(_type="radio", _name="author", _value="Dislike"),
+        INPUT(_type="radio", _name="author_rating", _value="Dislike"),
         BR()
     ])
-
+    items.append(INPUT(_type="submit"))
     intel_form = FORM(*items)
+
+    if intel_form.accepts(request, session):
+        likes = {
+            "title": [],
+            "tag": [],
+            "author": [],
+        }
+        import ipdb
+        ipdb.set_trace()
+        for k, v in intel_form.vars.iteritems():
+            if k.endswith("][tag"):
+                if v == "Like":
+                    likes["tag"].append(k[:-5])  # 5 = len("][tag")
+        if intel_form.vars["title_rating"] == "Like":
+            likes["title"].append(intel_form.vars["title"])
+        if intel_form.vars["author_rating"] == "Like":
+            likes["author"].append(intel_form.vars["author"])
+
+        dislikes = {
+            "title": [],
+            "tag": [],
+            "author": [],
+        }
+        for k, v in intel_form.vars.iteritems():
+            if k.endswith("][tag"):
+                if v == "Dislike":
+                    dislikes["tag"].append(k[:-5])
+        if intel_form.vars["title_rating"] == "Like":
+            dislikes["title"].append(intel_form.vars["title"])
+        if intel_form.vars["author_rating"] == "Like":
+            dislikes["author"].append(intel_form.vars["author"])
 
     return dict(requested_story=feed, intel_form=intel_form)
 
