@@ -16,3 +16,4 @@ applications/*/cache/*
 applications/*/databases/*
 applications/*/sessions/*
 applications/*/errors/*
+python-newsblur
