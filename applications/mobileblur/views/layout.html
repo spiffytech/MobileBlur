@@ -94,9 +94,9 @@
     </section>
 
     <footer>
-        {{ block footer_bonus }}{{end}}
         <section id="site-content">
             {{ if [request.application, request.controller, request.function] != [request.application, "default", "login"]: }}
+                {{ block footer_bonus }}{{end}}
                 <a href="{{= URL("default", "logout") }}" style="float: right">
                     <!-- Taken from Marie Coons, http://thenounproject.com/noun/squirrel/#icon-No837 -->
                     <img src="{{= URL("static", "images/squirrel.png") }}" title="Log out">
