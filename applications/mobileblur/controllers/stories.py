@@ -53,6 +53,89 @@ def view():
         feed_title=feed_title,
     )
 
+
+def intelligence():
+    feed_id = request.vars["feed_id"]
+    requested_story_id = request.vars["story_id"]
+    page = request.vars["page"]
+
+    feed = newsblur.feed(feed_id, page=page)
+    classifiers = feed["classifiers"]
+    stories = feed["stories"]
+    for story in range(len(stories)):
+        if stories[story]["id"] == requested_story_id:
+            requested_story = stories[story]
+    tags = requested_story["story_tags"]
+
+    items = []
+    items.append(TR(H4("Title")))
+    title = requested_story["story_title"]
+    items.append(
+        TR(
+            TD(INPUT(_name="title", _value=title)),
+            TD(LABEL("Like"), INPUT(_type="radio", _name="title_rating", _value="Like")),
+            TD(LABEL("Dislike"), INPUT(_type="radio", _name="title_rating", _value="Dislike")),
+        ),
+    )
+
+    items.append(TR(H4("Tags")))
+    formatted_tags = []
+    for tag in tags:
+        try:
+            rating = classifiers["tags"][tag]
+            value = "Like" if rating == 1 else "Dislike"
+        except KeyError:
+            value = ""
+        t = TR(
+            TD(LABEL(tag + ": ")),
+            TD(LABEL("Like"), INPUT(_type="radio", _name=tag+"][tag", _value="Like", value=value)),
+            TD(LABEL("Dislike"), INPUT(_type="radio", _name=tag+"][tag", _value="Dislike", value=value))
+        )
+        formatted_tags.append(t)
+    items.extend(formatted_tags)
+
+    author = requested_story["story_authors"]
+    items.append(TR(H4("Author")))
+    items.append(
+        TR(
+            TD(INPUT(_name="author", _value=author)),
+            TD(LABEL("Like"), INPUT(_type="radio", _name="author_rating", _value="Like")),
+            TD(LABEL("Dislike"), INPUT(_type="radio", _name="author_rating", _value="Dislike")),
+        )
+    )
+    items.append(INPUT(_type="submit"))
+    intel_form = FORM(TABLE(*items))
+
+    if intel_form.accepts(request,session):
+        ratings = {
+            "Like": {
+                "title": [],
+                "tag": [],
+                "author": [],
+            },
+            "Dislike": {
+                "title": [],
+                "tag": [],
+                "author": [],
+            }
+        }
+        for rating_k in ratings:
+            for form_k, form_v in intel_form.vars.iteritems():
+                if form_k.endswith("][tag"):
+                    if form_v == rating_k:
+                        ratings[rating_k]["tag"].append(form_k[:-5])  # 5 = len("][tag")
+            if intel_form.vars["title_rating"] == rating_k:
+                ratings[rating_k]["title"].append(intel_form.vars["title"])
+            if intel_form.vars["author_rating"] == rating_k:
+                ratings[rating_k]["author"].append(intel_form.vars["author"])
+
+            results = newsblur.classifier_save(feed_id=feed_id, likes=ratings["Like"], dislikes=ratings["Dislike"])
+            session.flash = "Intelligence filters saved"
+            redirect(URL("default", "index"))
+
+    return dict(intel_form=intel_form)
+
+
 def mark_unread():
     results = newsblur.mark_story_as_unread(request.vars["story_id"], request.vars["feed_id"])
     session.flash = "Story left unread"

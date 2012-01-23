@@ -29,6 +29,7 @@ def workflow(version, hotfix):
 
     push()
     _update_remote_docroot("apache/mobileblur.spiffyte.ch/docroot")
+    local("git checkout develop")
 
 
 def _update_remote_docroot(docroot):
