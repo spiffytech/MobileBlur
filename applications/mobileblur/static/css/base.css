@@ -568,12 +568,16 @@ body > header a {
 }
 body > header h1 {
     border-bottom: 1px solid white;
+    margin-bottom: 0;
 }
 body > header h2 {
     border-bottom: 1px dashed white;
+    margin-top: .5em;
+    margin-bottom: 0;
 }
 body > header h3 {
     border-bottom: 1px dotted white;
+    margin-top: .5em;
 }
 
 .list-item > div {
