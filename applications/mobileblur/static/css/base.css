@@ -619,11 +619,20 @@ span.ps, span.nt, span.ng {
 span.ps {
     background-color: #ABAA7A;
 }
+.story-title-ps {
+    color: #ABAA7A;
+}
 span.nt {
     background-color: #D99B48;
 }
+.story-title-nt {
+    color: #D99B48;
+}
 span.ng {
     background-color: red;
+}
+.story-title-ng {
+    color: red;
 }
 
 body > footer {
