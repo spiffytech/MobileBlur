@@ -598,10 +598,7 @@ body > header h3 {
 }
 
 .read {
-    color: #493F3E;
-}
-.unread, .feed-title {
-    color: #C57E3C;
+    background-color: #493F3E;
 }
 .ng, .nt, .ps {
     color: #493F3E;
@@ -620,19 +617,24 @@ span.ps {
     background-color: #ABAA7A;
 }
 .story-title-ps {
-    color: #ABAA7A;
+    background-color: #ABAA7A;
 }
 span.nt {
     background-color: #D99B48;
 }
 .story-title-nt {
-    color: #D99B48;
+    background-color: #D99B48;
 }
 span.ng {
     background-color: red;
 }
+p[class*='story-title'] {
+    color: white;
+    padding: .15em;
+    border-radius: 5px;
+}
 .story-title-ng {
-    color: red;
+    background-color: red;
 }
 
 body > footer {
