@@ -1,6 +1,6 @@
 import sys
 
-nb_module = local_import("newsblur")
+import newsblur as nb_module
 newsblur = nb_module.NewsBlur()
 def controller_error_handler(f):
     try:
