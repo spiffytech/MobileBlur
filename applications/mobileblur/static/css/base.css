@@ -617,28 +617,21 @@ span.ps, span.nt, span.ng {
     padding: .05em;
     border-radius: 5px;
 }
-span.ps {
+span.ps, div.ps {
     background-color: #ABAA7A;
 }
-.story-title-ps {
-    background-color: #ABAA7A;
-}
-span.nt {
+span.nt, div.nt {
     background-color: #D99B48;
 }
-.story-title-nt {
-    background-color: #D99B48;
-}
-span.ng {
+span.ng, div.ng {
     background-color: red;
 }
-p[class*='story-title'] {
-    color: white;
-    padding: .15em;
-    border-radius: 5px;
+
+.story-title-unread {
+    color: #C57E3C;
 }
-.story-title-ng {
-    background-color: red;
+.story-title-read {
+    color: #493F3E;
 }
 
 body > footer {

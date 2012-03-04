@@ -10,17 +10,17 @@
     for story in stories: 
         intel = get_intelligence_rating(story)
 
-        story_class = ""
         if story["read_status"] != 0:
-            story_class = "read"
+            story_status = "read"
         else:
-            story_class = "story-title-" + thresholds[intel]
+            story_status = "unread"
             pass
     }}
 
             <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"], feed_title=feed["feed_title"], page=story["page"])) }}" class="list-item">
+                    <div class="{{= thresholds[intel] }}" style=" width: .25em; height: 100%; float: left;">&nbsp;</div>
                 <div>
-                    <p class="story-title  {{= story_class }}">{{= story["story_title"] }}</p>
+                    <p class="story-title story-title-{{= story_status }}">{{= story["story_title"] }}</p>
                     <p class="story-date">{{= story["story_date"] }}</p>
                     {{ if request.vars.has_key("dev-mode"): }}
                         </p>{{= story["intelligence"] }}: {{= get_intelligence_rating(story) }}</p>
