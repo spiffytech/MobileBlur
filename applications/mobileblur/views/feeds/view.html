@@ -7,15 +7,26 @@
 
 <section id="story-list">
     {{ 
-        for story in stories: 
+    for story in stories: 
+        intel = get_intelligence_rating(story)
+
+        if story["read_status"] != 0:
+            story_status = "read"
+        else:
+            story_status = "unread"
+            pass
     }}
 
-        <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"], feed_title=feed["feed_title"], page=story["page"])) }}" class="list-item">
-            <div>
-                <p class="story-title {{= "unread" if not story.has_key("read_status") or story["read_status"] == 0 else "read" }}">{{= story["story_title"] }}</p>
-                <p class="story-date">{{= story["story_date"] }}</p>
-            </div>
-        </a>
+            <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"], feed_title=feed["feed_title"], page=story["page"])) }}" class="list-item">
+                <div class="list-item-{{= thresholds[intel] }}">
+                    <p class="story-title story-title-{{= story_status }}">{{= story["story_title"] }}</p>
+                    <p class="story-date">{{= story["story_date"] }}</p>
+                    {{ if request.vars.has_key("dev-mode"): }}
+                        </p>{{= story["intelligence"] }}: {{= get_intelligence_rating(story) }}</p>
+                    {{ pass }}
+                </div>
+            </a>
+        {{ pass }}
     {{ pass }}
 </section>
 

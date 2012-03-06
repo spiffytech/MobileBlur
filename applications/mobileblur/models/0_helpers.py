@@ -1,6 +1,6 @@
 import sys
 
-nb_module = local_import("newsblur")
+import newsblur as nb_module
 newsblur = nb_module.NewsBlur()
 def controller_error_handler(f):
     try:
@@ -26,5 +26,11 @@ else:
     threshold = int(request.cookies["threshold"].value)
 thresholds = ["nt", "ps", "ng"]  # indices -1, 0, 1 for negative, neutral, and positive intelligence filters
 
-passes_intelligence = lambda story: True if sum([v for k,v in story["intelligence"].iteritems()]) >= threshold else False
+
+def get_intelligence_rating(story): 
+    rating = sum([v for k,v in story["intelligence"].iteritems()])
+    rating = 1 if rating > 1 else -1 if rating < 0 else 0
+    return rating
+
+passes_intelligence = lambda story: True if get_intelligence_rating(story) >= threshold else False
 intelligence_filter = lambda stories: [s for s in stories if passes_intelligence(s)]

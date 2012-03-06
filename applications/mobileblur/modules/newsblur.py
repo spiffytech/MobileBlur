@@ -5,7 +5,7 @@
 import simplejson
 import requests
 
-__author__ = 'Dananjaya Ramanayake <dananjaya86@gmail.com>, spiffytech <spiffytechgmail.com>'
+__author__ = 'Dananjaya Ramanayake <dananjaya86@gmail.com>, spiffytech <spiffytech@gmail.com>'
 __version__ = "1.0"
 
 nb_url = "http://www.newsblur.com/"
@@ -283,7 +283,6 @@ class NewsBlur():
         feed_url = feed_url.strip("/")
         payload = {"url": feed_url, "folder": folder}
         results = self._nb_post(url, payload=payload)
-        print results.content
         return results
 
 
