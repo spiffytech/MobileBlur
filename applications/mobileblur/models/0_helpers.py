@@ -29,7 +29,7 @@ thresholds = ["nt", "ps", "ng"]  # indices -1, 0, 1 for negative, neutral, and p
 
 def get_intelligence_rating(story): 
     rating = sum([v for k,v in story["intelligence"].iteritems()])
-    rating = 1 if rating > 1 else -1 if rating < 0 else 0
+    rating = 1 if rating >= 1 else -1 if rating < 0 else 0
     return rating
 
 passes_intelligence = lambda story: True if get_intelligence_rating(story) >= threshold else False
