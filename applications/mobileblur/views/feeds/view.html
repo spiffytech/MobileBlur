@@ -18,8 +18,7 @@
     }}
 
             <a href="{{= URL(c="stories", f="view", vars=dict(story=story["id"], feed_id=feed["id"], feed_title=feed["feed_title"], page=story["page"])) }}" class="list-item">
-                    <div class="{{= thresholds[intel] }}" style=" width: .25em; height: 100%; float: left;">&nbsp;</div>
-                <div>
+                <div class="list-item-{{= thresholds[intel] }}">
                     <p class="story-title story-title-{{= story_status }}">{{= story["story_title"] }}</p>
                     <p class="story-date">{{= story["story_date"] }}</p>
                     {{ if request.vars.has_key("dev-mode"): }}

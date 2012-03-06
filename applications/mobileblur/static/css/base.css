@@ -538,17 +538,9 @@ a.button:hover span.icon.user { background-position: 0 -869px }
 
 /* Color scheme: http://www.colourlovers.com/palette/1875109/Spice_islands */
 
-html {
-}
 body {
     font-size: 130.01% !important;
     color: #493F3E
-}
-/*#content > * {
-    margin: 0 1em 0 1em;
-}*/
-
-#content {
 }
 
 a, a:hover {
@@ -580,6 +572,10 @@ body > header h3 {
     margin-top: .5em;
 }
 
+body > header > .button {
+    margin-top: 1em;
+}
+
 .list-item > div {
     padding: .9em .5em .9em .5em;
     border-top: 1px solid #95392E;
@@ -588,7 +584,7 @@ body > header h3 {
     color: #C57E3C;
 }
 .list-item:first-of-type > div {
-    border: none;
+    border-top: none;
 }
 
 #story-content {
@@ -604,6 +600,7 @@ body > header h3 {
 .read {
     background-color: #493F3E;
 }
+
 .ng, .nt, .ps {
     color: #493F3E;
 }
@@ -617,13 +614,31 @@ span.ps, span.nt, span.ng {
     padding: .05em;
     border-radius: 5px;
 }
-span.ps, div.ps {
+
+.list-item-ps, .list-item-nt, .list-item-ng {
+    border-left-width: 40px;
+    border-left-style: solid;
+    margin-left: -20px;
+}
+
+.list-item-ps {
+    border-left-color: #ABAA7A;
+}
+span.ps {
     background-color: #ABAA7A;
 }
-span.nt, div.nt {
+
+.list-item-nt {
+    border-left-color: #D99B48;
+}
+span.nt {
     background-color: #D99B48;
 }
-span.ng, div.ng {
+
+.list-item-ng {
+    border-left-color: #95392E;
+}
+span.ng {
     background-color: red;
 }
 
