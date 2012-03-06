@@ -616,9 +616,9 @@ span.ps, span.nt, span.ng {
 }
 
 .list-item-ps, .list-item-nt, .list-item-ng {
-    border-left-width: 40px;
+    border-left-width: 1.5em;
     border-left-style: solid;
-    margin-left: -20px;
+    margin-left: -.75em;
 }
 
 .list-item-ps {
