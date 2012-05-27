@@ -177,10 +177,10 @@ any named optional attribute is passed to the &lt;form&gt; tag
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.sqlhtml.SQLFORM-class.html#accepts" class="summary-sig-name">accepts</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">request_vars</span>,
-        <span class="summary-sig-arg">session</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">session</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">formname</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">%(tablename)s/%(record_id)s</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">keepvalues</span>=<span class="summary-sig-default">True</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">dbio</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">hideerror</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">detect_record_change</span>=<span class="summary-sig-default">True</span>)</span><br />
@@ -270,6 +270,131 @@ any named optional attribute is passed to the &lt;form&gt; tag
       generates a SQLFORM for the given fields.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#SQLFORM.factory">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="build_query"></a><span class="summary-sig-name">build_query</span>(<span class="summary-sig-arg">fields</span>,
+        <span class="summary-sig-arg">keywords</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#SQLFORM.build_query">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="search_menu"></a><span class="summary-sig-name">search_menu</span>(<span class="summary-sig-arg">fields</span>,
+        <span class="summary-sig-arg">search_options</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#SQLFORM.search_menu">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="grid"></a><span class="summary-sig-name">grid</span>(<span class="summary-sig-arg">query</span>,
+        <span class="summary-sig-arg">fields</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">field_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">left</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">headers</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">orderby</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">searchable</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">sortable</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">paginate</span>=<span class="summary-sig-default">20</span>,
+        <span class="summary-sig-arg">deletable</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">editable</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">details</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">selectable</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">create</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">csv</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">links</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">links_in_grid</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">upload</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">&lt;default&gt;</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
+        <span class="summary-sig-arg">user_signature</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">maxtextlengths</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">maxtextlength</span>=<span class="summary-sig-default">20</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">oncreate</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">onupdate</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">ondelete</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">sorter_icons</span>=<span class="summary-sig-default">(XML('&amp;#x2191;'),XML('&amp;#x2193;'))</span>,
+        <span class="summary-sig-arg">ui</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">web2py</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">showbuttontext</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">_class</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">web2py_grid</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">formname</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">web2py_grid</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">search_widget</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">default</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">ignore_rw</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">formstyle</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">table3cols</code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#SQLFORM.grid">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.sqlhtml.SQLFORM-class.html#smartgrid" class="summary-sig-name">smartgrid</a>(<span class="summary-sig-arg">table</span>,
+        <span class="summary-sig-arg">constraints</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">linked_tables</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">links</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">links_in_grid</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">user_signature</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      @auth.requires_login()
+def index():
+    db.define_table('person',Field('name'),format='%(name)s')
+    db.define_table('dog',
+        Field('name'),Field('owner',db.person),format='%(name)s')
+    db.define_table('comment',Field('body'),Field('dog',db.dog))
+    if db(db.person).isempty():
+        from gluon.contrib.populate import populate
+        populate(db.person,300)
+        populate(db.dog,300)
+        populate(db.comment,1000)
+        db.commit()
+form=SQLFORM.smartgrid(db[request.args(0) or 'person']) #***
+return dict(form=form)
+
+*** builds a complete interface to navigate all tables links
+    to the request.args(0)
+    table: pagination, search, view, edit, delete,
+           children, parent, etc.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#SQLFORM.smartgrid">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -416,7 +541,7 @@ SQLFORM(db.table,
        record=None,
        fields=['name'],
        labels={'name': 'Your name'},
-       linkto=URL(r=request, f='table/db/')
+       linkto=URL(f='table/db/')
 
 </pre>
   <dl class="fields">
@@ -435,10 +560,10 @@ SQLFORM(db.table,
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">accepts</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">request_vars</span>,
-        <span class="sig-arg">session</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">session</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">formname</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">%(tablename)s/%(record_id)s</code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">keepvalues</span>=<span class="sig-default">True</span>,
-        <span class="sig-arg">onvalidation</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">onvalidation</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">dbio</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">hideerror</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">detect_record_change</span>=<span class="sig-default">True</span>)</span>
@@ -484,6 +609,63 @@ elseif detect_record_change == False than:
   <p>generates a SQLFORM for the given fields.</p>
   Internally will build a non-database based data model to hold the 
   fields.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="smartgrid"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">smartgrid</span>(<span class="sig-arg">table</span>,
+        <span class="sig-arg">constraints</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">linked_tables</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">links</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">links_in_grid</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">args</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">user_signature</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#SQLFORM.smartgrid">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+
+@auth.requires_login()
+def index():
+    db.define_table('person',Field('name'),format='%(name)s')
+    db.define_table('dog',
+        Field('name'),Field('owner',db.person),format='%(name)s')
+    db.define_table('comment',Field('body'),Field('dog',db.dog))
+    if db(db.person).isempty():
+        from gluon.contrib.populate import populate
+        populate(db.person,300)
+        populate(db.dog,300)
+        populate(db.comment,1000)
+        db.commit()
+form=SQLFORM.smartgrid(db[request.args(0) or 'person']) #***
+return dict(form=form)
+
+*** builds a complete interface to navigate all tables links
+    to the request.args(0)
+    table: pagination, search, view, edit, delete,
+           children, parent, etc.
+
+constraints is a dict {'table',query} that limits which
+records can be accessible
+links is a dict like
+   {'tablename':[lambda row: A(....), ...]}
+that will add buttons when table tablename is displayed
+linked_tables is a optional list of tablenames of tables
+to be linked
+
+</pre>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -565,7 +747,7 @@ n.sqlhtml.PasswordWidget'&gt;, 'double': &lt;class 'web2py.gluon.sqlhtml.Dou<spa
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:01 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:59 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

@@ -138,9 +138,57 @@ The Listener class is a class responsible for accepting connections
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.rocket.Listener-class.html#run" class="summary-sig-name">run</a>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="web2py.gluon.rocket.Listener-class.html#start" class="summary-sig-name">start</a>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#Listener.run">source&nbsp;code</a></span>
+            <span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#Listener.start">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.rocket.Listener-class.html#isAlive" class="summary-sig-name">isAlive</a>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#Listener.isAlive">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.rocket.Listener-class.html#join" class="summary-sig-name">join</a>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#Listener.join">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="listen"></a><span class="summary-sig-name">listen</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#Listener.listen">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -153,12 +201,10 @@ The Listener class is a class responsible for accepting connections
     <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b>:
       <code>__repr__</code>,
       <code>getName</code>,
-      <code>isAlive</code>,
       <code>isDaemon</code>,
-      <code>join</code>,
+      <code>run</code>,
       <code>setDaemon</code>,
-      <code>setName</code>,
-      <code>start</code>
+      <code>setName</code>
       </p>
     <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b> (private):
       <code>_set_daemon</code>
@@ -250,24 +296,68 @@ The Listener class is a class responsible for accepting connections
   </dl>
 </td></tr></table>
 </div>
-<a name="run"></a>
+<a name="start"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">run</span>(<span class="sig-arg">self</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">start</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#Listener.run">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#Listener.start">source&nbsp;code</a></span>&nbsp;
     </td>
   </table>
   
   
   <dl class="fields">
     <dt>Overrides:
-      threading.Thread.run
+      threading.Thread.start
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="isAlive"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">isAlive</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#Listener.isAlive">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      threading.Thread.isAlive
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="join"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">join</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#Listener.join">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      threading.Thread.join
     </dt>
   </dl>
 </td></tr></table>
@@ -304,7 +394,7 @@ The Listener class is a class responsible for accepting connections
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:01 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:59 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

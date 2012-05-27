@@ -126,8 +126,38 @@ This file is part of the web2py Web Framework Copyrighted by Massimo
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.compileapp-module.html#LOAD" class="summary-sig-name">LOAD</a>(<span class="summary-sig-arg">c</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">f</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">index</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">vars</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">extension</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">target</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">ajax</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">ajax_trap</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">url</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">user_signature</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">times</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">content</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">loading...</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">**attr</span>)</span><br />
+      LOAD a component into the action's document</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.compileapp-pysrc.html#LOAD">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.compileapp-module.html#local_import_aux" class="summary-sig-name">local_import_aux</a>(<span class="summary-sig-arg">name</span>,
-        <span class="summary-sig-arg">force</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">reload_force</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">app</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">welcome</code><code class="variable-quote">'</code></span>)</span><br />
       In apps, instead of importing a local module
 (in applications/app/modules) with::
@@ -399,7 +429,14 @@ This prevents conflict between applications and un-necessary execs.</td>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="is_gae"></a><span class="summary-name">is_gae</span> = <code title="1">1</code><br />
+        <a name="is_pypy"></a><span class="summary-name">is_pypy</span> = <code title="True">True</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.compileapp-module.html#is_gae" class="summary-name">is_gae</a> = <code title="global_settings.applications_parent">&lt;web2py.gluon.custom_import._Web2pyImporter object at<code class="variable-ellipsis">...</code></code><br />
       PyMySQL: A pure-Python drop-in replacement for MySQLdb.
     </td>
   </tr>
@@ -444,6 +481,44 @@ def _TEST():
   </td>
 </tr>
 </table>
+<a name="LOAD"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">LOAD</span>(<span class="sig-arg">c</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">f</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">index</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">args</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">vars</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">extension</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">target</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">ajax</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">ajax_trap</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">url</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">user_signature</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">timeout</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">times</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">content</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">loading...</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">**attr</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.compileapp-pysrc.html#LOAD">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>LOAD a component into the action's document</p>
+  Timing options: -times: An integer or string 
+  (&quot;infinity&quot;/&quot;continuous&quot;) specifies how many times 
+  the component is requested -timeout (milliseconds): specifies the time to
+  wait before starting the request or the frequency if times is greater 
+  than 1 or &quot;infinity&quot;. Timing options default to the normal 
+  behavior. The component is added on page loading without delay.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
 <a name="local_import_aux"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -452,7 +527,7 @@ def _TEST():
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">local_import_aux</span>(<span class="sig-arg">name</span>,
-        <span class="sig-arg">force</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">reload_force</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">app</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">welcome</code><code class="variable-quote">'</code></span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -598,6 +673,41 @@ It can be used to import any module, including regular Python modules.
   </td>
 </tr>
 </table>
+<a name="is_gae"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">is_gae</h3>
+  <p>PyMySQL: A pure-Python drop-in replacement for MySQLdb.</p>
+  <p>Copyright (c) 2010 PyMySQL contributors</p>
+  <p>Permission is hereby granted, free of charge, to any person obtaining 
+  a copy of this software and associated documentation files (the 
+  &quot;Software&quot;), to deal in the Software without restriction, 
+  including without limitation the rights to use, copy, modify, merge, 
+  publish, distribute, sublicense, and/or sell copies of the Software, and 
+  to permit persons to whom the Software is furnished to do so, subject to 
+  the following conditions:</p>
+  <p>The above copyright notice and this permission notice shall be 
+  included in all copies or substantial portions of the Software.</p>
+  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY 
+  KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+  NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+  USE OR OTHER DEALINGS IN THE SOFTWARE.
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+global_settings.applications_parent
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="TEST_CODE"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -656,7 +766,7 @@ It can be used to import any module, including regular Python modules.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:46:59 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:57 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

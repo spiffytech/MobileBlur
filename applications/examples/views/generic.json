@@ -5,7 +5,7 @@
 try:
 	from gluon.serializers import json
 	response.write(json(response._vars), escape=False)
-	response.headers['Content-Type'] = 'application/json'
+	response.headers['Content-Type'] = 'application/json; charset=utf-8'
 except (TypeError, ValueError):
 	raise HTTP(405, 'JSON serialization error')
 except ImportError:

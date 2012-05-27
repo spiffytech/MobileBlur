@@ -101,17 +101,19 @@ the web2py web server (Rocket)<br /><br />
         <span class="summary-sig-arg">password</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">pid_filename</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">httpserver.pid</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">log_filename</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">httpserver.log</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">profiler_filename</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">ssl_certificate</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">ssl_private_key</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">min_threads</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">max_threads</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">server_name</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">profiler_filename</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">ssl_certificate</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">ssl_private_key</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">ssl_ca_certificate</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">min_threads</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">max_threads</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">server_name</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">request_queue_size</span>=<span class="summary-sig-default">5</span>,
         <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">10</span>,
-        <span class="summary-sig-arg">shutdown_timeout</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">path</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">interfaces</span>=<span class="summary-sig-default">1</span>)</span><br />
+        <span class="summary-sig-arg">socket_timeout</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">shutdown_timeout</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">path</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">interfaces</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
       starts the web server.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.main-pysrc.html#HttpServer.__init__">source&nbsp;code</a></span>
@@ -229,17 +231,19 @@ the web2py web server (Rocket)<br /><br />
         <span class="sig-arg">password</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">pid_filename</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">httpserver.pid</code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">log_filename</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">httpserver.log</code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">profiler_filename</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">ssl_certificate</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">ssl_private_key</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">min_threads</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">max_threads</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">server_name</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">profiler_filename</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">ssl_certificate</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">ssl_private_key</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">ssl_ca_certificate</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">min_threads</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">max_threads</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">server_name</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">request_queue_size</span>=<span class="sig-default">5</span>,
         <span class="sig-arg">timeout</span>=<span class="sig-default">10</span>,
-        <span class="sig-arg">shutdown_timeout</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">path</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">interfaces</span>=<span class="sig-default">1</span>)</span>
+        <span class="sig-arg">socket_timeout</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">shutdown_timeout</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">path</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">interfaces</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -287,7 +291,7 @@ the web2py web server (Rocket)<br /><br />
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:01 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:59 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

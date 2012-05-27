@@ -288,7 +288,7 @@ def make_table(table,fields):
                   'text':'text','file':'upload','image':'upload',
                   'upload':'upload','wiki':'text', 'html':'text'}
         for key,t in deftypes.items():
-            if key in has:                
+            if key in has:
                 ftype = t
         if refs:
             key = refs[0]
@@ -315,10 +315,10 @@ def make_table(table,fields):
 
         ### determine field representation
         elif 'wiki' in has:
-            s+=",\n          represent=lambda x: MARKMIN(x)"
+            s+=",\n          represent=lambda x, row: MARKMIN(x)"
             s+=",\n          comment='WIKI (markmin)'"
         elif 'html' in has:
-            s+=",\n          represent=lambda x: XML(x,sanitize=True)"
+            s+=",\n          represent=lambda x, row: XML(x,sanitize=True)"
             s+=",\n          comment='HTML (sanitized)'"
         ### determine field access
         if name=='password' or 'writeonly' in has:
@@ -353,7 +353,6 @@ db.auth_user.first_name.requires = IS_NOT_EMPTY(error_message=auth.messages.is_e
 db.auth_user.last_name.requires = IS_NOT_EMPTY(error_message=auth.messages.is_empty)
 db.auth_user.password.requires = CRYPT(key=auth.settings.hmac_key)
 db.auth_user.username.requires = IS_NOT_IN_DB(db, db.auth_user.username)
-db.auth_user.registration_id.requires = IS_NOT_IN_DB(db, db.auth_user.registration_id)
 db.auth_user.email.requires = (IS_EMAIL(error_message=auth.messages.invalid_email),
                                IS_NOT_IN_DB(db, db.auth_user.email))
 """
@@ -458,7 +457,7 @@ def create(options):
             fn = 'web2py.plugin.layout_%s.w2p' % params['layout_theme']
             theme = urllib.urlopen(LAYOUTS_APP+'/static/plugin_layouts/plugins/'+fn)
             plugin_install(app, theme, request, fn)
-        except: 
+        except:
             session.flash = T("unable to download layout")
 
     ### apply plugins
@@ -467,9 +466,9 @@ def create(options):
             plugin_name = 'web2py.plugin.'+plugin+'.w2p'
             stream = urllib.urlopen(PLUGINS_APP+'/static/'+plugin_name)
             plugin_install(app, stream, request, plugin_name)
-        except Exception, e: 
+        except Exception, e:
             session.flash = T("unable to download plugin: %s" % plugin)
-                    
+
     ### write configuration file into newapp/models/0.py
     model = os.path.join(request.folder,'..',app,'models','0.py')
     file = open(model, 'wb')
@@ -547,5 +546,7 @@ def call(): return service()
 
     if options.erase_database:
         path = os.path.join(request.folder,'..',app,'databases','*')
-        for file in glob.glob(path): 
+        for file in glob.glob(path):
             os.unlink(file)
+
+

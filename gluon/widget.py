@@ -1,4 +1,4 @@
-#!/-usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -222,7 +222,7 @@ class web2pyDialog(object):
 
         self.password = Tkinter.Entry(self.root, show='*')
         self.password.bind('<Return>', lambda e: self.start())
-        self.password.focus_force() 
+        self.password.focus_force()
         self.password.grid(row=2, column=1, sticky=sticky)
 
         # Prepare the canvas
@@ -553,6 +553,13 @@ def console():
                       type='int',
                       dest='shutdown_timeout',
                       help='timeout on shutdown of server (5 seconds)')
+
+    parser.add_option('--socket-timeout',
+                      default=5,
+                      type='int',
+                      dest='socket_timeout',
+                      help='timeout for socket (5 second)')
+
     parser.add_option('-f',
                       '--folder',
                       default=os.getcwd(),
@@ -753,7 +760,7 @@ def console():
 
     options.folder = os.path.abspath(options.folder)
 
-    #  accept --interfaces in the form 
+    #  accept --interfaces in the form
     #  "ip:port:cert:key;ip2:port2;ip3:port3:cert3:key3"
     #  (no spaces; optional cert:key indicate SSL)
     if isinstance(options.interfaces, str):
@@ -794,7 +801,7 @@ def start_schedulers(options):
     for app in apps:
         print 'starting scheduler for "%s"...' % app
         args = (app,True,True,None,False,code)
-        logging.getLogger().setLevel(logging.DEBUG)        
+        logging.getLogger().setLevel(logging.DEBUG)
         p = Process(target=run, args=args)
         processes.append(p)
         print "Currently running %s scheduler processes" % (len(processes))
@@ -807,7 +814,7 @@ def start_schedulers(options):
             p.terminate()
             p.join()
 
-            
+
 def start(cron=True):
     """ Start server  """
 
@@ -963,6 +970,7 @@ def start(cron=True):
                              server_name=options.server_name,
                              request_queue_size=options.request_queue_size,
                              timeout=options.timeout,
+                             socket_timeout=options.socket_timeout,
                              shutdown_timeout=options.shutdown_timeout,
                              path=options.folder,
                              interfaces=options.interfaces)
@@ -972,6 +980,7 @@ def start(cron=True):
     except KeyboardInterrupt:
         server.stop()
     logging.shutdown()
+
 
 
 

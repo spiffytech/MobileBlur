@@ -8,53 +8,44 @@ import stat
 import datetime
 
 from gluon.utils import md5_hash
-from gluon.restricted import RestrictedError
+from gluon.restricted import RestrictedError, TicketStorage
+from gluon import DAL
 
 SLEEP_MINUTES = 5
-DB_URI = 'sqlite://tickets.db'
-ALLOW_DUPLICATES = True
 
-path = os.path.join(request.folder, 'errors')
+errors_path = os.path.join(request.folder, 'errors')
+try:
+    db_string = open(os.path.join(request.folder, 'private', 'ticket_storage.txt')).read().replace('\r','').replace('\n','').strip()
+except:
+    db_string = 'sqlite://storage.db'
 
-db = SQLDB(DB_URI)
-db.define_table('ticket', SQLField('app'), SQLField('name'),
-                SQLField('date_saved', 'datetime'), SQLField('layer'),
-                SQLField('traceback', 'text'), SQLField('code', 'text'))
+db_path = os.path.join(request.folder, 'databases')
+
+tk_db = DAL(db_string, folder=db_path, auto_import=True)
+ts = TicketStorage(db=tk_db)
+tk_table = ts._get_table(db=tk_db, tablename=ts.tablename, app=request.application)
+
 
 hashes = {}
 
 while 1:
-    for file in os.listdir(path):
-        filename = os.path.join(path, file)
+    if request.tickets_db:
+        print "You're storing tickets yet in database"
+        sys.exit(1)
 
-        if not ALLOW_DUPLICATES:
-            fileobj = open(filename, 'r')
-            try:
-                file_data = fileobj.read()
-            finally:
-                fileobj.close()
-            key = md5_hash(file_data)
-
-            if key in hashes:
-                continue
-
-            hashes[key] = 1
-
-        error = RestrictedError()
-        error.load(request, request.application, filename)
+    for file in os.listdir(errors_path):
+        filename = os.path.join(errors_path, file)
 
         modified_time = os.stat(filename)[stat.ST_MTIME]
         modified_time = datetime.datetime.fromtimestamp(modified_time)
-
-        db.ticket.insert(app=request.application,
-                         date_saved=modified_time,
-                         name=file,
-                         layer=error.layer,
-                         traceback=error.traceback,
-                         code=error.code)
-
+        ticket_id = file
+        ticket_data = open(filename).read()
+        tk_table.insert(ticket_id=ticket_id,
+                        ticket_data=ticket_data,
+                        created_datetime=modified_time
+                        )
+        tk_db.commit()
         os.unlink(filename)
-
-    db.commit()
+        
     time.sleep(SLEEP_MINUTES * 60)
 

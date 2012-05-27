@@ -33,7 +33,8 @@ elif (remote_addr not in hosts) and (remote_addr != "127.0.0.1"):
 
 if (request.application=='admin' and not session.authorized) or \
         (request.application!='admin' and not gluon.fileutils.check_credentials(request)):
-    redirect(URL('admin', 'default', 'index'))
+    redirect(URL('admin', 'default', 'index',
+                 vars=dict(send=URL(args=request.args,vars=request.vars))))
 
 ignore_rw = True
 response.view = 'appadmin.html'
@@ -149,7 +150,7 @@ def csv():
         return None
     response.headers['Content-disposition'] = 'attachment; filename=%s_%s.csv'\
          % tuple(request.vars.query.split('.')[:2])
-    return str(db(query).select())
+    return str(db(query,ignore_common_filters=True).select())
 
 
 def import_csv(table, file):
@@ -224,10 +225,9 @@ def select():
                 response.flash = T('%s rows deleted', nrows)
             nrows = db(query).count()
             if orderby:
-                rows = db(query).select(limitby=(start, stop),
-                        orderby=eval_in_global_env(orderby))
+                rows = db(query,ignore_common_filters=True).select(limitby=(start, stop), orderby=eval_in_global_env(orderby))
             else:
-                rows = db(query).select(limitby=(start, stop))
+                rows = db(query,ignore_common_filters=True).select(limitby=(start, stop))
         except Exception, e:
             (rows, nrows) = ([], 0)
             response.flash = DIV(T('Invalid Query'),PRE(str(e)))
@@ -254,9 +254,9 @@ def update():
     if keyed:
         key = [f for f in request.vars if f in db[table]._primarykey]
         if key:
-            record = db(db[table][key[0]] == request.vars[key[0]]).select().first()
+            record = db(db[table][key[0]] == request.vars[key[0]], ignore_common_filters=True).select().first()
     else:
-        record = db(db[table].id == request.args(2)).select().first()
+        record = db(db[table].id == request.args(2),ignore_common_filters=True).select().first()
 
     if not record:
         qry = query_by_table_type(table, db)
@@ -326,15 +326,28 @@ def ccache():
     from gluon import portalocker
 
     ram = {
+        'entries': 0,
         'bytes': 0,
         'objects': 0,
         'hits': 0,
         'misses': 0,
         'ratio': 0,
-        'oldest': time.time()
+        'oldest': time.time(),
+        'keys': []
     }
     disk = copy.copy(ram)
     total = copy.copy(ram)
+    disk['keys'] = []
+    total['keys'] = []
+
+    def GetInHMS(seconds):
+        hours = math.floor(seconds / 3600)
+        seconds -= hours * 3600
+        minutes = math.floor(seconds / 60)
+        seconds -= minutes * 60
+        seconds = math.floor(seconds)
+
+        return (hours, minutes, seconds)
 
     for key, value in cache.ram.storage.items():
         if isinstance(value, dict):
@@ -348,9 +361,10 @@ def ccache():
             if hp:
                 ram['bytes'] += hp.iso(value[1]).size
                 ram['objects'] += hp.iso(value[1]).count
-
-                if value[0] < ram['oldest']:
-                    ram['oldest'] = value[0]
+            ram['entries'] += 1
+            if value[0] < ram['oldest']:
+                ram['oldest'] = value[0]
+            ram['keys'].append((key, GetInHMS(time.time() - value[0])))
 
     locker = open(os.path.join(request.folder,
                                         'cache/cache.lock'), 'a')
@@ -369,17 +383,22 @@ def ccache():
                 if hp:
                     disk['bytes'] += hp.iso(value[1]).size
                     disk['objects'] += hp.iso(value[1]).count
-                    if value[0] < disk['oldest']:
-                        disk['oldest'] = value[0]
+                disk['entries'] += 1
+                if value[0] < disk['oldest']:
+                    disk['oldest'] = value[0]
+                disk['keys'].append((key, GetInHMS(time.time() - value[0])))
+
     finally:
         portalocker.unlock(locker)
         locker.close()
         disk_storage.close()
 
+    total['entries'] = ram['entries'] + disk['entries']
     total['bytes'] = ram['bytes'] + disk['bytes']
     total['objects'] = ram['objects'] + disk['objects']
     total['hits'] = ram['hits'] + disk['hits']
     total['misses'] = ram['misses'] + disk['misses']
+    total['keys'] = ram['keys'] + disk['keys']
     try:
         total['ratio'] = total['hits'] * 100 / (total['hits'] + total['misses'])
     except (KeyError, ZeroDivisionError):
@@ -390,19 +409,23 @@ def ccache():
     else:
         total['oldest'] = ram['oldest']
 
-    def GetInHMS(seconds):
-        hours = math.floor(seconds / 3600)
-        seconds -= hours * 3600
-        minutes = math.floor(seconds / 60)
-        seconds -= minutes * 60
-        seconds = math.floor(seconds)
-
-        return (hours, minutes, seconds)
-
     ram['oldest'] = GetInHMS(time.time() - ram['oldest'])
     disk['oldest'] = GetInHMS(time.time() - disk['oldest'])
     total['oldest'] = GetInHMS(time.time() - total['oldest'])
 
+    def key_table(keys):
+        return TABLE(
+            TR(TD(B('Key')), TD(B('Time in Cache (h:m:s)'))),
+            *[TR(TD(k[0]), TD('%02d:%02d:%02d' % k[1])) for k in keys],
+            **dict(_class='cache-keys',
+                   _style="border-collapse: separate; border-spacing: .5em;"))
+
+    ram['keys'] = key_table(ram['keys'])
+    disk['keys'] = key_table(disk['keys'])
+    total['keys'] = key_table(total['keys'])
+
     return dict(form=form, total=total,
-                ram=ram, disk=disk)
+                ram=ram, disk=disk, object_stats=hp != False)
+
+
 

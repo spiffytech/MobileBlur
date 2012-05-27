@@ -30,12 +30,14 @@ def setUpModule():
         "build a temporary applications tree"
         #  applications/
         os.mkdir(abspath('applications'))
+
         #  applications/app/
         for app in ('admin', 'examples', 'welcome'):
             os.mkdir(abspath('applications', app))
             #  applications/app/(controllers, static)
             for subdir in ('controllers', 'static'):
                 os.mkdir(abspath('applications', app, subdir))
+
         #  applications/admin/controllers/*.py
         for ctr in ('appadmin', 'default', 'gae', 'mercurial', 'shell', 'wizard'):
             open(abspath('applications', 'admin', 'controllers', '%s.py' % ctr), 'w').close()
@@ -43,12 +45,15 @@ def setUpModule():
         for ctr in ('ajax_examples', 'appadmin', 'default', 'global', 'spreadsheet'):
             open(abspath('applications', 'examples', 'controllers', '%s.py' % ctr), 'w').close()
         #  applications/welcome/controllers/*.py
-        for ctr in ('appadmin', 'default'):
+        #  (include controller that collides with another app)
+        for ctr in ('appadmin', 'default', 'other', 'admin'):
             open(abspath('applications', 'welcome', 'controllers', '%s.py' % ctr), 'w').close()
+
         #  create an app-specific routes.py for examples app
         routes = open(abspath('applications', 'examples', 'routes.py'), 'w')
         routes.write("routers=dict(examples=dict(default_function='exdef'))")
         routes.close()
+        
         #  create language files for examples app
         for lang in ('en', 'it'):
             os.mkdir(abspath('applications', 'examples', 'static', lang))
@@ -358,6 +363,29 @@ class TestRouter(unittest.TestCase):
         except AttributeError:
             pass
 
+    def test_router_domains_fs(self):
+        '''
+        Test URLs that map domains using test filesystem layout
+        '''
+        routers = dict(
+            BASE = dict(
+                domains = {
+                    "domain1.com" : "admin",
+                    "domain2.com" : "welcome",
+                },
+            ),
+        )
+
+        load(rdict=routers)
+        self.assertEqual(filter_url('http://domain1.com'), '/admin/default/index')
+        self.assertEqual(filter_url('http://domain2.com'), '/welcome/default/index')
+        self.assertEqual(filter_url('http://domain1.com/gae'), '/admin/gae/index')
+        self.assertEqual(filter_url('http://domain2.com/other'), '/welcome/other/index')
+        self.assertEqual(filter_url('http://domain1.com/gae/f1'), '/admin/gae/f1')
+        self.assertEqual(filter_url('http://domain2.com/f2'), '/welcome/default/f2')
+        self.assertEqual(filter_url('http://domain2.com/other/f3'), '/welcome/other/f3')
+
+        
     def test_router_domains(self):
         '''
         Test URLs that map domains
@@ -742,6 +770,12 @@ class TestRouter(unittest.TestCase):
             "/init/default/f ['', 'arg1']")
         self.assertEqual(filter_url('http://domain.com/init/default/f/arg1/arg2'), 
             "/init/default/f ['arg1', 'arg2']")
+        self.assertEqual(filter_url('http://domain.com/init/default/f/arg1//arg2'), 
+            "/init/default/f ['arg1', '', 'arg2']")
+        self.assertEqual(filter_url('http://domain.com/init/default/f/arg1//arg3/'), 
+            "/init/default/f ['arg1', '', 'arg3']")
+        self.assertEqual(filter_url('http://domain.com/init/default/f/arg1//arg3//'), 
+            "/init/default/f ['arg1', '', 'arg3', '']")
 
         self.assertEqual(filter_url('http://domain.com/init/default/f', out=True), "/f")
         self.assertEqual(map_url_out(None, None, 'init', 'default', 'f', None, None, None, None, None), "/f")
@@ -817,7 +851,7 @@ class TestRouter(unittest.TestCase):
         r = Storage()
         r.env = Storage()
         r.env.http_host = 'domain.com'
-        r.env.WSGI_URL_SCHEME = 'httpx' # distinguish incoming scheme
+        r.env.wsgi_url_scheme = 'httpx' # distinguish incoming scheme
         self.assertEqual(str(URL(r=r, a='a', c='c', f='f')), "/a/c/f")
         self.assertEqual(str(URL(r=r, a='a', c='c', f='f', host=True)), 
             "httpx://domain.com/a/c/f")
@@ -855,6 +889,7 @@ class TestRouter(unittest.TestCase):
         Test REQUEST_URI in env
         '''
         load(rdict=dict())
+
         self.assertEqual(filter_url('http://domain.com/abc', env=True).request_uri, 
             '/init/default/abc')
         self.assertEqual(filter_url('http://domain.com/abc?def', env=True).request_uri, 
@@ -865,6 +900,49 @@ class TestRouter(unittest.TestCase):
             "/init/default/abc/def")
         self.assertEqual(filter_url('http://domain.com/index/a%20bc', env=True).request_uri, 
             "/init/default/index/a%20bc")
+
+    def test_request_collide(self):
+        '''
+        Test controller-app name collision: admin vs welcome/admin
+        '''
+        router_collide = dict(
+            BASE  = dict(
+                domains = {
+                    'ex.domain.com' : 'examples',
+                    'ad.domain.com' : 'admin',
+                    'welcome.com' : 'welcome',
+                    'www.welcome.com' : 'welcome',
+                },
+                exclusive_domain=True,
+            ),
+        )
+        load(rdict=router_collide)
+        
+        # basic inbound
+        self.assertEqual(filter_url('http://ex.domain.com'), '/examples/default/exdef')
+        self.assertEqual(filter_url('http://ad.domain.com'), '/admin/default/index')
+        self.assertEqual(filter_url('http://welcome.com'), '/welcome/default/index')
+        self.assertEqual(filter_url('http://www.welcome.com'), '/welcome/default/index')
+        # basic outbound
+        self.assertEqual(filter_url('http://ex.domain.com/examples/default/exdef', domain='examples', out=True), "/")
+        self.assertEqual(filter_url('http://ad.domain.com/admin/default/index', domain='admin', out=True), "/")
+        self.assertEqual(filter_url('http://welcome.com/welcome/default/index', domain='welcome', out=True), "/")
+        self.assertEqual(filter_url('http://www.welcome.com/welcome/default/index', domain='welcome', out=True), "/")
+
+        # inbound
+        self.assertEqual(filter_url('http://welcome.com/admin'), '/welcome/admin/index')
+        self.assertEqual(filter_url('http://welcome.com/f1'), '/welcome/default/f1')
+        self.assertEqual(filter_url('http://ad.domain.com/shell'), '/admin/shell/index')
+        self.assertEqual(filter_url('http://ad.domain.com/f1'), '/admin/default/f1')
+        # outbound
+        self.assertEqual(filter_url('http://welcome.com/welcome/other/index', domain='welcome', out=True), "/other")
+        self.assertEqual(filter_url('http://welcome.com/welcome/admin/index', domain='welcome', out=True), "/admin")
+        self.assertEqual(filter_url('http://ad.domain.com/admin/shell/index', domain='admin', out=True), "/shell")
+        self.assertEqual(filter_url('http://ad.domain.com/admin/default/f1', domain='admin', out=True), "/f1")
+        router_collide['BASE']['exclusive_domain'] = False
+        load(rdict=router_collide)
+        self.assertEqual(filter_url('http://welcome.com/welcome/admin/index', domain='welcome', out=True), "/welcome/admin")
+
 
 if __name__ == '__main__':
     setUpModule()       # pre-2.7

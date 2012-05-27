@@ -93,15 +93,17 @@ including:
 - MongoDB (in progress)
 - Google:nosql
 - Google:sql
+- Teradata
+- IMAP (experimental)
 
 Example of usage:
 
 &gt;&gt;&gt; # from dal import DAL, Field
 
-### create DAL connection (and create DB if not exists)
-&gt;&gt;&gt; db=DAL(('mysql://a:b@locahost/x','sqlite://storage.sqlite'),folder=None)
+### create DAL connection (and create DB if it doesn't exist)
+&gt;&gt;&gt; db = DAL(('mysql://a:b@localhost/x', 'sqlite://storage.sqlite'), folder=None)
 
-### define a table 'person' (create/aster as necessary)
+### define a table 'person' (create/alter as necessary)
 &gt;&gt;&gt; person = db.define_table('person',Field('name','string'))
 
 ### insert a record
@@ -114,7 +116,7 @@ Example of usage:
 &gt;&gt;&gt; james = person(name='James')
 
 ### retrieve it by arbitrary query
-&gt;&gt;&gt; query = (person.name=='James')&amp;(person.name.startswith('J'))
+&gt;&gt;&gt; query = (person.name=='James') &amp; (person.name.startswith('J'))
 &gt;&gt;&gt; james = db(query).select(person.ALL)[0]
 
 ### update one record
@@ -125,18 +127,18 @@ Example of usage:
 1
 
 ### delete records by query
-&gt;&gt;&gt; db(person.name.lower()=='jim').delete()
+&gt;&gt;&gt; db(person.name.lower() == 'jim').delete()
 0
 
 ### retrieve multiple records (rows)
-&gt;&gt;&gt; people = db(person).select(orderby=person.name,groupby=person.name,limitby=(0,100))
+&gt;&gt;&gt; people = db(person).select(orderby=person.name, groupby=person.name, limitby=(0,100))
 
 ### further filter them
-&gt;&gt;&gt; james = people.find(lambda row: row.name=='James').first()
+&gt;&gt;&gt; james = people.find(lambda row: row.name == 'James').first()
 &gt;&gt;&gt; print james.id, james.name
 1 James
 
-### check aggrgates
+### check aggregates
 &gt;&gt;&gt; counter = person.id.count()
 &gt;&gt;&gt; print db(person).select(counter).first()(counter)
 1
@@ -149,14 +151,16 @@ Example of usage:
 &gt;&gt;&gt; person.drop()
 
 Supported field types:
-id string text boolean integer double decimal password upload blob time date datetime,
+id string text boolean integer double decimal password upload blob time date datetime
 
 Supported DAL URI strings:
 'sqlite://test.db'
 'sqlite:memory'
 'jdbc:sqlite://test.db'
 'mysql://root:none@localhost/test'
-'postgres://mdipierro:none@localhost/test'
+'postgres://mdipierro:password@localhost/test'
+'postgres:psycopg2://mdipierro:password@localhost/test'
+'postgres:pg8000://mdipierro:password@localhost/test'
 'jdbc:postgres://mdipierro:none@localhost/test'
 'mssql://web2py:none@A64X2/web2py_test'
 'mssql2://web2py:none@A64X2/web2py_test' # alternate mappings
@@ -169,7 +173,8 @@ Supported DAL URI strings:
 'informixu://user:password@server:3050/database' # unicode informix
 'google:datastore' # for google app engine datastore
 'google:sql' # for google app engine with sql (mysql compatible)
-'teradata://DSN=dsn;UID=user;PWD=pass' # experimental 
+'teradata://DSN=dsn;UID=user;PWD=pass; DATABASE=database' # experimental
+'imap://user:password@server:port' # experimental
 
 For more info:
 help(DAL)
@@ -395,6 +400,21 @@ help(Field)
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a href="web2py.gluon.dal.IMAPAdapter-class.html" class="summary-name">IMAPAdapter</a><br />
+      IMAP server adapter
+
+  This class is intended as an interface with
+email IMAP servers to perform simple queries in the
+web2py DAL query syntax, so email read, search and
+other related IMAP mail services (as those implemented
+by brands like Google(r), and Yahoo!(r)
+can be managed from web2py applications.
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="web2py.gluon.dal.Row-class.html" class="summary-name">Row</a><br />
       a dictionary that lets you do d['a'] as well as d.a this is only
         used to store a Row
@@ -454,12 +474,25 @@ help(Field)
       allows defining of custom SQL types...
     </td>
   </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.dal.FieldVirtual-class.html" class="summary-name">FieldVirtual</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.dal.FieldLazy-class.html" class="summary-name">FieldLazy</a>
+    </td>
+  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="web2py.gluon.dal.Field-class.html" class="summary-name">Field</a><br />
-      an instance of this class represents a database field
+        <a href="web2py.gluon.dal.Field-class.html" class="summary-name">Field</a>
     </td>
   </tr>
 <tr class="private">
@@ -483,6 +516,13 @@ the records are identified by the query=Query(...) object.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a href="web2py.gluon.dal.VirtualCommand-class.html" class="summary-name">VirtualCommand</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="web2py.gluon.dal.Rows-class.html" class="summary-name">Rows</a><br />
       A wrapper for the return value of a select.
     </td>
@@ -491,8 +531,7 @@ the records are identified by the query=Query(...) object.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="web2py.gluon.dal.Field-class.html" class="summary-name">SQLField</a><br />
-      an instance of this class represents a database field
+        <a href="web2py.gluon.dal.Field-class.html" class="summary-name">SQLField</a>
     </td>
   </tr>
 <tr class="private">
@@ -587,6 +626,57 @@ the records are identified by the query=Query(...) object.
           <td><span class="summary-sig"><a name="DEFAULT"></a><span class="summary-sig-name">DEFAULT</span>()</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#DEFAULT">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pluralize"></a><span class="summary-sig-name">pluralize</span>(<span class="summary-sig-arg">singular</span>,
+        <span class="summary-sig-arg">rules</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">(</code>re.compile(r'child$')<code class="variable-op">, </code>re.compile(r'child$')<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">children</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">, </code><code class="variable-group">(</code><code class="variable-ellipsis">...</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#pluralize">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="OR"></a><span class="summary-sig-name">OR</span>(<span class="summary-sig-arg">a</span>,
+        <span class="summary-sig-arg">b</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#OR">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="AND"></a><span class="summary-sig-name">AND</span>(<span class="summary-sig-arg">a</span>,
+        <span class="summary-sig-arg">b</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#AND">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -763,6 +853,23 @@ the records are identified by the query=Query(...) object.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="smart_query"></a><span class="summary-sig-name">smart_query</span>(<span class="summary-sig-arg">fields</span>,
+        <span class="summary-sig-arg">text</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#smart_query">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="Reference_unpickler"></a><span class="summary-sig-name">Reference_unpickler</span>(<span class="summary-sig-arg">data</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#Reference_unpickler">source&nbsp;code</a></span>
@@ -795,6 +902,22 @@ the records are identified by the query=Query(...) object.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="raw"></a><span class="summary-sig-name">raw</span>(<span class="summary-sig-arg">s</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#raw">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="xorify"></a><span class="summary-sig-name">xorify</span>(<span class="summary-sig-arg">orderby</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#xorify">source&nbsp;code</a></span>
@@ -811,10 +934,42 @@ the records are identified by the query=Query(...) object.
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="use_common_filters"></a><span class="summary-sig-name">use_common_filters</span>(<span class="summary-sig-arg">query</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#use_common_filters">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="update_record"></a><span class="summary-sig-name">update_record</span>(<span class="summary-sig-arg">pack</span>,
-        <span class="summary-sig-arg">a</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span></td>
+        <span class="summary-sig-arg">a</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#update_record">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="lazy_virtualfield"></a><span class="summary-sig-name">lazy_virtualfield</span>(<span class="summary-sig-arg">f</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#lazy_virtualfield">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -893,14 +1048,25 @@ the records are identified by the query=Query(...) object.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="MAXCHARLENGTH"></a><span class="summary-name">MAXCHARLENGTH</span> = <code title="512">512</code>
+        <a name="MAXCHARLENGTH"></a><span class="summary-name">MAXCHARLENGTH</span> = <code title="32768">32768</code>
     </td>
   </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="INFINITY"></a><span class="summary-name">INFINITY</span> = <code title="32768">32768</code>
+        <a href="web2py.gluon.dal-module.html#DEFAULTLENGTH" class="summary-name">DEFAULTLENGTH</a> = <code title="{'blob': 2147483648,
+ 'password': 512,
+ 'string': 512,
+ 'text': 32768,
+ 'upload': 512}"><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">blob</code><code class="variable-quote">'</code><code class="variable-op">: </code>2147483648<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">password</code><code class="variable-quote">'</code><code class="variable-op">: </code>512<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">string</code><code class="variable-quote">'</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="TIMINGSSIZE"></a><span class="summary-name">TIMINGSSIZE</span> = <code title="100">100</code>
     </td>
   </tr>
 <tr class="private">
@@ -960,6 +1126,13 @@ the records are identified by the query=Query(...) object.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a name="regex_type"></a><span class="summary-name">regex_type</span> = <code title="re.compile(r'^([\w_:]+)')">re.compile(r'^<code class="re-group">(</code><code class="re-group">[</code>\w_:<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">)</code>')</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a name="regex_dbname"></a><span class="summary-name">regex_dbname</span> = <code title="re.compile(r'^(\w+)(:\w+)*')">re.compile(r'^<code class="re-group">(</code>\w<code class="re-op">+</code><code class="re-group">)</code><code class="re-group">(</code>:\w<code class="re-op">+</code><code class="re-group">)</code><code class="re-op">*</code>')</code>
     </td>
   </tr>
@@ -967,7 +1140,7 @@ the records are identified by the query=Query(...) object.
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="table_field"></a><span class="summary-name">table_field</span> = <code title="re.compile(r'^[\w_]+\.[\w_]+$')">re.compile(r'^<code class="re-group">[</code>\w_<code class="re-group">]</code><code class="re-op">+</code>\.<code class="re-group">[</code>\w_<code class="re-group">]</code><code class="re-op">+</code>$')</code>
+        <a name="regex_table_field"></a><span class="summary-name">regex_table_field</span> = <code title="re.compile(r'^([\w_]+)\.([\w_]+)$')">re.compile(r'^<code class="re-group">(</code><code class="re-group">[</code>\w_<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">)</code>\.<code class="re-group">(</code><code class="re-group">[</code>\w_<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">)</code>$')</code>
     </td>
   </tr>
 <tr class="private">
@@ -1005,7 +1178,29 @@ e|finally|is|return|def|for|lambda|try)$')">re.compile(r'^<code class="re-group"
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="drivers"></a><span class="summary-name">drivers</span> = <code title="['SQLite3', 'pymysql', 'PostgreSQL']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">SQLite3</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">pymysql</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">PostgreSQL</code><code class="variable-quote">'</code><code class="variable-group">]</code></code>
+        <a name="regex_select_as_parser"></a><span class="summary-name">regex_select_as_parser</span> = <code title="re.compile(r'\s+AS\s+(\S+)')">re.compile(r'\s<code class="re-op">+</code>AS\s<code class="re-op">+</code><code class="re-group">(</code>\S<code class="re-op">+</code><code class="re-group">)</code>')</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="drivers"></a><span class="summary-name">drivers</span> = <code title="['SQLite3', 'pymysql', 'psycopg2', 'pg8000', 'IMAP']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">SQLite3</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">pymysql</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">psycopg2</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">pg8000</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">IMAP</code><code class="variable-quote">'</code><code class="variable-group">]</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.dal-module.html#PLURALIZE_RULES" class="summary-name">PLURALIZE_RULES</a> = <code title="[(re.compile(r'child$'), re.compile(r'child$'), 'children'),
+ (re.compile(r'oot$'), re.compile(r'oot$'), 'eet'),
+ (re.compile(r'ooth$'), re.compile(r'ooth$'), 'eeth'),
+ (re.compile(r'l[eo]af$'), re.compile(r'l([eo])af$'), 'l\\1aves'),
+ (re.compile(r'sis$'), re.compile(r'sis$'), 'ses'),
+ (re.compile(r'man$'), re.compile(r'man$'), 'men'),
+ (re.compile(r'ife$'), re.compile(r'ife$'), 'ives'),
+ (re.compile(r'eau$'), re.compile(r'eau$'), 'eaux'),
+..."><code class="variable-group">[</code><code class="variable-group">(</code>re.compile(r'child$')<code class="variable-op">, </code>re.compile(r'child$<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr class="private">
@@ -1285,6 +1480,28 @@ Insert a field
   </td>
 </tr>
 </table>
+<a name="DEFAULTLENGTH"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">DEFAULTLENGTH</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">blob</code><code class="variable-quote">'</code><code class="variable-op">: </code>2147483648<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">password</code><code class="variable-quote">'</code><code class="variable-op">: </code>512<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">string</code><code class="variable-quote">'</code><code class="variable-op">: </code>512<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">text</code><code class="variable-quote">'</code><code class="variable-op">: </code>32768<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">upload</code><code class="variable-quote">'</code><code class="variable-op">: </code>512<code class="variable-group">}</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="CALLABLETYPES"></a>
 <div class="private">
 <table class="details" border="1" cellpadding="3"
@@ -1341,6 +1558,32 @@ re.compile(r'<code class="re-group">(?P&lt;</code><code class="re-ref">table</co
 re.compile(r'^<code class="re-group">(</code>and<code class="re-op">|</code>del<code class="re-op">|</code>from<code class="re-op">|</code>not<code class="re-op">|</code>while<code class="re-op">|</code>as<code class="re-op">|</code>elif<code class="re-op">|</code>global<code class="re-op">|</code>or<code class="re-op">|</code>with<code class="re-op">|</code>assert<code class="re-op">|</code>el<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
 se<code class="re-op">|</code>if<code class="re-op">|</code>pass<code class="re-op">|</code>yield<code class="re-op">|</code>break<code class="re-op">|</code>except<code class="re-op">|</code>import<code class="re-op">|</code>print<code class="re-op">|</code>class<code class="re-op">|</code>exec<code class="re-op">|</code>in<code class="re-op">|</code>raise<code class="re-op">|</code>continu<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
 e<code class="re-op">|</code>finally<code class="re-op">|</code>is<code class="re-op">|</code>return<code class="re-op">|</code>def<code class="re-op">|</code>for<code class="re-op">|</code>lambda<code class="re-op">|</code>try<code class="re-group">)</code>$')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="PLURALIZE_RULES"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">PLURALIZE_RULES</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">[</code><code class="variable-group">(</code>re.compile(r'child$')<code class="variable-op">, </code>re.compile(r'child$')<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">children</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code>re.compile(r'oot$')<code class="variable-op">, </code>re.compile(r'oot$')<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">eet</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code>re.compile(r'ooth$')<code class="variable-op">, </code>re.compile(r'ooth$')<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">eeth</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code>re.compile(r'l<code class="re-group">[</code>eo<code class="re-group">]</code>af$')<code class="variable-op">, </code>re.compile(r'l<code class="re-group">(</code><code class="re-group">[</code>eo<code class="re-group">]</code><code class="re-group">)</code>af$')<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">l\\1aves</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code>re.compile(r'sis$')<code class="variable-op">, </code>re.compile(r'sis$')<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">ses</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code>re.compile(r'man$')<code class="variable-op">, </code>re.compile(r'man$')<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">men</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code>re.compile(r'ife$')<code class="variable-op">, </code>re.compile(r'ife$')<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">ives</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+ <code class="variable-group">(</code>re.compile(r'eau$')<code class="variable-op">, </code>re.compile(r'eau$')<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">eaux</code><code class="variable-quote">'</code><code class="variable-group">)</code><code class="variable-op">,</code>
+<code class="variable-ellipsis">...</code>
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -1404,7 +1647,7 @@ e<code class="re-op">|</code>finally<code class="re-op">|</code>is<code class="r
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:46:59 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:57 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

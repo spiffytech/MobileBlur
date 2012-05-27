@@ -28,14 +28,12 @@ import socket
 import tempfile
 import random
 import string
-import platform
 from fileutils import abspath, write_file, parse_version
 from settings import global_settings
 from admin import add_path_first, create_missing_folders, create_missing_app_folders
 from globals import current
 
 from custom_import import custom_import_install
-from contrib.simplejson import dumps
 
 #  Remarks:
 #  calling script has inserted path to script directory into sys.path
@@ -380,7 +378,7 @@ def wsgibase(environ, responder):
 
                 (static_file, environ) = rewrite.url_in(request, environ)
                 if static_file:
-                    if request.env.get('query_string', '')[:10] == 'attachment':
+                    if environ.get('QUERY_STRING', '')[:10] == 'attachment':
                         response.headers['Content-Disposition'] = 'attachment'
                     response.stream(static_file, request=request)
 
@@ -415,7 +413,9 @@ def wsgibase(environ, responder):
                 # ##################################################
 
                 if not os.path.exists(request.folder):
-                    if request.application == rewrite.thread.routes.default_application and request.application != 'welcome':
+                    if request.application == \
+                            rewrite.thread.routes.default_application \
+                            and request.application != 'welcome':
                         request.application = 'welcome'
                         redirect(Url(r=request))
                     elif rewrite.thread.routes.error_handler:
@@ -428,6 +428,9 @@ def wsgibase(environ, responder):
                         raise HTTP(404, rewrite.thread.routes.error_message \
                                        % 'invalid request',
                                    web2py_error='invalid application')
+                elif not request.is_local and \
+                        os.path.exists(os.path.join(request.folder,'DISABLED')):
+                    raise HTTP(200, "<html><body><h1>Down for maintenance</h1></body></html>")
                 request.url = Url(r=request, args=request.args,
                                        extension=request.raw_extension)
 
@@ -487,6 +490,11 @@ def wsgibase(environ, responder):
                 # run controller
                 # ##################################################
 
+                if global_settings.debugging and request.application != "admin":
+                    import gluon.debug
+                    # activate the debugger and wait to reach application code
+                    gluon.debug.dbg.do_debug(mainpyfile=request.folder)
+
                 serve_controller(request, response, session)
 
             except HTTP, http_response:
@@ -505,7 +513,9 @@ def wsgibase(environ, responder):
                 # on success, commit database
                 # ##################################################
 
-                if response._custom_commit:
+                if response.do_not_commit is True:
+                    BaseAdapter.close_all_instances(None)
+                elif response._custom_commit:
                     response._custom_commit()
                 else:
                     BaseAdapter.close_all_instances('commit')
@@ -586,9 +596,6 @@ def wsgibase(environ, responder):
         if response and hasattr(response, 'session_file') \
                 and response.session_file:
             response.session_file.close()
-#         if global_settings.debugging:
-#             import gluon.debug
-#             gluon.debug.stop_trace()
 
     session._unlock(response)
     http_response, new_environ = rewrite.try_rewrite_on_error(
@@ -730,6 +737,7 @@ class HttpServer(object):
         server_name=None,
         request_queue_size=5,
         timeout=10,
+        socket_timeout = 1,
         shutdown_timeout=None, # Rocket does not use a shutdown timeout
         path=None,
         interfaces=None # Rocket is able to use several interfaces - must be list of socket-tuples as string
@@ -758,6 +766,9 @@ class HttpServer(object):
             global_settings.applications_parent = path
             os.chdir(path)
             [add_path_first(p) for p in (path, abspath('site-packages'), "")]
+            custom_import_install(web2py_path)
+            if os.path.exists("logging.conf"):
+                logging.config.fileConfig("logging.conf")
 
         save_password(password, port)
         self.pid_filename = pid_filename
@@ -765,6 +776,7 @@ class HttpServer(object):
             server_name = socket.gethostname()
         logger.info('starting web server...')
         rocket.SERVER_NAME = server_name
+        rocket.SOCKET_TIMEOUT = socket_timeout
         sock_list = [ip, port]
         if not ssl_certificate or not ssl_private_key:
             logger.info('SSL is off')
@@ -778,7 +790,7 @@ class HttpServer(object):
             sock_list.extend([ssl_private_key, ssl_certificate])
             if ssl_ca_certificate:
                 sock_list.append(ssl_ca_certificate)
-            
+
             logger.info('SSL is ON')
         app_info = {'wsgi_app': appfactory(wsgibase,
                                            log_filename,
@@ -817,6 +829,7 @@ class HttpServer(object):
             os.unlink(self.pid_filename)
         except:
             pass
+
 
 
 

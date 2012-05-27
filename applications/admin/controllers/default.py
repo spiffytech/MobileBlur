@@ -1,5 +1,13 @@
 # coding: utf8
 
+EXPERIMENTAL_STUFF = True
+
+if EXPERIMENTAL_STUFF:
+    is_mobile = request.user_agent().is_mobile
+    if is_mobile:
+        response.view = response.view.replace('default/','default.mobile/')
+        response.menu = []
+
 from gluon.admin import *
 from gluon.fileutils import abspath, read_file, write_file
 from glob import glob
@@ -265,7 +273,7 @@ def uninstall():
             else:
                 session.flash = T('no permission to uninstall "%s"', app)
                 redirect(URL('site'))
-        if app_uninstall(app, request):            
+        if app_uninstall(app, request):
             session.flash = T('application "%s" uninstalled', app)
         else:
             session.flash = T('unable to uninstall "%s"', app)
@@ -325,6 +333,16 @@ def delete():
                               dict(filename=filename))
         redirect(URL(sender))
     return dict(filename=filename, sender=sender)
+
+def enable():
+    app = get_app()
+    filename = os.path.join(apath(app, r=request),'DISABLED')
+    if os.path.exists(filename):
+        os.unlink(filename)
+        return SPAN(T('Disable'),_style='color:green')
+    else:
+        open(filename,'wb').write(time.ctime())
+        return SPAN(T('Enable'),_style='color:red')
 
 def peek():
     """ Visualize object code """
@@ -397,7 +415,7 @@ def edit():
 
     path = apath(filename, r=request)
 
-    if request.vars.revert and os.path.exists(path + '.bak'):
+    if ('revert' in request.vars) and os.path.exists(path + '.bak'):
         try:
             data = safe_read(path + '.bak')
             data1 = safe_read(path)
@@ -777,7 +795,7 @@ def delete_plugin():
             for folder in ['models','views','controllers','static','modules']:
                 path=os.path.join(apath(app,r=request),folder)
                 for item in os.listdir(path):
-                    if item.startswith(plugin_name):
+                    if item.rsplit('.',1)[0] == plugin_name:
                         filename=os.path.join(path,item)
                         if os.path.isdir(filename):
                             shutil.rmtree(filename)
@@ -930,7 +948,7 @@ def create_file():
                 raise SyntaxError
 
             msg = T('This is the %(filename)s template',
-                    dict(filename=filename))            
+                    dict(filename=filename))
             if extension == 'html':
                 text = dedent("""
                    {{extend 'layout.html'}}
@@ -942,7 +960,7 @@ def create_file():
                     text = read_file(generic)
                 else:
                     text = ''
-                
+
         elif path[-9:] == '/modules/':
             if request.vars.plugin and not filename.startswith('plugin_%s/' % request.vars.plugin):
                 filename = 'plugin_%s/%s' % (request.vars.plugin, filename)
@@ -1043,7 +1061,10 @@ def errors():
     app = get_app()
 
     method = request.args(1) or 'new'
-
+    db_ready = {}
+    db_ready['status'] = get_ticket_storage(app)
+    db_ready['errmessage'] = "No ticket_storage.txt found under /private folder"
+    db_ready['errlink'] = "http://web2py.com/books/default/chapter/29/13#Collecting-tickets"
 
     if method == 'new':
         errors_path = apath('%s/errors' % app, r=request)
@@ -1086,7 +1107,61 @@ def errors():
         decorated = [(x['count'], x) for x in hash2error.values()]
         decorated.sort(key=operator.itemgetter(0), reverse=True)
 
+        return dict(errors = [x[1] for x in decorated], app=app, method=method, db_ready=db_ready)
+
+    elif method == 'dbnew':
+        errors_path = apath('%s/errors' % app, r=request)
+        tk_db, tk_table = get_ticket_storage(app)
+
+        delete_hashes = []
+        for item in request.vars:
+            if item[:7] == 'delete_':
+                delete_hashes.append(item[7:])
+
+        hash2error = dict()
+
+        for fn in tk_db(tk_table.id>0).select():
+            try:
+                error = pickle.loads(fn.ticket_data)
+            except AttributeError:
+                tk_db(tk_table.id == fn.id).delete()
+                tk_db.commit()
+
+            hash = hashlib.md5(error['traceback']).hexdigest()
+
+            if hash in delete_hashes:
+                tk_db(tk_table.id == fn.id).delete()
+                tk_db.commit()
+            else:
+                try:
+                    hash2error['hash']['count'] += 1
+                except KeyError:
+                    error_lines = error['traceback'].split("\n")
+                    last_line = error_lines[-2]
+                    error_causer = os.path.split(error['layer'])[1]
+                    hash2error[hash] = dict(count=1, pickel=error,
+                                            causer=error_causer,
+                                            last_line=last_line,
+                                            hash=hash,ticket=fn.ticket_id)
+
+        decorated = [(x['count'], x) for x in hash2error.values()]
+
+        decorated.sort(key=operator.itemgetter(0), reverse=True)
+
         return dict(errors = [x[1] for x in decorated], app=app, method=method)
+
+    elif method == 'dbold':
+        tk_db, tk_table = get_ticket_storage(app)
+        for item in request.vars:
+            if item[:7] == 'delete_':
+                tk_db(tk_table.ticket_id == item[7:]).delete()
+                tk_db.commit()
+        tickets_ = tk_db(tk_table.id>0).select(tk_table.ticket_id, tk_table.created_datetime, orderby=~tk_table.created_datetime)
+        tickets = [row.ticket_id for row in tickets_]
+        times = dict([(row.ticket_id, row.created_datetime) for row in tickets_])
+
+        return dict(app=app, tickets=tickets, method=method, times=times)
+
     else:
         for item in request.vars:
             if item[:7] == 'delete_':
@@ -1097,8 +1172,28 @@ def errors():
                          key=func,
                          reverse=True)
 
-        return dict(app=app, tickets=tickets, method=method)
+        return dict(app=app, tickets=tickets, method=method, db_ready=db_ready)
 
+def get_ticket_storage(app):
+    private_folder = apath('%s/private' % app, r=request)
+    ticket_file = os.path.join(private_folder, 'ticket_storage.txt')
+    if os.path.exists(ticket_file):
+        db_string = open(ticket_file).read()
+        db_string = db_string.strip().replace('\r','').replace('\n','')
+    else:
+        return False
+    tickets_table = 'web2py_ticket'
+    tablename = tickets_table + '_' + app
+    db_path = apath('%s/databases' % app, r=request)
+    ticketsdb = DAL(db_string, folder=db_path, auto_import=True)
+    if not ticketsdb.get(tablename):
+        table = ticketsdb.define_table(
+                tablename,
+                Field('ticket_id', length=100),
+                Field('ticket_data', 'text'),
+                Field('created_datetime', 'datetime'),
+                )
+    return ticketsdb , ticketsdb.get(tablename)
 
 def make_link(path):
     """ Create a link from a path """
@@ -1182,6 +1277,29 @@ def ticket():
                 layer=e.layer,
                 myversion=myversion)
 
+def ticketdb():
+    """ Ticket handler """
+
+    if len(request.args) != 2:
+        session.flash = T('invalid ticket')
+        redirect(URL('site'))
+
+    app = get_app()
+    myversion = request.env.web2py_version
+    ticket = request.args[1]
+    e = RestrictedError()
+    request.tickets_db = get_ticket_storage(app)[0]
+    e.load(request, app, ticket)
+    response.view = 'default/ticket.html'
+    return dict(app=app,
+                ticket=ticket,
+                output=e.output,
+                traceback=(e.traceback and TRACEBACK(e.traceback)),
+                snapshot=e.snapshot,
+                code=e.code,
+                layer=e.layer,
+                myversion=myversion)
+
 def error():
     """ Generate a ticket (for testing) """
     raise RuntimeError('admin ticket generator at your service')
@@ -1194,6 +1312,7 @@ def update_languages():
     session.flash = T('Language files (static strings) updated')
     redirect(URL('design',args=app,anchor='languages'))
 
+
 def twitter():
     session.forget()
     session._unlock(response)
@@ -1201,17 +1320,23 @@ def twitter():
     import gluon.contrib.simplejson as sj
     try:
         if TWITTER_HASH:
-            page = gluon.tools.fetch('http://twitter.com/%s?format=json'%TWITTER_HASH)
-            return sj.loads(page)['#timeline']
+            page = urllib.urlopen("http://search.twitter.com/search.json?q=%%40%s" % TWITTER_HASH).read()
+            data = sj.loads(page  , encoding="utf-8")['results']
+            d = dict()
+            for e in data:
+                d[e["id"]] = e
+            r = reversed(sorted(d))
+            return dict(tweets = [d[k] for k in r])
         else:
             return 'disabled'
     except Exception, e:
         return DIV(T('Unable to download because:'),BR(),str(e))
 
+
 def user():
     if MULTI_USER_MODE:
         if not db(db.auth_user).count():
-            auth.settings.registration_requires_approval = False            
+            auth.settings.registration_requires_approval = False
         return dict(form=auth())
     else:
         return dict(form=T("Disabled"))
@@ -1221,3 +1346,5 @@ def reload_routes():
     import gluon.rewrite
     gluon.rewrite.load()
     redirect(URL('site'))
+
+

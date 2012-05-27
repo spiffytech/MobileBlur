@@ -101,8 +101,7 @@ object --+
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="web2py.gluon.dal.Field-class.html" class="summary-name">Field</a><br />
-      an instance of this class represents a database field
+        <a href="web2py.gluon.dal.Field-class.html" class="summary-name">Field</a>
     </td>
   </tr>
 <tr>
@@ -140,16 +139,16 @@ object --+
           <td><span class="summary-sig"><a href="web2py.gluon.dal.DAL-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">uri</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">sqlite://dummy.db</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">pool_size</span>=<span class="summary-sig-default">0</span>,
-        <span class="summary-sig-arg">folder</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">folder</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">db_codec</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">UTF-8</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">check_reserved</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">check_reserved</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">migrate</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">fake_migrate</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">migrate_enabled</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">fake_migrate_all</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">decode_credentials</span>=<span class="summary-sig-default">True</span>,
-        <span class="summary-sig-arg">driver_args</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">adapter_args</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">driver_args</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">adapter_args</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">attempts</span>=<span class="summary-sig-default">5</span>,
         <span class="summary-sig-arg">auto_import</span>=<span class="summary-sig-default">True</span>)</span><br />
       Creates a new Database Abstraction Layer instance.</td>
@@ -229,7 +228,7 @@ True if D has a key k, else False</td>
         <span class="summary-sig-arg">patterns</span>,
         <span class="summary-sig-arg">args</span>,
         <span class="summary-sig-arg">vars</span>,
-        <span class="summary-sig-arg">query</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">queries</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">nested_select</span>=<span class="summary-sig-default">True</span>)</span><br />
       EXAMPLE:...</td>
           <td align="right" valign="top">
@@ -373,8 +372,27 @@ True if D has a key k, else False</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="smart_query"></a><span class="summary-sig-name">smart_query</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">fields</span>,
+        <span class="summary-sig-arg">text</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#DAL.smart_query">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="__call__"></a><span class="summary-sig-name">__call__</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">query</span>=<span class="summary-sig-default">1</span>)</span></td>
+        <span class="summary-sig-arg">query</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">ignore_common_filters</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#DAL.__call__">source&nbsp;code</a></span>
             
@@ -424,12 +442,10 @@ True if D has a key k, else False</td>
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.dal.DAL-class.html#executesql" class="summary-sig-name">executesql</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">query</span>,
-        <span class="summary-sig-arg">placeholders</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">placeholders</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">as_dict</span>=<span class="summary-sig-default">True</span>)</span><br />
-      placeholders is optional and will always be None when using DAL if
-      using raw SQL with placeholders, placeholders may be a sequence of 
-      values to be substituted in or, *if supported by the DB driver*, a 
-      dictionary with keys matching named placeholders in your SQL.</td>
+      placeholders is optional and will always be None when using 
+      DAL.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#DAL.executesql">source&nbsp;code</a></span>
             
@@ -483,7 +499,7 @@ True if D has a key k, else False</td>
         <tr>
           <td><span class="summary-sig"><a name="import_from_csv_file"></a><span class="summary-sig-name">import_from_csv_file</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">ifile</span>,
-        <span class="summary-sig-arg">id_map</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="summary-sig-arg">id_map</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">null</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">&lt;NULL&gt;</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">unique</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">uuid</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">*args</span>,
@@ -623,6 +639,13 @@ True if D has a key k, else False</td>
     </table>
   </td>
 </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.dal.DAL-class.html#tables" class="summary-name">tables</a>
+    </td>
+  </tr>
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -659,16 +682,16 @@ True if D has a key k, else False</td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">uri</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">sqlite://dummy.db</code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">pool_size</span>=<span class="sig-default">0</span>,
-        <span class="sig-arg">folder</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">folder</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">db_codec</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">UTF-8</code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">check_reserved</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">check_reserved</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">migrate</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">fake_migrate</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">migrate_enabled</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">fake_migrate_all</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">decode_credentials</span>=<span class="sig-default">True</span>,
-        <span class="sig-arg">driver_args</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">adapter_args</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
+        <span class="sig-arg">driver_args</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">adapter_args</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">attempts</span>=<span class="sig-default">5</span>,
         <span class="sig-arg">auto_import</span>=<span class="sig-default">True</span>)</span>
     <br /><em class="fname">(Constructor)</em>
@@ -781,7 +804,7 @@ True if D has a key k, else False
         <span class="sig-arg">patterns</span>,
         <span class="sig-arg">args</span>,
         <span class="sig-arg">vars</span>,
-        <span class="sig-arg">query</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">queries</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">nested_select</span>=<span class="sig-default">True</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -794,29 +817,29 @@ True if D has a key k, else False
         EXAMPLE:
 
 db.define_table('person',Field('name'),Field('info'))
-db.define_table('pet',Field('person',db.person),Field('name'),Field('info'))
+db.define_table('pet',Field('owner',db.person),Field('name'),Field('info'))
 
 @request.restful()
 def index():
-    def GET(*kargs,**kvars):
+    def GET(*args,**vars):
         patterns = [
-            &quot;/persons[person]&quot;,
-            &quot;/{person.name.startswith}&quot;,
-            &quot;/{person.name}/:field&quot;,
-            &quot;/{person.name}/pets[pet.person]&quot;,
-            &quot;/{person.name}/pet[pet.person]/{pet.name}&quot;,
-            &quot;/{person.name}/pet[pet.person]/{pet.name}/:field&quot;
+            &quot;/friends[person]&quot;,
+            &quot;/{friend.name.startswith}&quot;,
+            &quot;/{friend.name}/:field&quot;,
+            &quot;/{friend.name}/pets[pet.owner]&quot;,
+            &quot;/{friend.name}/pet[pet.owner]/{pet.name}&quot;,
+            &quot;/{friend.name}/pet[pet.owner]/{pet.name}/:field&quot;
             ]
-        parser = db.parse_as_rest(patterns,kargs,kvars)
+        parser = db.parse_as_rest(patterns,args,vars)
         if parser.status == 200:
             return dict(content=parser.response)
         else:
             raise HTTP(parser.status,parser.error)
-    def POST(table_name,**kvars):
+    def POST(table_name,**vars):
         if table_name == 'person':
-            return db.person.validate_and_insert(**kvars)
+            return db.person.validate_and_insert(**vars)
         elif table_name == 'pet':
-            return db.pet.validate_and_insert(**kvars)
+            return db.pet.validate_and_insert(**vars)
         else:
             raise HTTP(400)
     return locals()
@@ -959,7 +982,7 @@ def index():
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">executesql</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">query</span>,
-        <span class="sig-arg">placeholders</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">placeholders</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">as_dict</span>=<span class="sig-default">True</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -967,22 +990,69 @@ def index():
     </td>
   </table>
   
-  <p>placeholders is optional and will always be None when using DAL if 
+  <p>placeholders is optional and will always be None when using DAL. If 
   using raw SQL with placeholders, placeholders may be a sequence of values
-  to be substituted in or, *if supported by the DB driver*, a dictionary 
+  to be substituted in or, (if supported by the DB driver), a dictionary 
   with keys matching named placeholders in your SQL.</p>
   <p>Added 2009-12-05 &quot;as_dict&quot; optional argument. Will always be
   None when using DAL. If using raw SQL can be set to True and the results 
   cursor returned by the DB driver will be converted to a sequence of 
   dictionaries keyed with the db field names. Tested with SQLite but should
   work with any database since the cursor.description used to get field 
-  names is part of the Python dbi 2.0 specs. Results returned with as_dict 
-  = True are the same as those returned when applying .to_list() to a DAL 
-  query.</p>
+  names is part of the Python dbi 2.0 specs. Results returned with 
+  as_dict=True are the same as those returned when applying .to_list() to a
+  DAL query.</p>
   <p>[{field1: value1, field2: value2}, {field1: value1b, field2: 
   value2b}]</p>
   --bmeredyk
   <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Property Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-PropertyDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="tables"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">tables</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.tables(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+global_settings.applications_parent
+</pre></td></tr></table>
+
+        - PyMySQL: A pure-Python drop-in replacement for MySQLdb.
+    </dd>
+    <dt>Delete Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+global_settings.applications_parent
+</pre></td></tr></table>
+
+        - PyMySQL: A pure-Python drop-in replacement for MySQLdb.
+    </dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1018,7 +1088,7 @@ def index():
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:00 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:58 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
