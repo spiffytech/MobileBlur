@@ -98,6 +98,57 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a href="web2py.gluon.rocket.FileLikeSocket-class.html" class="summary-name">FileLikeSocket</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket.Future-class.html" class="summary-name">Future</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket.ThreadPoolExecutor-class.html" class="summary-name">ThreadPoolExecutor</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket.WSGIFuture-class.html" class="summary-name">WSGIFuture</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket._WorkItem-class.html" class="summary-name">_WorkItem</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket.WSGIExecutor-class.html" class="summary-name">WSGIExecutor</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket.FuturesMiddleware-class.html" class="summary-name">FuturesMiddleware</a><br />
+      Futures middleware that adds a Futures Executor to the 
+        environment
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="web2py.gluon.rocket.Listener-class.html" class="summary-name">Listener</a><br />
       The Listener class is a class responsible for accepting 
         connections and queuing them to be processed by a worker 
@@ -140,21 +191,6 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="web2py.gluon.rocket.Headers-class.html" class="summary-name">Headers</a>
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="web2py.gluon.rocket.FileWrapper-class.html" class="summary-name">FileWrapper</a><br />
-      Wrapper to convert file-like objects to iterables
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
         <a href="web2py.gluon.rocket.Worker-class.html" class="summary-name">Worker</a><br />
       The Worker class is a base class responsible for receiving 
         connections and (a subclass) will run an application to process the
@@ -191,6 +227,20 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="web2py.gluon.rocket.ChunkedReader-class.html" class="summary-name">ChunkedReader</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket.LimitingFileWrapper-class.html" class="summary-name">LimitingFileWrapper</a>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket.FileSystemWorker-class.html" class="summary-name">FileSystemWorker</a>
     </td>
   </tr>
 <tr class="private">
@@ -262,7 +312,7 @@
           <td><span class="summary-sig"><a name="CherryPyWSGIServer"></a><span class="summary-sig-name">CherryPyWSGIServer</span>(<span class="summary-sig-arg">bind_addr</span>,
         <span class="summary-sig-arg">wsgi_app</span>,
         <span class="summary-sig-arg">numthreads</span>=<span class="summary-sig-default">10</span>,
-        <span class="summary-sig-arg">server_name</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">server_name</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">max</span>=<span class="summary-sig-default">-1</span>,
         <span class="summary-sig-arg">request_queue_size</span>=<span class="summary-sig-default">5</span>,
         <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">10</span>,
@@ -270,25 +320,6 @@
       A Cherrypy wsgiserver-compatible wrapper.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#CherryPyWSGIServer">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr class="private">
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.rocket-module.html#_formatparam" class="summary-sig-name">_formatparam</a>(<span class="summary-sig-arg">param</span>,
-        <span class="summary-sig-arg">value</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">quote</span>=<span class="summary-sig-default">1</span>)</span><br />
-      Convenience function to format and return a key=value pair.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#_formatparam">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -367,7 +398,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="VERSION"></a><span class="summary-name">VERSION</span> = <code title="'1.2.2'"><code class="variable-quote">'</code><code class="variable-string">1.2.2</code><code class="variable-quote">'</code></code>
+        <a name="VERSION"></a><span class="summary-name">VERSION</span> = <code title="'1.2.4'"><code class="variable-quote">'</code><code class="variable-string">1.2.4</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -381,14 +412,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="SERVER_SOFTWARE"></a><span class="summary-name">SERVER_SOFTWARE</span> = <code title="'Rocket 1.2.2'"><code class="variable-quote">'</code><code class="variable-string">Rocket 1.2.2</code><code class="variable-quote">'</code></code>
+        <a name="SERVER_SOFTWARE"></a><span class="summary-name">SERVER_SOFTWARE</span> = <code title="'Rocket 1.2.4'"><code class="variable-quote">'</code><code class="variable-string">Rocket 1.2.4</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="HTTP_SERVER_SOFTWARE"></a><span class="summary-name">HTTP_SERVER_SOFTWARE</span> = <code title="'Rocket 1.2.2 Python/2.5.2'"><code class="variable-quote">'</code><code class="variable-string">Rocket 1.2.2 Python/2.5.2</code><code class="variable-quote">'</code></code>
+        <a name="HTTP_SERVER_SOFTWARE"></a><span class="summary-name">HTTP_SERVER_SOFTWARE</span> = <code title="'Rocket 1.2.4 Python/2.5.2'"><code class="variable-quote">'</code><code class="variable-string">Rocket 1.2.4 Python/2.5.2</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -402,7 +433,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="SOCKET_TIMEOUT"></a><span class="summary-name">SOCKET_TIMEOUT</span> = <code title="1">1</code><br />
+        <a href="web2py.gluon.rocket-module.html#SOCKET_TIMEOUT" class="summary-name">SOCKET_TIMEOUT</a> = <code title="global_settings.applications_parent">&lt;web2py.gluon.custom_import._Web2pyImporter o<code class="variable-ellipsis">...</code></code><br />
       PyMySQL: A pure-Python drop-in replacement for MySQLdb.
     </td>
   </tr>
@@ -410,7 +441,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="THREAD_STOP_CHECK_INTERVAL"></a><span class="summary-name">THREAD_STOP_CHECK_INTERVAL</span> = <code title="1">1</code><br />
+        <a href="web2py.gluon.rocket-module.html#THREAD_STOP_CHECK_INTERVAL" class="summary-name">THREAD_STOP_CHECK_INTERVAL</a> = <code title="global_settings.applications_parent">&lt;web2py.gluon.custom_import._Web2<code class="variable-ellipsis">...</code></code><br />
       PyMySQL: A pure-Python drop-in replacement for MySQLdb.
     </td>
   </tr>
@@ -461,6 +492,13 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="PY3K"></a><span class="summary-name">PY3K</span> = <code title="True">True</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="has_futures"></a><span class="summary-name">has_futures</span> = <code title="True">True</code>
     </td>
   </tr>
 <tr class="private">
@@ -524,7 +562,37 @@ ECT'])">set(['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', '<code class="variable-ell
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="_tspecials"></a><span class="summary-name">_tspecials</span> = <code title="re.compile(r'[ \(\)&lt;&gt;@,;:\\&quot;/\[\]\?=]')">re.compile(r'<code class="re-group">[</code> \(\)&lt;&gt;@,;:\\&quot;/\[\]\?=<code class="re-group">]</code>')</code>
+        <a name="CHUNK_SIZE"></a><span class="summary-name">CHUNK_SIZE</span> = <code title="65536">65536</code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket-module.html#INDEX_HEADER" class="summary-name">INDEX_HEADER</a> = <code title="'''&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Directory Index: %(path)s&lt;/title&gt;
+&lt;style&gt; .parent { margin-bottom: 1em; }&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;&lt;h1&gt;Directory Index: %(path)s&lt;/h1&gt;
+&lt;table&gt;
+&lt;tr&gt;&lt;th&gt;Directories&lt;/th&gt;&lt;/tr&gt;
+'''"><code class="variable-quote">'</code><code class="variable-string">&lt;html&gt;\n&lt;head&gt;&lt;title&gt;Directory Index: %(path)s</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.rocket-module.html#INDEX_ROW" class="summary-name">INDEX_ROW</a> = <code title="'&lt;tr&gt;&lt;td&gt;&lt;div class=&quot;%(cls)s&quot;&gt;&lt;a href=&quot;/%(link)s&quot;&gt;%(name)s&lt;/a&gt;&lt;/div&gt;&lt;/\
+td&gt;&lt;/tr&gt;'"><code class="variable-quote">'</code><code class="variable-string">&lt;tr&gt;&lt;td&gt;&lt;div class=&quot;%(cls)s&quot;&gt;&lt;a href=&quot;/%(link)s&quot;&gt;</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="INDEX_FOOTER"></a><span class="summary-name">INDEX_FOOTER</span> = <code title="'''&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;\r
+'''"><code class="variable-quote">'</code><code class="variable-string">&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;\r\n</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr class="private">
@@ -549,13 +617,12 @@ ECT'])">set(['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', '<code class="variable-ell
     </td><td class="summary">
         <a href="web2py.gluon.rocket-module.html#BASE_ENV" class="summary-name">BASE_ENV</a> = <code title="{'SCRIPT_NAME': '',
  'SERVER_NAME': 'www',
- 'wsgi.errors': &lt;epydoc.docintrospecter._DevNull instance at 0x2b630b3\
-2a440&gt;,
- 'wsgi.file_wrapper': &lt;class web2py.gluon.rocket.FileWrapper at 0x13da\
-350&gt;,
+ 'wsgi.errors': &lt;epydoc.docintrospecter._DevNull instance at 0x2af5fa8\
+c2440&gt;,
+ 'wsgi.file_wrapper': &lt;class wsgiref.util.FileWrapper at 0x1452410&gt;,
  'wsgi.multiprocess': False,
  'wsgi.run_once': False,
-..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">SCRIPT_NAME</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">SERVER_NAME</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">www</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">wsgi.err</code><code class="variable-ellipsis">...</code></code>
+ 'wsgi.version': (1, 0)}"><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">SCRIPT_NAME</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">SERVER_NAME</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">www</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">wsgi.err</code><code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 </table>
@@ -618,28 +685,6 @@ ECT'])">set(['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', '<code class="variable-ell
   </dl>
 </td></tr></table>
 </div>
-<a name="_formatparam"></a>
-<div class="private">
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_formatparam</span>(<span class="sig-arg">param</span>,
-        <span class="sig-arg">value</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">quote</span>=<span class="sig-default">1</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="web2py.gluon.rocket-pysrc.html#_formatparam">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </table>
-  
-  <p>Convenience function to format and return a key=value pair.</p>
-  This will quote the value if needed or if quote is true.
-  <dl class="fields">
-  </dl>
-</td></tr></table>
-</div>
 <br />
 <!-- ==================== VARIABLES DETAILS ==================== -->
 <a name="section-VariablesDetails"></a>
@@ -659,6 +704,76 @@ ECT'])">set(['OPTIONS', 'GET', 'HEAD', 'POST', 'PUT', '<code class="variable-ell
   </td>
 </tr>
 </table>
+<a name="SOCKET_TIMEOUT"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">SOCKET_TIMEOUT</h3>
+  <p>PyMySQL: A pure-Python drop-in replacement for MySQLdb.</p>
+  <p>Copyright (c) 2010 PyMySQL contributors</p>
+  <p>Permission is hereby granted, free of charge, to any person obtaining 
+  a copy of this software and associated documentation files (the 
+  &quot;Software&quot;), to deal in the Software without restriction, 
+  including without limitation the rights to use, copy, modify, merge, 
+  publish, distribute, sublicense, and/or sell copies of the Software, and 
+  to permit persons to whom the Software is furnished to do so, subject to 
+  the following conditions:</p>
+  <p>The above copyright notice and this permission notice shall be 
+  included in all copies or substantial portions of the Software.</p>
+  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY 
+  KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+  NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+  USE OR OTHER DEALINGS IN THE SOFTWARE.
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+global_settings.applications_parent
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="THREAD_STOP_CHECK_INTERVAL"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">THREAD_STOP_CHECK_INTERVAL</h3>
+  <p>PyMySQL: A pure-Python drop-in replacement for MySQLdb.</p>
+  <p>Copyright (c) 2010 PyMySQL contributors</p>
+  <p>Permission is hereby granted, free of charge, to any person obtaining 
+  a copy of this software and associated documentation files (the 
+  &quot;Software&quot;), to deal in the Software without restriction, 
+  including without limitation the rights to use, copy, modify, merge, 
+  publish, distribute, sublicense, and/or sell copies of the Software, and 
+  to permit persons to whom the Software is furnished to do so, subject to 
+  the following conditions:</p>
+  <p>The above copyright notice and this permission notice shall be 
+  included in all copies or substantial portions of the Software.</p>
+  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY 
+  KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+  NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+  USE OR OTHER DEALINGS IN THE SOFTWARE.
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+global_settings.applications_parent
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="DEFAULTS"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -757,6 +872,50 @@ ECT'])
   </dl>
 </td></tr></table>
 </div>
+<a name="INDEX_HEADER"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">INDEX_HEADER</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'''</code><code class="variable-string">&lt;html&gt;</code>
+<code class="variable-string">&lt;head&gt;&lt;title&gt;Directory Index: %(path)s&lt;/title&gt;</code>
+<code class="variable-string">&lt;style&gt; .parent { margin-bottom: 1em; }&lt;/style&gt;</code>
+<code class="variable-string">&lt;/head&gt;</code>
+<code class="variable-string">&lt;body&gt;&lt;h1&gt;Directory Index: %(path)s&lt;/h1&gt;</code>
+<code class="variable-string">&lt;table&gt;</code>
+<code class="variable-string">&lt;tr&gt;&lt;th&gt;Directories&lt;/th&gt;&lt;/tr&gt;</code>
+<code class="variable-string"></code><code class="variable-quote">'''</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="INDEX_ROW"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">INDEX_ROW</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">&lt;tr&gt;&lt;td&gt;&lt;div class=&quot;%(cls)s&quot;&gt;&lt;a href=&quot;/%(link)s&quot;&gt;%(name)s&lt;/a&gt;&lt;/div&gt;&lt;/</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-string">td&gt;&lt;/tr&gt;</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="BASE_ENV"></a>
 <div class="private">
 <table class="details" border="1" cellpadding="3"
@@ -771,13 +930,12 @@ ECT'])
       <dd><table><tr><td><pre class="variable">
 <code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">SCRIPT_NAME</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code><code class="variable-op">,</code>
  <code class="variable-quote">'</code><code class="variable-string">SERVER_NAME</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">www</code><code class="variable-quote">'</code><code class="variable-op">,</code>
- <code class="variable-quote">'</code><code class="variable-string">wsgi.errors</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;epydoc.docintrospecter._DevNull instance at 0x2b630b3<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-2a440&gt;<code class="variable-op">,</code>
- <code class="variable-quote">'</code><code class="variable-string">wsgi.file_wrapper</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;class web2py.gluon.rocket.FileWrapper at 0x13da<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-350&gt;<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">wsgi.errors</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;epydoc.docintrospecter._DevNull instance at 0x2af5fa8<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+c2440&gt;<code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">wsgi.file_wrapper</code><code class="variable-quote">'</code><code class="variable-op">: </code>&lt;class wsgiref.util.FileWrapper at 0x1452410&gt;<code class="variable-op">,</code>
  <code class="variable-quote">'</code><code class="variable-string">wsgi.multiprocess</code><code class="variable-quote">'</code><code class="variable-op">: </code>False<code class="variable-op">,</code>
  <code class="variable-quote">'</code><code class="variable-string">wsgi.run_once</code><code class="variable-quote">'</code><code class="variable-op">: </code>False<code class="variable-op">,</code>
-<code class="variable-ellipsis">...</code>
+ <code class="variable-quote">'</code><code class="variable-string">wsgi.version</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-group">(</code>1<code class="variable-op">, </code>0<code class="variable-group">)</code><code class="variable-group">}</code>
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -815,7 +973,7 @@ ECT'])
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:46:59 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:57 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

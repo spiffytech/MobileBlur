@@ -12,10 +12,8 @@ import cPickle
 import traceback
 import types
 import os
-import datetime
 import logging
 
-from utils import web2py_uuid
 from storage import Storage
 from http import HTTP
 from html import BEAUTIFY
@@ -171,6 +169,18 @@ class RestrictedError(Exception):
         self.traceback = d['traceback']
         self.snapshot = d.get('snapshot')
 
+    def __str__(self):
+        # safely show an useful message to the user
+        try:
+            output = self.output
+            if isinstance(output, unicode):
+                output = output.encode("utf8")
+            elif not isinstance(output, str):
+                output = str(output)
+        except:
+            output = ""
+        return output
+
 
 def compile2(code,layer):
     """
@@ -186,6 +196,7 @@ def restricted(code, environment=None, layer='Unknown'):
     """
     if environment is None: environment = {}
     environment['__file__'] = layer
+    environment['__name__'] = '__restricted__'
     try:
         if type(code) == types.CodeType:
             ccode = code
@@ -194,16 +205,21 @@ def restricted(code, environment=None, layer='Unknown'):
         exec ccode in environment
     except HTTP:
         raise
+    except RestrictedError:
+        # do not encapsulate (obfuscate) the original RestrictedError
+        raise
     except Exception, error:
+        # extract the exception type and value (used as output message)
+        etype, evalue, tb = sys.exc_info()
         # XXX Show exception in Wing IDE if running in debugger
         if __debug__ and 'WINGDB_ACTIVE' in os.environ:
-            etype, evalue, tb = sys.exc_info()
             sys.excepthook(etype, evalue, tb)
-        raise RestrictedError(layer, code, '', environment)
+        output = "%s %s" % (etype, evalue)
+        raise RestrictedError(layer, code, output, environment)
 
 def snapshot(info=None, context=5, code=None, environment=None):
     """Return a dict describing a given traceback (based on cgitb.text)."""
-    import os, types, time, traceback, linecache, inspect, pydoc, cgitb
+    import os, types, time, linecache, inspect, pydoc, cgitb
 
     # if no exception info given, get current:
     etype, evalue, etb = info or sys.exc_info()
@@ -285,6 +301,7 @@ def snapshot(info=None, context=5, code=None, environment=None):
             s[k] = BEAUTIFY(v)
 
     return s
+
 
 
 

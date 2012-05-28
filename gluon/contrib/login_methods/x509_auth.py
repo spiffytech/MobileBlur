@@ -22,6 +22,11 @@ class X509Auth(object):
     """
     Login using x509 cert from client.
 
+    from gluon.contrib.login_methods.x509_auth import X509Account
+    auth.settings.actions_disabled=['register','change_password',
+                                    'request_reset_password','profile']
+    auth.settings.login_form = X509Account()
+
     """
 
 
@@ -81,10 +86,10 @@ class X509Auth(object):
 
         p = profile = dict()
 
-        username = p['username'] = self.subject.CN or self.subject.commonName
-        p['first_name'] = self.subject.givenName or username
-        p['last_name'] = self.subject.surname
-        p['email'] = self.subject.Email or self.subject.emailAddress
+        username = p['username'] = reduce(lambda a,b: '%s | %s' % (a,b), self.subject.CN or self.subject.commonName)
+        p['first_name'] = reduce(lambda a,b: '%s | %s' % (a,b),self.subject.givenName or username)
+        p['last_name'] = reduce(lambda a,b: '%s | %s' % (a,b),self.subject.surname)
+        p['email'] = reduce(lambda a,b: '%s | %s' % (a,b),self.subject.Email or self.subject.emailAddress)
 
         # IMPORTANT WE USE THE CERT SERIAL AS UNIQUE KEY FOR THE USER
         p['registration_id'] = self.serial

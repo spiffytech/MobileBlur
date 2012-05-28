@@ -4,6 +4,22 @@
 import re
 import cgi
 
+"""
+TODO: next version should use MathJax
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+MathJax.Hub.Config({
+ extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+ jax: ["input/TeX", "output/HTML-CSS"],
+ tex2jax: {
+     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+     displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+ },
+ "HTML-CSS": { availableFonts: ["TeX"] }
+});
+</script>
+"""
+
 __all__ = ['render', 'markmin2html']
 
 __doc__ = """
@@ -16,13 +32,13 @@ This is a new markup language that we call markmin designed to produce high qual
 Example of usage:
 
 ``
->>> m = "Hello **world** [[link http://web2py.com]]"
->>> from markmin2html import markmin2html
->>> print markmin2html(m)
->>> from markmin2latex import markmin2latex
->>> print markmin2latex(m)
->>> from markmin2pdf import markmin2pdf # requires pdflatex
->>> print markmin2pdf(m)
+m = "Hello **world** [[link http://web2py.com]]"
+from markmin2html import markmin2html
+print markmin2html(m)
+from markmin2latex import markmin2latex
+print markmin2latex(m)
+from markmin2pdf import markmin2pdf # requires pdflatex
+print markmin2pdf(m)
 ``
 
 ## Why?
@@ -157,8 +173,8 @@ The ``:python`` after the markup is also optional. If present, by default, it is
 The behavior can be overridden by passing an argument ``extra`` to the ``render`` function. For example:
 
 ``
->>> markmin2html("!`!!`!aaa!`!!`!:custom",
-       extra=dict(custom=lambda text: 'x'+text+'x'))
+markmin2html("!`!!`!aaa!`!!`!:custom",
+             extra=dict(custom=lambda text: 'x'+text+'x'))
 ``:python
 
 generates
@@ -182,9 +198,8 @@ Formulas can be embedded into HTML with ``$````$``formula``$````$``.
 You can use Google charts to render the formula:
 
 ``
->>> LATEX = '<img src="http://chart.apis.google.com/chart?cht=tx&chl=%s" align="ce\
-nter"/>'
->>> markmin2html(text,{'latex':lambda code: LATEX % code.replace('"','\"')})
+LATEX = '<img src="http://chart.apis.google.com/chart?cht=tx&chl=%s" />'
+markmin2html(text,{'latex':lambda code: LATEX % code.replace('"','\"')})
 ``
 
 ### Code with syntax highlighting
@@ -192,11 +207,11 @@ nter"/>'
 This requires a syntax highlighting tool, such as the web2py CODE helper.
 
 ``
->>> extra={'code_cpp':lambda text: CODE(text,language='cpp').xml(),
-           'code_java':lambda text: CODE(text,language='java').xml(),
-           'code_python':lambda text: CODE(text,language='python').xml(),
-           'code_html':lambda text: CODE(text,language='html').xml()}
->>> markmin2html(text,extra=extra)
+extra={'code_cpp':lambda text: CODE(text,language='cpp').xml(),
+       'code_java':lambda text: CODE(text,language='java').xml(),
+       'code_python':lambda text: CODE(text,language='python').xml(),
+       'code_html':lambda text: CODE(text,language='html').xml()}
+markmin2html(text,extra=extra)
 ``
 
 Code can now be marked up as in this example:
@@ -236,14 +251,14 @@ As shown in Ref.!`!`mdipierro`!`!:cite
 """
 
 META = 'META'
-LATEX = '<img src="http://chart.apis.google.com/chart?cht=tx&chl=%s" align="center"/>'
+LATEX = '<img src="http://chart.apis.google.com/chart?cht=tx&chl=%s" />'
 regex_newlines = re.compile('(\n\r)|(\r\n)')
 regex_dd=re.compile('\$\$(?P<latex>.*?)\$\$')
 regex_code = re.compile('('+META+')|(``(?P<t>.*?)``(:(?P<c>\w+))?)',re.S)
 regex_maps = [
     (re.compile('[ \t\r]+\n'),'\n'),
     (re.compile('[ \t\r]+\n'),'\n'),
-    (re.compile('\*\*(?P<t>[^\s\*]+( +[^\s\*]+)*)\*\*'),'<b>\g<t></b>'),
+    (re.compile('\*\*(?P<t>[^\s\*]+( +[^\s\*]+)*)\*\*'),'<strong>\g<t></strong>'),
     (re.compile("''(?P<t>[^\s']+( +[^\s']+)*)''"),'<i>\g<t></i>'),
     (re.compile('^#{6} (?P<t>[^\n]+)',re.M),'\n\n<<h6>\g<t></h6>\n'),
     (re.compile('^#{5} (?P<t>[^\n]+)',re.M),'\n\n<<h5>\g<t></h5>\n'),
@@ -259,14 +274,21 @@ regex_maps = [
     (re.compile('\n\s+\n'),'\n\n')]
 regex_table = re.compile('^\-{4,}\n(?P<t>.*?)\n\-{4,}(:(?P<c>\w+))?\n',re.M|re.S)
 regex_anchor = re.compile('\[\[(?P<t>\S+)\]\]')
-regex_image_width = re.compile('\[\[(?P<t>.*?) +(?P<k>\S+) +(?P<p>left|right|center) +(?P<w>\d+px)\]\]')
-regex_image = re.compile('\[\[(?P<t>.*?) +(?P<k>\S+) +(?P<p>left|right|center)\]\]')
-regex_video = re.compile('\[\[(?P<t>.*?) +(?P<k>\S+) +video\]\]')
-regex_audio = re.compile('\[\[(?P<t>.*?) +(?P<k>\S+) +audio\]\]')
-regex_link = re.compile('\[\[(?P<t>.*?) +(?P<k>\S+)\]\]')
-regex_link_popup = re.compile('\[\[(?P<t>.*?) +(?P<k>\S+) popup\]\]')
+regex_image_center_width = re.compile('\[\[(?P<t>[^\]]*?) +(?P<k>\S+) +center +(?P<w>\d+px)\]\]')
+regex_image_width = re.compile('\[\[(?P<t>[^\]]*?) +(?P<k>\S+) +(?P<p>left|right) +(?P<w>\d+px)\]\]')
+regex_image_center = re.compile('\[\[(?P<t>[^\]]*?) +(?P<k>\S+) +center\]\]')
+regex_image = re.compile('\[\[(?P<t>[^\]]*?) +(?P<k>\S+) +(?P<p>left|right|center)\]\]')
+regex_video = re.compile('\[\[(?P<t>[^\]]*?) +(?P<k>\S+) +video\]\]')
+regex_audio = re.compile('\[\[(?P<t>[^\]]*?) +(?P<k>\S+) +audio\]\]')
+regex_link = re.compile('\[\[(?P<t>[^\]]*?) +(?P<k>\S+)\]\]')
+regex_link_popup = re.compile('\[\[(?P<t>[^\]]*?) +(?P<k>\S+) popup\]\]')
 regex_link_no_anchor = re.compile('\[\[ +(?P<k>\S+)\]\]')
-regex_auto = re.compile('(?<!["\w\>])(?P<k>\w+://[\w\.\-\+\?&%\/]+)',re.M)
+regex_qr = re.compile('(?<!["\w\>/=])qr:(?P<k>\w+://[\w\.\-\+\?&%\/\:]+)',re.M)
+regex_embed = re.compile('(?<!["\w\>/=])embed:(?P<k>\w+://[\w\.\-\+\?&%\/\:]+)',re.M)
+regex_auto_image = re.compile('(?<!["\w\>/=])(?P<k>\w+://\S+\.(jpeg|jpg|gif|png)(\?\S+)?)',re.M)
+regex_auto_video = re.compile('(?<!["\w\>/=])(?P<k>\w+://\S+\.(mp4|mpeg|mov)(\?\S+)?)',re.M)
+regex_auto_audio = re.compile('(?<!["\w\>/=])(?P<k>\w+://\S+\.(mp3|wav)(\?\S+)?)',re.M)
+regex_auto = re.compile('(?<!["\w\>/=])(?P<k>\w+://\S+)',re.M)
 
 def render(text,extra={},allowed={},sep='p'):
     """
@@ -329,8 +351,9 @@ def render(text,extra={},allowed={},sep='p'):
 
     >>> render("``aaa``:custom",extra=dict(custom=lambda text: 'x'+text+'x'))
     'xaaax'
-    >>> render(r"$$\int_a^b sin(x)dx$$")
-    '<code class="latex">\\\\int_a^b sin(x)dx</code>'
+    
+    >>> print render(r"$$\int_a^b sin(x)dx$$")
+    <img src="http://chart.apis.google.com/chart?cht=tx&chl=\\int_a^b sin(x)dx" />
     """
     text = str(text or '')
     #############################################################
@@ -373,22 +396,30 @@ def render(text,extra={},allowed={},sep='p'):
         content = item.group('t')
         if ' | ' in content:
             rows = content.replace('\n','</td></tr><tr><td>').replace(' | ','</td><td>')
-            text = text[:item.start()] + '<<table class="%s"><tr><td>'%c + rows + '</td></tr></table>' + text[item.end():]
+            text = text[:item.start()] + '<<table class="%s"><tr><td>'%c + rows + '</td></tr></table>\n' + text[item.end():]
         else:
-            text = text[:item.start()] + '<<blockquote class="%s">'%c + content + '</blockquote>' + text[item.end():]
+            text = text[:item.start()] + '<<blockquote class="%s">'%c + content + '</blockquote>\n' + text[item.end():]
 
     #############################################################
     # deal with images, videos, audios and links
     #############################################################
 
     text = regex_anchor.sub('<span id="\g<t>"><span>', text)
+    text = regex_image_center_width.sub('<p align="center"><img src="\g<k>" alt="\g<t>" width="\g<w>" /></p>', text)
     text = regex_image_width.sub('<img src="\g<k>" alt="\g<t>" align="\g<p>" width="\g<w>" />', text)
+    text = regex_image_center.sub('<p align="center"><img src="\g<k>" alt="\g<t>" /></p>', text)
     text = regex_image.sub('<img src="\g<k>" alt="\g<t>" align="\g<p>" />', text)
     text = regex_video.sub('<video src="\g<k>" controls></video>', text)
     text = regex_audio.sub('<audio src="\g<k>" controls></audio>', text)
     text = regex_link_popup.sub('<a href="\g<k>" target="_blank">\g<t></a>', text)
     text = regex_link_no_anchor.sub('<a href="\g<k>">\g<k></a>', text)
     text = regex_link.sub('<a href="\g<k>">\g<t></a>', text)
+    text = regex_qr.sub('<img width="80px" src="http://qrcode.kaywa.com/img.php?s=8&amp;d=\g<k>" alt="qr code" />',text)
+    text = regex_embed.sub('<iframe src="\g<k>" frameborder="0" allowfullscreen></iframe>', 
+                           text)
+    text = regex_auto_image.sub('<img src="\g<k>" controls />', text)
+    text = regex_auto_video.sub('<video src="\g<k>" controls></video>', text)
+    text = regex_auto_audio.sub('<audio src="\g<k>" controls></audio>', text)
     text = regex_auto.sub('<a href="\g<k>">\g<k></a>', text)
 
     #############################################################

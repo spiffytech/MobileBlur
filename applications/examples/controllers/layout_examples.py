@@ -1,6 +1,3 @@
-
-
-
 def civilized():
     response.menu = [['civilized', True, URL('civilized'
                      )], ['slick', False, URL('slick')],
@@ -23,5 +20,6 @@ def basic():
                      ['basic', True, URL('basic')]]
     response.flash = 'you clicked on basic'
     return dict(message='you clicked on basic')
+
 
 

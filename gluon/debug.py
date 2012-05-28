@@ -10,6 +10,7 @@ License: LGPLv3 (http://www.gnu.org/licenses/lgpl.html)
 """
 
 import logging
+import os
 import pdb
 import Queue
 import sys
@@ -82,6 +83,110 @@ def communicate(command=None):
     return ''.join(result)
 
 
+# New debugger implementation using qdb and a web UI
 
+import gluon.contrib.qdb as qdb
+from threading import RLock
 
+interact_lock = RLock()
+run_lock = RLock()
+
+def check_interaction(fn):
+    "Decorator to clean and prevent interaction when not available"
+    def check_fn(self, *args, **kwargs):
+        interact_lock.acquire()
+        try:
+            if self.filename:
+                self.clear_interaction()
+                return fn(self, *args, **kwargs)
+        finally:
+            interact_lock.release()
+    return check_fn
+
+      
+class WebDebugger(qdb.Frontend):
+    "Qdb web2py interface"
+    
+    def __init__(self, pipe, completekey='tab', stdin=None, stdout=None):
+        qdb.Frontend.__init__(self, pipe)
+        self.clear_interaction()
+
+    def clear_interaction(self):
+        self.filename = None
+        self.lineno = None
+        self.exception_info = None
+        self.context = None
+
+    # redefine Frontend methods:
+    
+    def run(self):
+        run_lock.acquire()
+        try:
+            while self.pipe.poll():
+                qdb.Frontend.run(self)
+        finally:
+            run_lock.release()
+
+    def interaction(self, filename, lineno, line, **context):
+        # store current status
+        interact_lock.acquire()
+        try:
+            self.filename = filename
+            self.lineno = lineno
+            self.context = context
+        finally:
+            interact_lock.release()
+
+    def exception(self, title, extype, exvalue, trace, request):
+        self.exception_info = {'title': title, 
+                               'extype': extype, 'exvalue': exvalue,
+                               'trace': trace, 'request': request}
+
+    @check_interaction
+    def do_continue(self):
+        qdb.Frontend.do_continue(self)
+
+    @check_interaction
+    def do_step(self):
+        qdb.Frontend.do_step(self)
+
+    @check_interaction
+    def do_return(self):
+        qdb.Frontend.do_return(self)
+
+    @check_interaction
+    def do_next(self):
+        qdb.Frontend.do_next(self)
+
+    @check_interaction
+    def do_quit(self):
+        qdb.Frontend.do_quit(self)
+
+    def do_exec(self, statement):
+        interact_lock.acquire()
+        try:
+            # check to see if we're inside interaction
+            if self.filename:
+                # avoid spurious interaction notifications:
+                self.set_burst(2)
+                # execute the statement in the remote debugger:
+                return qdb.Frontend.do_exec(self, statement)
+        finally:
+            interact_lock.release()
+        
+# create the connection between threads:
+
+parent_queue, child_queue = Queue.Queue(), Queue.Queue()
+front_conn = qdb.QueuePipe("parent", parent_queue, child_queue)
+child_conn = qdb.QueuePipe("child", child_queue, parent_queue)
+
+web_debugger = WebDebugger(front_conn)                          # frontend
+qdb_debugger = qdb.Qdb(pipe=child_conn, redirect_stdio=False, skip=None)   # backend
+dbg = qdb_debugger
+
+# enable getting context (stack, globals/locals) at interaction
+qdb_debugger.set_params(dict(call_stack=True, environment=True))
+
+import gluon.main
+gluon.main.global_settings.debugging = True
 

@@ -1,7 +1,3 @@
-
-
-
-
 def index():
     return dict()
 
@@ -22,5 +18,6 @@ def flash():
 
 def fade():
     return dict()
+
 
 

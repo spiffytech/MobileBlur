@@ -120,6 +120,26 @@ object --+
       
     </td>
   </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.Table-class.html#update" class="summary-sig-name">update</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Update D from E and F: for k in E: D[k] = E[k] (if E has keys 
+      else: for (k, v) in E: D[k] = v) then: for k in F: D[k] = F[k]</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#Table.update">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr class="private">
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
@@ -214,7 +234,7 @@ object --+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="__call__"></a><span class="summary-sig-name">__call__</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">key</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0xd1ec80&gt;</span>,
+        <span class="summary-sig-arg">key</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0xefc500&gt;</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#Table.__call__">source&nbsp;code</a></span>
@@ -459,7 +479,7 @@ object --+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="update_or_insert"></a><span class="summary-sig-name">update_or_insert</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">key</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0xd1ec80&gt;</span>,
+        <span class="summary-sig-arg">_key</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0xefc500&gt;</span>,
         <span class="summary-sig-arg">**values</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#Table.update_or_insert">source&nbsp;code</a></span>
@@ -495,7 +515,7 @@ object --+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="_truncate"></a><span class="summary-sig-name">_truncate</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">1</span>)</span></td>
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#Table._truncate">source&nbsp;code</a></span>
             
@@ -512,7 +532,7 @@ object --+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="truncate"></a><span class="summary-sig-name">truncate</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">1</span>)</span></td>
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#Table.truncate">source&nbsp;code</a></span>
             
@@ -530,7 +550,7 @@ object --+
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.dal.Table-class.html#import_from_csv_file" class="summary-sig-name">import_from_csv_file</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">csvfile</span>,
-        <span class="summary-sig-arg">id_map</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">id_map</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">null</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">&lt;NULL&gt;</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">unique</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">uuid</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">*args</span>,
@@ -607,7 +627,6 @@ object --+
       <code>pop</code>,
       <code>popitem</code>,
       <code>setdefault</code>,
-      <code>update</code>,
       <code>values</code>
       </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -635,6 +654,13 @@ object --+
     </table>
   </td>
 </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="web2py.gluon.dal.Table-class.html#fields" class="summary-name">fields</a>
+    </td>
+  </tr>
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -694,6 +720,37 @@ new empty dictionary
 </pre></dd>
     <dt>Overrides:
       dict.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="update"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">update</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#Table.update">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  Update D from E and F: for k in E: D[k] = E[k] (if E has keys else: 
+  for (k, v) in E: D[k] = v) then: for k in F: D[k] = F[k]
+  <dl class="fields">
+    <dt>Returns:</dt>
+        <dd><pre class="literalblock">
+None
+
+</pre></dd>
+    <dt>Overrides:
+      dict.update
+        <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
 </td></tr></table>
@@ -879,7 +936,7 @@ new empty dictionary
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">import_from_csv_file</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">csvfile</span>,
-        <span class="sig-arg">id_map</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">id_map</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">null</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">&lt;NULL&gt;</code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">unique</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">uuid</code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">*args</span>,
@@ -895,6 +952,53 @@ new empty dictionary
   the 'table.' prefix is ignored. 'unique' argument is a field which must 
   be unique (typically a uuid field)
   <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Property Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-PropertyDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="fields"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">fields</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><i>unreachable</i>.fields(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+global_settings.applications_parent
+</pre></td></tr></table>
+
+        - PyMySQL: A pure-Python drop-in replacement for MySQLdb.
+    </dd>
+    <dt>Delete Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+global_settings.applications_parent
+</pre></td></tr></table>
+
+        - PyMySQL: A pure-Python drop-in replacement for MySQLdb.
+    </dd>
   </dl>
 </td></tr></table>
 </div>
@@ -930,7 +1034,7 @@ new empty dictionary
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:00 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:58 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

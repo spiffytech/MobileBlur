@@ -64,15 +64,13 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class TeradataAdapter</h1><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#TeradataAdapter">source&nbsp;code</a></span><br /><br />
 <pre class="base-tree">
-    object --+            
-             |            
-<a href="web2py.gluon.dal.ConnectionPool-class.html">ConnectionPool</a> --+        
-                 |        
-       <a href="web2py.gluon.dal.BaseAdapter-class.html">BaseAdapter</a> --+    
-                     |    
-            <a href="web2py.gluon.dal.DB2Adapter-class.html">DB2Adapter</a> --+
-                         |
-                        <strong class="uidshort">TeradataAdapter</strong>
+    object --+        
+             |        
+<a href="web2py.gluon.dal.ConnectionPool-class.html">ConnectionPool</a> --+    
+                 |    
+       <a href="web2py.gluon.dal.BaseAdapter-class.html">BaseAdapter</a> --+
+                     |
+                    <strong class="uidshort">TeradataAdapter</strong>
 </pre>
 
 <hr />
@@ -99,13 +97,49 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.TeradataAdapter-class.html#LEFT_JOIN" class="summary-sig-name">LEFT_JOIN</a>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#TeradataAdapter.LEFT_JOIN">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.TeradataAdapter-class.html#create_table" class="summary-sig-name">create_table</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">table</span>,
+        <span class="summary-sig-arg">migrate</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">fake_migrate</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">polymodel</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#TeradataAdapter.create_table">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.dal.TeradataAdapter-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">db</span>,
         <span class="summary-sig-arg">uri</span>,
         <span class="summary-sig-arg">pool_size</span>=<span class="summary-sig-default">0</span>,
-        <span class="summary-sig-arg">folder</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">folder</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">db_codec</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">UTF-8</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">credential_decoder</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0xd6db90&gt;</span>,
+        <span class="summary-sig-arg">credential_decoder</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0xfc3230&gt;</span>,
         <span class="summary-sig-arg">driver_args</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
         <span class="summary-sig-arg">adapter_args</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
       x.__init__(...) initializes x; see x.__class__.__doc__ for 
@@ -119,17 +153,30 @@
       
     </td>
   </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.TeradataAdapter-class.html#select_limitby" class="summary-sig-name">select_limitby</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sql_s</span>,
+        <span class="summary-sig-arg">sql_f</span>,
+        <span class="summary-sig-arg">sql_t</span>,
+        <span class="summary-sig-arg">sql_w</span>,
+        <span class="summary-sig-arg">sql_o</span>,
+        <span class="summary-sig-arg">limitby</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#TeradataAdapter.select_limitby">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
   <tr>
     <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.DB2Adapter-class.html">DB2Adapter</a></code></b>:
-      <code><a href="web2py.gluon.dal.DB2Adapter-class.html#LEFT_JOIN">LEFT_JOIN</a></code>,
-      <code><a href="web2py.gluon.dal.DB2Adapter-class.html#RANDOM">RANDOM</a></code>,
-      <code><a href="web2py.gluon.dal.DB2Adapter-class.html#execute">execute</a></code>,
-      <code><a href="web2py.gluon.dal.DB2Adapter-class.html#lastrowid">lastrowid</a></code>,
-      <code><a href="web2py.gluon.dal.DB2Adapter-class.html#represent_exceptions">represent_exceptions</a></code>,
-      <code><a href="web2py.gluon.dal.DB2Adapter-class.html#rowslice">rowslice</a></code>,
-      <code><a href="web2py.gluon.dal.DB2Adapter-class.html#select_limitby">select_limitby</a></code>
-      </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.BaseAdapter-class.html">BaseAdapter</a></code></b>:
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#ADD">ADD</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#AGGREGATE">AGGREGATE</a></code>,
@@ -137,6 +184,7 @@
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#AND">AND</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#AS">AS</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#BELONGS">BELONGS</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#COALESCE">COALESCE</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#COALESCE_ZERO">COALESCE_ZERO</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#COMMA">COMMA</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#CONTAINS">CONTAINS</a></code>,
@@ -146,6 +194,7 @@
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#EXTRACT">EXTRACT</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#GE">GE</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#GT">GT</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#ILIKE">ILIKE</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#INVERT">INVERT</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#JOIN">JOIN</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#LE">LE</a></code>,
@@ -160,40 +209,64 @@
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#ON">ON</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#OR">OR</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#PRIMARY_KEY">PRIMARY_KEY</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#RANDOM">RANDOM</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#RAW">RAW</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#REGEXP">REGEXP</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#STARTSWITH">STARTSWITH</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#SUB">SUB</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#SUBSTRING">SUBSTRING</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#UPPER">UPPER</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#adapt">adapt</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#alias">alias</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#build_parsemap">build_parsemap</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#bulk_insert">bulk_insert</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#close">close</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#commit">commit</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#commit_prepared">commit_prepared</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#common_filter">common_filter</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#concat_add">concat_add</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#constraint_name">constraint_name</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#count">count</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#create_sequence_and_triggers">create_sequence_and_triggers</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#create_table">create_table</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#delete">delete</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#distributed_transaction_begin">distributed_transaction_begin</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#drop">drop</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#execute">execute</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#expand">expand</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#expand_all">expand_all</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#file_close">file_close</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#file_delete">file_delete</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#file_exists">file_exists</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#file_open">file_open</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#filter_tenant">filter_tenant</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#get_table">get_table</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#insert">insert</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#integrity_error">integrity_error</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#integrity_error_class">integrity_error_class</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#lastrowid">lastrowid</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#log_execute">log_execute</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#migrate_table">migrate_table</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#operational_error">operational_error</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse">parse</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_blob">parse_blob</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_boolean">parse_boolean</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_date">parse_date</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_datetime">parse_datetime</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_decimal">parse_decimal</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_double">parse_double</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_id">parse_id</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_integer">parse_integer</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_list_integers">parse_list_integers</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_list_references">parse_list_references</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_list_strings">parse_list_strings</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_reference">parse_reference</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_time">parse_time</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_value">parse_value</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#prepare">prepare</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#represent">represent</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#represent_exceptions">represent_exceptions</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#rollback">rollback</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#rollback_prepared">rollback_prepared</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#rowslice">rowslice</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#select">select</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#sequence_name">sequence_name</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#tables">tables</a></code>,
@@ -283,26 +356,28 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="web2py.gluon.dal.TeradataAdapter-class.html#types" class="summary-name">types</a> = <code title="{'boolean': 'CHAR(1)', 'string': 'VARCHAR(%(length)s)', 'text': 'CLOB'\
-, 'password': 'VARCHAR(%(length)s)', 'blob': 'BLOB', 'upload': 'VARCHA\
-R(%(length)s)', 'integer': 'INT', 'double': 'DOUBLE', 'decimal': 'NUME\
-RIC(%(precision)s,%(scale)s)', 'date': 'DATE', 'time': 'TIME', 'dateti\
-me': 'TIMESTAMP', 'id': 'INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY \
-KEY NOT NULL', 'reference': 'INT, FOREIGN KEY (%(field_name)s) REFEREN\
-CES %(foreign_key)s ON DELETE %(on_delete_action)s', 'reference FK': '\
-, CONSTRAINT FK_%(constraint_name)s FOREIGN KEY (%(field_name)s) REFER\
-...">{'boolean': 'CHAR(1)', 'string': 'VARCHAR(%(length)s)'<code class="variable-ellipsis">...</code></code>
+        <a href="web2py.gluon.dal.TeradataAdapter-class.html#types" class="summary-name">types</a> = <code title="{'blob': 'BLOB',
+ 'boolean': 'CHAR(1)',
+ 'date': 'DATE',
+ 'datetime': 'TIMESTAMP',
+ 'decimal': 'NUMERIC(%(precision)s,%(scale)s)',
+ 'double': 'DOUBLE',
+ 'id': 'INTEGER GENERATED ALWAYS AS IDENTITY',
+ 'integer': 'INT',
+..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">blob</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">BLOB</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">boolean</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">CHAR(1)</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">date</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">DATE</code><code class="variable-quote">'</code><code class="variable-op">,</code><code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.BaseAdapter-class.html">BaseAdapter</a></code></b>:
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#can_select_for_update">can_select_for_update</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#commit_on_alter_table">commit_on_alter_table</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#maxcharlength">maxcharlength</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#support_distributed_transaction">support_distributed_transaction</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#uploads_in_blob">uploads_in_blob</a></code>
       </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.ConnectionPool-class.html">ConnectionPool</a></code></b>:
+      <code><a href="web2py.gluon.dal.ConnectionPool-class.html#check_active_connection">check_active_connection</a></code>,
       <code><a href="web2py.gluon.dal.ConnectionPool-class.html#pools">pools</a></code>
       </p>
     </td>
@@ -351,6 +426,54 @@ CES %(foreign_key)s ON DELETE %(on_delete_action)s', 'reference FK': '\
   </td>
 </tr>
 </table>
+<a name="LEFT_JOIN"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">LEFT_JOIN</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#TeradataAdapter.LEFT_JOIN">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#LEFT_JOIN">BaseAdapter.LEFT_JOIN</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="create_table"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">create_table</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">table</span>,
+        <span class="sig-arg">migrate</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">fake_migrate</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">polymodel</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#TeradataAdapter.create_table">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#create_table">BaseAdapter.create_table</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="__init__"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -362,9 +485,9 @@ CES %(foreign_key)s ON DELETE %(on_delete_action)s', 'reference FK': '\
         <span class="sig-arg">db</span>,
         <span class="sig-arg">uri</span>,
         <span class="sig-arg">pool_size</span>=<span class="sig-default">0</span>,
-        <span class="sig-arg">folder</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">folder</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">db_codec</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">UTF-8</code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">credential_decoder</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0xd6db90&gt;</span>,
+        <span class="sig-arg">credential_decoder</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0xfc3230&gt;</span>,
         <span class="sig-arg">driver_args</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
         <span class="sig-arg">adapter_args</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
     <br /><em class="fname">(Constructor)</em>
@@ -378,7 +501,35 @@ CES %(foreign_key)s ON DELETE %(on_delete_action)s', 'reference FK': '\
   signature
   <dl class="fields">
     <dt>Overrides:
-      <a href="web2py.gluon.dal.DB2Adapter-class.html#__init__">DB2Adapter.__init__</a>
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#__init__">BaseAdapter.__init__</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="select_limitby"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">select_limitby</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sql_s</span>,
+        <span class="sig-arg">sql_f</span>,
+        <span class="sig-arg">sql_t</span>,
+        <span class="sig-arg">sql_w</span>,
+        <span class="sig-arg">sql_o</span>,
+        <span class="sig-arg">limitby</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#TeradataAdapter.select_limitby">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#select_limitby">BaseAdapter.select_limitby</a>
     </dt>
   </dl>
 </td></tr></table>
@@ -414,14 +565,14 @@ CES %(foreign_key)s ON DELETE %(on_delete_action)s', 'reference FK': '\
   <dl class="fields">
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-{'boolean': 'CHAR(1)', 'string': 'VARCHAR(%(length)s)', 'text': 'CLOB'<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-, 'password': 'VARCHAR(%(length)s)', 'blob': 'BLOB', 'upload': 'VARCHA<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-R(%(length)s)', 'integer': 'INT', 'double': 'DOUBLE', 'decimal': 'NUME<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-RIC(%(precision)s,%(scale)s)', 'date': 'DATE', 'time': 'TIME', 'dateti<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-me': 'TIMESTAMP', 'id': 'INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY <span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-KEY NOT NULL', 'reference': 'INT, FOREIGN KEY (%(field_name)s) REFEREN<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-CES %(foreign_key)s ON DELETE %(on_delete_action)s', 'reference FK': '<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-, CONSTRAINT FK_%(constraint_name)s FOREIGN KEY (%(field_name)s) REFER<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">blob</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">BLOB</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">boolean</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">CHAR(1)</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">date</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">DATE</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">datetime</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">TIMESTAMP</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">decimal</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">NUMERIC(%(precision)s,%(scale)s)</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">double</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">DOUBLE</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">id</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">INTEGER GENERATED ALWAYS AS IDENTITY</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">integer</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">INT</code><code class="variable-quote">'</code><code class="variable-op">,</code>
 <code class="variable-ellipsis">...</code>
 </pre></td></tr></table>
 </dd>
@@ -460,7 +611,7 @@ CES %(foreign_key)s ON DELETE %(on_delete_action)s', 'reference FK': '<span clas
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:00 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:58 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

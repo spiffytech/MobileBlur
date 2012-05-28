@@ -182,7 +182,7 @@ Contains:
           <td><span class="summary-sig"><a href="web2py.gluon.main-module.html#start_response_aux" class="summary-sig-name">start_response_aux</a>(<span class="summary-sig-arg">status</span>,
         <span class="summary-sig-arg">headers</span>,
         <span class="summary-sig-arg">exc_info</span>,
-        <span class="summary-sig-arg">response</span>=<span class="summary-sig-default">1</span>)</span><br />
+        <span class="summary-sig-arg">response</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
       in controller you can use::...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.main-pysrc.html#start_response_aux">source&nbsp;code</a></span>
@@ -289,7 +289,7 @@ Contains:
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.main-module.html#appfactory" class="summary-sig-name">appfactory</a>(<span class="summary-sig-arg">wsgiapp</span>=<span class="summary-sig-default">&lt;function wsgibase at 0x13d0410&gt;</span>,
+          <td><span class="summary-sig"><a href="web2py.gluon.main-module.html#appfactory" class="summary-sig-name">appfactory</a>(<span class="summary-sig-arg">wsgiapp</span>=<span class="summary-sig-default">&lt;function wsgibase at 0x1567b90&gt;</span>,
         <span class="summary-sig-arg">logfilename</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">httpserver.log</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">profilerfilename</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">profiler.log</code><code class="variable-quote">'</code></span>)</span><br />
       generates a wsgi application that does logging and profiling and calls
@@ -327,7 +327,7 @@ wsgibase
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="web2py_path"></a><span class="summary-name">web2py_path</span> = <code title="1">1</code><br />
+        <a href="web2py.gluon.main-module.html#web2py_path" class="summary-name">web2py_path</a> = <code title="global_settings.applications_parent">&lt;web2py.gluon.custom_import._Web2pyImporter obje<code class="variable-ellipsis">...</code></code><br />
       PyMySQL: A pure-Python drop-in replacement for MySQLdb.
     </td>
   </tr>
@@ -370,8 +370,7 @@ wsgibase
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="web2py_version"></a><span class="summary-name">web2py_version</span> = <code title="'''Version 1.98.2 (2011-08-03 18:44:38)
-'''"><code class="variable-quote">'</code><code class="variable-string">Version 1.98.2 (2011-08-03 18:44:38)\n</code><code class="variable-quote">'</code></code>
+        <a href="web2py.gluon.main-module.html#web2py_version" class="summary-name">web2py_version</a> = <code title="(1, 99, 7, datetime.datetime(2012, 3, 4, 16, 3, 35), 'stable')"><code class="variable-group">(</code>1<code class="variable-op">, </code>99<code class="variable-op">, </code>7<code class="variable-op">, </code>datetime.datetime(2012, 3, 4, 16, <code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 </table>
@@ -451,7 +450,7 @@ wsgibase
   <h3 class="epydoc"><span class="sig"><span class="sig-name">start_response_aux</span>(<span class="sig-arg">status</span>,
         <span class="sig-arg">headers</span>,
         <span class="sig-arg">exc_info</span>,
-        <span class="sig-arg">response</span>=<span class="sig-default">1</span>)</span>
+        <span class="sig-arg">response</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.main-pysrc.html#start_response_aux">source&nbsp;code</a></span>&nbsp;
@@ -556,7 +555,7 @@ The naming conventions are:
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">appfactory</span>(<span class="sig-arg">wsgiapp</span>=<span class="sig-default">&lt;function wsgibase at 0x13d0410&gt;</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">appfactory</span>(<span class="sig-arg">wsgiapp</span>=<span class="sig-default">&lt;function wsgibase at 0x1567b90&gt;</span>,
         <span class="sig-arg">logfilename</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">httpserver.log</code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">profilerfilename</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">profiler.log</code><code class="variable-quote">'</code></span>)</span>
   </h3>
@@ -599,6 +598,41 @@ wsgibase
   </td>
 </tr>
 </table>
+<a name="web2py_path"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">web2py_path</h3>
+  <p>PyMySQL: A pure-Python drop-in replacement for MySQLdb.</p>
+  <p>Copyright (c) 2010 PyMySQL contributors</p>
+  <p>Permission is hereby granted, free of charge, to any person obtaining 
+  a copy of this software and associated documentation files (the 
+  &quot;Software&quot;), to deal in the Software without restriction, 
+  including without limitation the rights to use, copy, modify, merge, 
+  publish, distribute, sublicense, and/or sell copies of the Software, and 
+  to permit persons to whom the Software is furnished to do so, subject to 
+  the following conditions:</p>
+  <p>The above copyright notice and this permission notice shall be 
+  included in all copies or substantial portions of the Software.</p>
+  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY 
+  KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+  NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+  USE OR OTHER DEALINGS IN THE SOFTWARE.
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+global_settings.applications_parent
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="version_info"></a>
 <div class="private">
 <table class="details" border="1" cellpadding="3"
@@ -612,6 +646,24 @@ wsgibase
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
 open(abspath('VERSION', gluon= True), 'r')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="web2py_version"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">web2py_version</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">(</code>1<code class="variable-op">, </code>99<code class="variable-op">, </code>7<code class="variable-op">, </code>datetime.datetime(2012, 3, 4, 16, 3, 35)<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">stable</code><code class="variable-quote">'</code><code class="variable-group">)</code>
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -649,7 +701,7 @@ open(abspath('VERSION', gluon= True), 'r')
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:46:59 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:57 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

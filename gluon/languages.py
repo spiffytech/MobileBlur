@@ -38,10 +38,8 @@ regex_language = \
 
 
 def read_dict_aux(filename):
-    fp = open(filename, 'r')
-    portalocker.lock(fp, portalocker.LOCK_SH)
+    fp = portalocker.LockedFile(filename, 'r')
     lang_text = fp.read().replace('\r\n', '\n')
-    portalocker.unlock(fp)
     fp.close()
     if not lang_text.strip():
         return {}
@@ -51,7 +49,7 @@ def read_dict_aux(filename):
         logging.error('Syntax error in %s' % filename)
         return {}
 
-def read_dict(filename):
+def read_dict(filename):    
     return getcfs('language:%s'%filename,filename,
                   lambda filename=filename:read_dict_aux(filename))
 
@@ -91,16 +89,15 @@ def utf8_repr(s):
 
 def write_dict(filename, contents):
     try:
-        fp = open(filename, 'w')
-    except IOError:
-        logging.error('Unable to write to file %s' % filename)
+        fp = portalocker.LockedFile(filename, 'w')
+    except (IOError, OSError):
+        if not is_gae:
+            logging.warning('Unable to write to file %s' % filename)
         return
-    portalocker.lock(fp, portalocker.LOCK_EX)
     fp.write('# coding: utf8\n{\n')
     for key in sorted(contents):
         fp.write('%s: %s,\n' % (utf8_repr(key), utf8_repr(contents[key])))
     fp.write('}\n')
-    portalocker.unlock(fp)
     fp.close()
 
 
@@ -250,9 +247,11 @@ class translator(object):
         self.t = {}  # ## no language by default
         return languages
 
-    def __call__(self, message, symbols={}, language=None):
+    def __call__(self, message, symbols={}, language=None, lazy=None):
+        if lazy is None:
+            lazy = self.lazy
         if not language:
-            if self.lazy:
+            if lazy:
                 return lazyT(message, symbols, self)
             else:
                 return self.translate(message, symbols)
@@ -262,7 +261,7 @@ class translator(object):
             except KeyError:
                 otherT = self.otherTs[language] = translator(self.request)
                 otherT.force(language)
-            return otherT(message,symbols)
+            return otherT(message, symbols, lazy=lazy)
 
     def translate(self, message, symbols):
         """
@@ -309,10 +308,8 @@ def findT(path, language='en-us'):
     vp = os.path.join(path, 'views')
     for file in listdir(mp, '.+\.py', 0) + listdir(cp, '.+\.py', 0)\
          + listdir(vp, '.+\.html', 0):
-        fp = open(file, 'r')
-        portalocker.lock(fp, portalocker.LOCK_SH)
+        fp = portalocker.LockedFile(file, 'r')
         data = fp.read()
-        portalocker.unlock(fp)
         fp.close()
         items = regex_translate.findall(data)
         for item in items:
@@ -347,6 +344,7 @@ def update_all_languages(application_path):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+
 
 
 

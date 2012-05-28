@@ -14,6 +14,7 @@
 'ATTENTION: TESTING IS NOT THREAD SAFE SO DO NOT PERFORM MULTIPLE TESTS CONCURRENTLY.': 'ACHTUNG: Testen ist nicht threadsicher. Führen sie also nicht mehrere Tests gleichzeitig aus.',
 'ATTENTION: This is an experimental feature and it needs more testing.': 'ACHTUNG: Dies ist eine experimentelle Funktion und benötigt noch weitere Tests.',
 'ATTENTION: you cannot edit the running application!': 'ACHTUNG: Eine laufende Anwendung kann nicht editiert werden!',
+'Abort': 'Abbrechen',
 'About': 'Über',
 'About application': 'Über die Anwendung',
 'Additional code for your application': 'Additional code for your application',
@@ -338,3 +339,5 @@
 'web2py is up to date': 'web2py ist auf dem neuesten Stand',
 'xml': 'xml',
 }
+
+

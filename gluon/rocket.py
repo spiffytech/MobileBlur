@@ -458,7 +458,7 @@ class Listener(Thread):
                 self.err_log.error("Cannot find root ca certificate file "
                           "'%s'.  Cannot bind to %s:%s" % data)
                 return
-            
+
         # Set socket options
         try:
             listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -515,7 +515,7 @@ class Listener(Thread):
             # Generally this happens when an HTTP request is received on a
             # secure socket. We don't do anything because it will be detected
             # by Worker and dealt with appropriately.
-            self.err_log.error('SSL Error: %s' % traceback.format_exc())
+            # self.err_log.error('SSL Error: %s' % traceback.format_exc())
             pass
 
         return sock
@@ -2073,4 +2073,5 @@ def demo():
 
 if __name__=='__main__':
     demo()
+
 

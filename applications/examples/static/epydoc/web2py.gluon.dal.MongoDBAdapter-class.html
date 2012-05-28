@@ -103,9 +103,9 @@
         <span class="summary-sig-arg">db</span>,
         <span class="summary-sig-arg">uri</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">mongodb://127.0.0.1:5984/db</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">pool_size</span>=<span class="summary-sig-default">0</span>,
-        <span class="summary-sig-arg">folder</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">folder</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">db_codec</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">UTF-8</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">credential_decoder</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0xd739b0&gt;</span>,
+        <span class="summary-sig-arg">credential_decoder</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0xfc8140&gt;</span>,
         <span class="summary-sig-arg">driver_args</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
         <span class="summary-sig-arg">adapter_args</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
       x.__init__(...) initializes x; see x.__class__.__doc__ for 
@@ -125,9 +125,28 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#represent" class="summary-sig-name">represent</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>,
+        <span class="summary-sig-arg">fieldtype</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.represent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#insert" class="summary-sig-name">insert</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">table</span>,
-        <span class="summary-sig-arg">fields</span>)</span></td>
+        <span class="summary-sig-arg">fields</span>,
+        <span class="summary-sig-arg">safe</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.insert">source&nbsp;code</a></span>
             
@@ -143,10 +162,70 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#create_table" class="summary-sig-name">create_table</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">table</span>,
+        <span class="summary-sig-arg">migrate</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">fake_migrate</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">polymodel</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">isCapped</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.create_table">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#count" class="summary-sig-name">count</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">query</span>)</span></td>
+        <span class="summary-sig-arg">query</span>,
+        <span class="summary-sig-arg">distinct</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">snapshot</span>=<span class="summary-sig-default">True</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.count">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#expand" class="summary-sig-name">expand</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">expression</span>,
+        <span class="summary-sig-arg">field_type</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.expand">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#_select" class="summary-sig-name">_select</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">query</span>,
+        <span class="summary-sig-arg">fields</span>,
+        <span class="summary-sig-arg">attributes</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter._select">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -163,8 +242,10 @@
           <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#select" class="summary-sig-name">select</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">query</span>,
         <span class="summary-sig-arg">fields</span>,
-        <span class="summary-sig-arg">attributes</span>)</span><br />
-      Always returns a Rows object, even if it may be empty</td>
+        <span class="summary-sig-arg">attributes</span>,
+        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">snapshot</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Always returns a Rows object, possibly empty.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.select">source&nbsp;code</a></span>
             
@@ -180,11 +261,66 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#delete" class="summary-sig-name">delete</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">tablename</span>,
-        <span class="summary-sig-arg">query</span>)</span></td>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#INVERT" class="summary-sig-name">INVERT</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>)</span></td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.delete">source&nbsp;code</a></span>
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.INVERT">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#drop" class="summary-sig-name">drop</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">table</span>,
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.drop">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#truncate" class="summary-sig-name">truncate</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">table</span>,
+        <span class="summary-sig-arg">mode</span>,
+        <span class="summary-sig-arg">safe</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.truncate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="oupdate"></a><span class="summary-sig-name">oupdate</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tablename</span>,
+        <span class="summary-sig-arg">query</span>,
+        <span class="summary-sig-arg">fields</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.oupdate">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -201,9 +337,443 @@
           <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#update" class="summary-sig-name">update</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">tablename</span>,
         <span class="summary-sig-arg">query</span>,
-        <span class="summary-sig-arg">fields</span>)</span></td>
+        <span class="summary-sig-arg">fields</span>,
+        <span class="summary-sig-arg">safe</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.update">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#_update" class="summary-sig-name">_update</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tablename</span>,
+        <span class="summary-sig-arg">query</span>,
+        <span class="summary-sig-arg">fields</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter._update">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#bulk_insert" class="summary-sig-name">bulk_insert</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">table</span>,
+        <span class="summary-sig-arg">items</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.bulk_insert">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#NOT" class="summary-sig-name">NOT</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.NOT">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#AND" class="summary-sig-name">AND</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.AND">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#OR" class="summary-sig-name">OR</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.OR">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#BELONGS" class="summary-sig-name">BELONGS</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.BELONGS">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#LIKE" class="summary-sig-name">LIKE</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span><br />
+      case sensitive like operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.LIKE">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#STARTSWITH" class="summary-sig-name">STARTSWITH</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.STARTSWITH">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#ENDSWITH" class="summary-sig-name">ENDSWITH</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.ENDSWITH">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#CONTAINS" class="summary-sig-name">CONTAINS</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.CONTAINS">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#EQ" class="summary-sig-name">EQ</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.EQ">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#NE" class="summary-sig-name">NE</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.NE">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#LT" class="summary-sig-name">LT</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.LT">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#LE" class="summary-sig-name">LE</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.LE">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#GT" class="summary-sig-name">GT</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.GT">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#GE" class="summary-sig-name">GE</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.GE">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#ADD" class="summary-sig-name">ADD</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.ADD">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#SUB" class="summary-sig-name">SUB</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.SUB">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#MUL" class="summary-sig-name">MUL</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.MUL">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#DIV" class="summary-sig-name">DIV</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.DIV">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#MOD" class="summary-sig-name">MOD</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.MOD">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#AS" class="summary-sig-name">AS</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.AS">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#ON" class="summary-sig-name">ON</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.ON">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.dal.MongoDBAdapter-class.html#COMMA" class="summary-sig-name">COMMA</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">first</span>,
+        <span class="summary-sig-arg">second</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.COMMA">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -214,23 +784,13 @@
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html">NoSQLAdapter</a></code></b>:
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#ADD">ADD</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#AGGREGATE">AGGREGATE</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#AND">AND</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#AS">AS</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#DIV">DIV</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#ENDSWITH">ENDSWITH</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#EXTRACT">EXTRACT</a></code>,
+      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#ILIKE">ILIKE</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#LEFT_JOIN">LEFT_JOIN</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#LIKE">LIKE</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#LOWER">LOWER</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#MUL">MUL</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#ON">ON</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#OR">OR</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#PRIMARY_KEY">PRIMARY_KEY</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#RANDOM">RANDOM</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#STARTSWITH">STARTSWITH</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#SUB">SUB</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#SUBSTRING">SUBSTRING</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#UPPER">UPPER</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#alias">alias</a></code>,
@@ -241,14 +801,12 @@
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#constraint_name">constraint_name</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#create_sequence_and_triggers">create_sequence_and_triggers</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#distributed_transaction_begin">distributed_transaction_begin</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#drop">drop</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#execute">execute</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#integrity_error_class">integrity_error_class</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#lastrowid">lastrowid</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#log_execute">log_execute</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#migrate_table">migrate_table</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#prepare">prepare</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#represent">represent</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#represent_exceptions">represent_exceptions</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#rollback">rollback</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#rollback_prepared">rollback_prepared</a></code>,
@@ -257,43 +815,47 @@
     <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html">NoSQLAdapter</a></code></b> (private):
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#_count">_count</a></code>,
       <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#_delete">_delete</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#_insert">_insert</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#_select">_select</a></code>,
-      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#_update">_update</a></code>
+      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#_insert">_insert</a></code>
       </p></div>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.BaseAdapter-class.html">BaseAdapter</a></code></b>:
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#ALLOW_NULL">ALLOW_NULL</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#BELONGS">BELONGS</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#COALESCE">COALESCE</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#COALESCE_ZERO">COALESCE_ZERO</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#COMMA">COMMA</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#CONTAINS">CONTAINS</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#EQ">EQ</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#GE">GE</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#GT">GT</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#INVERT">INVERT</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#JOIN">JOIN</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#LE">LE</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#LT">LT</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#MOD">MOD</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#NE">NE</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#NOT">NOT</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#NOT_NULL">NOT_NULL</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#bulk_insert">bulk_insert</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#create_table">create_table</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#expand">expand</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#RAW">RAW</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#REGEXP">REGEXP</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#adapt">adapt</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#build_parsemap">build_parsemap</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#common_filter">common_filter</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#delete">delete</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#expand_all">expand_all</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#file_close">file_close</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#file_delete">file_delete</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#file_exists">file_exists</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#file_open">file_open</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#filter_tenant">filter_tenant</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#get_table">get_table</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#integrity_error">integrity_error</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#operational_error">operational_error</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse">parse</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_blob">parse_blob</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_boolean">parse_boolean</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_date">parse_date</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_datetime">parse_datetime</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_decimal">parse_decimal</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_double">parse_double</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_id">parse_id</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_integer">parse_integer</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_list_integers">parse_list_integers</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_list_references">parse_list_references</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_list_strings">parse_list_strings</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_reference">parse_reference</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_time">parse_time</a></code>,
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#parse_value">parse_value</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#select_limitby">select_limitby</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#sequence_name">sequence_name</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#tables">tables</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#trigger_name">trigger_name</a></code>,
-      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#truncate">truncate</a></code>
+      <code><a href="web2py.gluon.dal.BaseAdapter-class.html#trigger_name">trigger_name</a></code>
       </p>
     <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.BaseAdapter-class.html">BaseAdapter</a></code></b> (private):
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#_drop">_drop</a></code>,
@@ -387,6 +949,9 @@
   </tr>
   <tr>
     <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html">NoSQLAdapter</a></code></b>:
+      <code><a href="web2py.gluon.dal.NoSQLAdapter-class.html#can_select_for_update">can_select_for_update</a></code>
+      </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.BaseAdapter-class.html">BaseAdapter</a></code></b>:
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#commit_on_alter_table">commit_on_alter_table</a></code>,
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#driver">driver</a></code>,
@@ -394,6 +959,7 @@
       <code><a href="web2py.gluon.dal.BaseAdapter-class.html#support_distributed_transaction">support_distributed_transaction</a></code>
       </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.dal.ConnectionPool-class.html">ConnectionPool</a></code></b>:
+      <code><a href="web2py.gluon.dal.ConnectionPool-class.html#check_active_connection">check_active_connection</a></code>,
       <code><a href="web2py.gluon.dal.ConnectionPool-class.html#pools">pools</a></code>
       </p>
     </td>
@@ -453,9 +1019,9 @@
         <span class="sig-arg">db</span>,
         <span class="sig-arg">uri</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">mongodb://127.0.0.1:5984/db</code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">pool_size</span>=<span class="sig-default">0</span>,
-        <span class="sig-arg">folder</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">folder</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">db_codec</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">UTF-8</code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">credential_decoder</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0xd739b0&gt;</span>,
+        <span class="sig-arg">credential_decoder</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0xfc8140&gt;</span>,
         <span class="sig-arg">driver_args</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>,
         <span class="sig-arg">adapter_args</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
     <br /><em class="fname">(Constructor)</em>
@@ -474,6 +1040,30 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="represent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">represent</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">obj</span>,
+        <span class="sig-arg">fieldtype</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.represent">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#represent">NoSQLAdapter.represent</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="insert"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -483,7 +1073,8 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">insert</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">table</span>,
-        <span class="sig-arg">fields</span>)</span>
+        <span class="sig-arg">fields</span>,
+        <span class="sig-arg">safe</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.insert">source&nbsp;code</a></span>&nbsp;
@@ -498,6 +1089,33 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="create_table"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">create_table</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">table</span>,
+        <span class="sig-arg">migrate</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">fake_migrate</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">polymodel</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">isCapped</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.create_table">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#create_table">BaseAdapter.create_table</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="count"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -506,7 +1124,9 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">count</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">query</span>)</span>
+        <span class="sig-arg">query</span>,
+        <span class="sig-arg">distinct</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">snapshot</span>=<span class="sig-default">True</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.count">source&nbsp;code</a></span>&nbsp;
@@ -521,6 +1141,55 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="expand"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">expand</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">expression</span>,
+        <span class="sig-arg">field_type</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.expand">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#expand">BaseAdapter.expand</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_select"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_select</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">query</span>,
+        <span class="sig-arg">fields</span>,
+        <span class="sig-arg">attributes</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter._select">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#_select">NoSQLAdapter._select</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="select"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -531,14 +1200,16 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">select</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">query</span>,
         <span class="sig-arg">fields</span>,
-        <span class="sig-arg">attributes</span>)</span>
+        <span class="sig-arg">attributes</span>,
+        <span class="sig-arg">count</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">snapshot</span>=<span class="sig-default">True</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.select">source&nbsp;code</a></span>&nbsp;
     </td>
   </table>
   
-  Always returns a Rows object, even if it may be empty
+  Always returns a Rows object, possibly empty.
   <dl class="fields">
     <dt>Overrides:
       <a href="web2py.gluon.dal.BaseAdapter-class.html#select">BaseAdapter.select</a>
@@ -547,26 +1218,74 @@
   </dl>
 </td></tr></table>
 </div>
-<a name="delete"></a>
+<a name="INVERT"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">delete</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">tablename</span>,
-        <span class="sig-arg">query</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">INVERT</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.delete">source&nbsp;code</a></span>&nbsp;
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.INVERT">source&nbsp;code</a></span>&nbsp;
     </td>
   </table>
   
   
   <dl class="fields">
     <dt>Overrides:
-      <a href="web2py.gluon.dal.BaseAdapter-class.html#delete">BaseAdapter.delete</a>
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#INVERT">BaseAdapter.INVERT</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="drop"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">drop</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">table</span>,
+        <span class="sig-arg">mode</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.drop">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#drop">NoSQLAdapter.drop</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="truncate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">truncate</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">table</span>,
+        <span class="sig-arg">mode</span>,
+        <span class="sig-arg">safe</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.truncate">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#truncate">BaseAdapter.truncate</a>
     </dt>
   </dl>
 </td></tr></table>
@@ -581,7 +1300,8 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">update</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">tablename</span>,
         <span class="sig-arg">query</span>,
-        <span class="sig-arg">fields</span>)</span>
+        <span class="sig-arg">fields</span>,
+        <span class="sig-arg">safe</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.update">source&nbsp;code</a></span>&nbsp;
@@ -592,6 +1312,583 @@
   <dl class="fields">
     <dt>Overrides:
       <a href="web2py.gluon.dal.BaseAdapter-class.html#update">BaseAdapter.update</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_update"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_update</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">tablename</span>,
+        <span class="sig-arg">query</span>,
+        <span class="sig-arg">fields</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter._update">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#_update">NoSQLAdapter._update</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="bulk_insert"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">bulk_insert</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">table</span>,
+        <span class="sig-arg">items</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.bulk_insert">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#bulk_insert">BaseAdapter.bulk_insert</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="NOT"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">NOT</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.NOT">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#NOT">BaseAdapter.NOT</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="AND"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">AND</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.AND">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#AND">NoSQLAdapter.AND</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="OR"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">OR</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.OR">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#OR">NoSQLAdapter.OR</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="BELONGS"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">BELONGS</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.BELONGS">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#BELONGS">BaseAdapter.BELONGS</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="LIKE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">LIKE</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.LIKE">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  case sensitive like operator
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#LIKE">BaseAdapter.LIKE</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="STARTSWITH"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">STARTSWITH</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.STARTSWITH">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#STARTSWITH">NoSQLAdapter.STARTSWITH</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ENDSWITH"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ENDSWITH</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.ENDSWITH">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#ENDSWITH">NoSQLAdapter.ENDSWITH</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="CONTAINS"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">CONTAINS</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.CONTAINS">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#CONTAINS">BaseAdapter.CONTAINS</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="EQ"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">EQ</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.EQ">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#EQ">BaseAdapter.EQ</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="NE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">NE</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.NE">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#NE">BaseAdapter.NE</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="LT"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">LT</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.LT">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#LT">BaseAdapter.LT</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="LE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">LE</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.LE">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#LE">BaseAdapter.LE</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="GT"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GT</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.GT">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#GT">BaseAdapter.GT</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="GE"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GE</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.GE">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#GE">BaseAdapter.GE</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ADD"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ADD</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.ADD">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#ADD">NoSQLAdapter.ADD</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="SUB"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">SUB</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.SUB">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#SUB">NoSQLAdapter.SUB</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="MUL"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">MUL</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.MUL">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#MUL">NoSQLAdapter.MUL</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="DIV"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">DIV</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.DIV">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#DIV">NoSQLAdapter.DIV</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="MOD"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">MOD</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.MOD">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#MOD">BaseAdapter.MOD</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="AS"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">AS</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.AS">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#AS">NoSQLAdapter.AS</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ON"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ON</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.ON">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.NoSQLAdapter-class.html#ON">NoSQLAdapter.ON</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="COMMA"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">COMMA</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">first</span>,
+        <span class="sig-arg">second</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.dal-pysrc.html#MongoDBAdapter.COMMA">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  
+  <dl class="fields">
+    <dt>Overrides:
+      <a href="web2py.gluon.dal.BaseAdapter-class.html#COMMA">BaseAdapter.COMMA</a>
     </dt>
   </dl>
 </td></tr></table>
@@ -673,7 +1970,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:00 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:58 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

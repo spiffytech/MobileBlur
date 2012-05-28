@@ -106,6 +106,72 @@ object --+
     </td>
   </tr>
 </table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.sqlhtml.UploadWidget-class.html#widget" class="summary-sig-name">widget</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">field</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">download_url</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">**attributes</span>)</span><br />
+      generates a INPUT file tag.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#UploadWidget.widget">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.sqlhtml.UploadWidget-class.html#represent" class="summary-sig-name">represent</a>(<span class="summary-sig-arg">cls</span>,
+        <span class="summary-sig-arg">field</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">download_url</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
+      how to represent the file:...</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#UploadWidget.represent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.sqlhtml.FormWidget-class.html">FormWidget</a></code></b> (private):
+      <code><a href="web2py.gluon.sqlhtml.FormWidget-class.html#_attributes">_attributes</a></code>
+      </p></div>
+    </td>
+  </tr>
+</table>
 <!-- ==================== STATIC METHODS ==================== -->
 <a name="section-StaticMethods"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -129,45 +195,6 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.sqlhtml.UploadWidget-class.html#widget" class="summary-sig-name">widget</a>(<span class="summary-sig-arg">field</span>,
-        <span class="summary-sig-arg">value</span>,
-        <span class="summary-sig-arg">download_url</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">**attributes</span>)</span><br />
-      generates a INPUT file tag.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#UploadWidget.widget">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.sqlhtml.UploadWidget-class.html#represent" class="summary-sig-name">represent</a>(<span class="summary-sig-arg">field</span>,
-        <span class="summary-sig-arg">value</span>,
-        <span class="summary-sig-arg">download_url</span>=<span class="summary-sig-default">1</span>)</span><br />
-      how to represent the file:...</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#UploadWidget.represent">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.sqlhtml.UploadWidget-class.html#is_image" class="summary-sig-name">is_image</a>(<span class="summary-sig-arg">value</span>)</span><br />
       Tries to check if the filename provided references to an image
 
@@ -179,13 +206,6 @@ Checking is based on filename extension.</td>
         </tr>
       </table>
       
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" class="summary">
-    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="web2py.gluon.sqlhtml.FormWidget-class.html">FormWidget</a></code></b> (private):
-      <code><a href="web2py.gluon.sqlhtml.FormWidget-class.html#_attributes">_attributes</a></code>
-      </p></div>
     </td>
   </tr>
 </table>
@@ -206,6 +226,13 @@ Checking is based on filename extension.</td>
     </table>
   </td>
 </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="_class"></a><span class="summary-name">_class</span> = <code title="'upload'"><code class="variable-quote">'</code><code class="variable-string">upload</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
@@ -285,11 +312,12 @@ Checking is based on filename extension.</td>
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">widget</span>(<span class="sig-arg">field</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">widget</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">field</span>,
         <span class="sig-arg">value</span>,
-        <span class="sig-arg">download_url</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">download_url</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">**attributes</span>)</span>
-    <br /><em class="fname">Static Method</em>
+    <br /><em class="fname">Class Method</em>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#UploadWidget.widget">source&nbsp;code</a></span>&nbsp;
@@ -316,10 +344,11 @@ Checking is based on filename extension.</td>
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">represent</span>(<span class="sig-arg">field</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">represent</span>(<span class="sig-arg">cls</span>,
+        <span class="sig-arg">field</span>,
         <span class="sig-arg">value</span>,
-        <span class="sig-arg">download_url</span>=<span class="sig-default">1</span>)</span>
-    <br /><em class="fname">Static Method</em>
+        <span class="sig-arg">download_url</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+    <br /><em class="fname">Class Method</em>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.sqlhtml-pysrc.html#UploadWidget.represent">source&nbsp;code</a></span>&nbsp;
@@ -404,7 +433,7 @@ Checking is based on filename extension. Currently recognized:
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:01 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:59 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

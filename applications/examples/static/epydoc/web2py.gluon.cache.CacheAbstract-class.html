@@ -104,24 +104,6 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.cache.CacheAbstract-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">request</span>=<span class="summary-sig-default">1</span>)</span><br />
-      Paremeters...</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.__init__">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.cache.CacheAbstract-class.html#__call__" class="summary-sig-name">__call__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">key</span>,
         <span class="summary-sig-arg">f</span>,
@@ -144,30 +126,11 @@ and stores the output in the cache corresponding to `key`.</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.cache.CacheAbstract-class.html#clear" class="summary-sig-name">clear</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">regex</span>=<span class="summary-sig-default">1</span>)</span><br />
-      Clears the cache of all keys that match the provided regular expression.</td>
+          <td><span class="summary-sig"><a href="web2py.gluon.cache.CacheAbstract-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">request</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
+      Paremeters...</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.clear">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="web2py.gluon.cache.CacheAbstract-class.html#increment" class="summary-sig-name">increment</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">key</span>,
-        <span class="summary-sig-arg">value</span>=<span class="summary-sig-default">1</span>)</span><br />
-      Increments the cached value for the given key by the amount in value...</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.increment">source&nbsp;code</a></span>
+            <span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.__init__">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -188,6 +151,43 @@ and stores the output in the cache corresponding to `key`.</td>
       entries</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract._clear">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.cache.CacheAbstract-class.html#clear" class="summary-sig-name">clear</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">regex</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
+      Clears the cache of all keys that match the provided regular expression.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.clear">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.cache.CacheAbstract-class.html#increment" class="summary-sig-name">increment</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">key</span>,
+        <span class="summary-sig-arg">value</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
+      Increments the cached value for the given key by the amount in value...</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.increment">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -279,37 +279,6 @@ and stores the output in the cache corresponding to `key`.</td>
   </td>
 </tr>
 </table>
-<a name="__init__"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">request</span>=<span class="sig-default">1</span>)</span>
-    <br /><em class="fname">(Constructor)</em>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.__init__">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </table>
-  
-  <pre class="literalblock">
-
-Paremeters
-----------
-request:
-    the global request object
-
-</pre>
-  <dl class="fields">
-    <dt>Overrides:
-      object.__init__
-    </dt>
-  </dl>
-</td></tr></table>
-</div>
 <a name="__call__"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -352,6 +321,37 @@ If the function `f` is `None` the cache is cleared.
   </dl>
 </td></tr></table>
 </div>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">request</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+
+Paremeters
+----------
+request:
+    the global request object
+
+</pre>
+  <dl class="fields">
+    <dt>Overrides:
+      object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="clear"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -360,7 +360,7 @@ If the function `f` is `None` the cache is cleared.
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">clear</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">regex</span>=<span class="sig-default">1</span>)</span>
+        <span class="sig-arg">regex</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.clear">source&nbsp;code</a></span>&nbsp;
@@ -392,7 +392,7 @@ regex:
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">increment</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">key</span>,
-        <span class="sig-arg">value</span>=<span class="sig-default">1</span>)</span>
+        <span class="sig-arg">value</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.cache-pysrc.html#CacheAbstract.increment">source&nbsp;code</a></span>&nbsp;
@@ -447,7 +447,7 @@ value:
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:46:59 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:58 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

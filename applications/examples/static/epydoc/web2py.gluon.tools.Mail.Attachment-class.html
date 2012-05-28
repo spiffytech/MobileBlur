@@ -73,49 +73,53 @@ email.message.Message --+
 </pre>
 
 <hr />
-<p>Email attachment</p>
-  Arguments:
 <pre class="literalblock">
-   payload: path to file or file-like object with read() method
-   filename: name of the attachment stored in message; if set to
-             None, it will be fetched from payload path; file-like
-             object payload must have explicit filename specified
-   content_id: id of the attachment; automatically contained within
-               &lt; and &gt;
-   content_type: content type of the attachment; if set to None,
-                 it will be fetched from filename using gluon.contenttype
-                 module
-   encoding: encoding of all strings passed to this function (except
-             attachment body)
-</pre>
-  <p>Content ID is used to identify attachments within the html body; in 
-  example, attached image with content ID 'photo' may be used in html 
-  message as a source of img tag &lt;img src=&quot;cid:photo&quot; 
-  /&gt;.</p>
-  Examples:
-<pre class="literalblock">
-   #Create attachment from text file:
-   attachment = Mail.Attachment('/path/to/file.txt')
 
-   Content-Type: text/plain
-   MIME-Version: 1.0
-   Content-Disposition: attachment; filename=&quot;file.txt&quot;
-   Content-Transfer-Encoding: base64
+Email attachment
 
-   SOMEBASE64CONTENT=
+Arguments:
 
-   #Create attachment from image file with custom filename and cid:
-   attachment = Mail.Attachment('/path/to/file.png',
-                                    filename='photo.png',
-                                    content_id='photo')
+    payload: path to file or file-like object with read() method
+    filename: name of the attachment stored in message; if set to
+              None, it will be fetched from payload path; file-like
+              object payload must have explicit filename specified
+    content_id: id of the attachment; automatically contained within
+                &lt; and &gt;
+    content_type: content type of the attachment; if set to None,
+                  it will be fetched from filename using gluon.contenttype
+                  module
+    encoding: encoding of all strings passed to this function (except
+              attachment body)
 
-   Content-Type: image/png
-   MIME-Version: 1.0
-   Content-Disposition: attachment; filename=&quot;photo.png&quot;
-   Content-Id: &lt;photo&gt;
-   Content-Transfer-Encoding: base64
+Content ID is used to identify attachments within the html body;
+in example, attached image with content ID 'photo' may be used in
+html message as a source of img tag &lt;img src=&quot;cid:photo&quot; /&gt;.
 
-   SOMEOTHERBASE64CONTENT=
+Examples:
+
+    #Create attachment from text file:
+    attachment = Mail.Attachment('/path/to/file.txt')
+
+    Content-Type: text/plain
+    MIME-Version: 1.0
+    Content-Disposition: attachment; filename=&quot;file.txt&quot;
+    Content-Transfer-Encoding: base64
+
+    SOMEBASE64CONTENT=
+
+    #Create attachment from image file with custom filename and cid:
+    attachment = Mail.Attachment('/path/to/file.png',
+                                     filename='photo.png',
+                                     content_id='photo')
+
+    Content-Type: image/png
+    MIME-Version: 1.0
+    Content-Disposition: attachment; filename=&quot;photo.png&quot;
+    Content-Id: &lt;photo&gt;
+    Content-Transfer-Encoding: base64
+
+    SOMEOTHERBASE64CONTENT=
+
 </pre><br /><br />
 
 <!-- ==================== INSTANCE METHODS ==================== -->
@@ -143,9 +147,9 @@ email.message.Message --+
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Mail.Attachment-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">payload</span>,
-        <span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">content_id</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">content_type</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">content_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">content_type</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">encoding</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">utf-8</code><code class="variable-quote">'</code></span>)</span><br />
       This constructor adds a Content-Type: and a MIME-Version: 
       header.</td>
@@ -234,9 +238,9 @@ email.message.Message --+
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">payload</span>,
-        <span class="sig-arg">filename</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">content_id</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">content_type</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">filename</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">content_id</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">content_type</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">encoding</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">utf-8</code><code class="variable-quote">'</code></span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
@@ -289,7 +293,7 @@ email.message.Message --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:01 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:59 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

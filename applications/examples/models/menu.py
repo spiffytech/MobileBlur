@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+response.menu = [
+    (T('Home'),False,URL('default','index')),
+    (T('About'),False,URL('default','what')),
+    (T('Download'),False,URL('default','download')),
+    (T('Docs & Resources'),False,URL('default','documentation')),
+    (T('Support'),False,URL('default','support')),
+    (T('Contributors'),False,URL('default','who'))]
+
 #########################################################################
 ## Changes the menu active item
 #########################################################################
@@ -34,3 +42,4 @@ def toggle_menuclass(cssclass='pressed',menuid='headermenu'):
             return XML(jscript)
     else:
         return ''
+

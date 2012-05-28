@@ -91,9 +91,9 @@ This file is part of the web2py Web Framework Developed by Massimo Di
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.shell-module.html#exec_environment" class="summary-sig-name">exec_environment</a>(<span class="summary-sig-arg">pyfile</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">request</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">response</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">session</span>=<span class="summary-sig-default">1</span>)</span><br />
+        <span class="summary-sig-arg">request</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">response</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">session</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
       ..</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.shell-pysrc.html#exec_environment">source&nbsp;code</a></span>
@@ -112,8 +112,8 @@ This file is part of the web2py Web Framework Developed by Massimo Di
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.shell-module.html#env" class="summary-sig-name">env</a>(<span class="summary-sig-arg">a</span>,
         <span class="summary-sig-arg">import_models</span>=<span class="summary-sig-default">True</span>,
-        <span class="summary-sig-arg">c</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">f</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">c</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">f</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">dir</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">extra_request</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span><br />
       Return web2py execution environment for application (a), 
@@ -152,8 +152,9 @@ This file is part of the web2py Web Framework Developed by Massimo Di
           <td><span class="summary-sig"><a href="web2py.gluon.shell-module.html#run" class="summary-sig-name">run</a>(<span class="summary-sig-arg">appname</span>,
         <span class="summary-sig-arg">plain</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">import_models</span>=<span class="summary-sig-default">True</span>,
-        <span class="summary-sig-arg">startfile</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">bpython</span>=<span class="summary-sig-default">True</span>)</span><br />
+        <span class="summary-sig-arg">startfile</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">bpython</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">python_code</span>=<span class="summary-sig-default">True</span>)</span><br />
       Start interactive shell or run Python script (startfile) in web2py
       controller environment.</td>
           <td align="right" valign="top">
@@ -240,7 +241,7 @@ This file is part of the web2py Web Framework Developed by Massimo Di
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="execute_from_command_line"></a><span class="summary-sig-name">execute_from_command_line</span>(<span class="summary-sig-arg">argv</span>=<span class="summary-sig-default">1</span>)</span></td>
+          <td><span class="summary-sig"><a name="execute_from_command_line"></a><span class="summary-sig-name">execute_from_command_line</span>(<span class="summary-sig-arg">argv</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.shell-pysrc.html#execute_from_command_line">source&nbsp;code</a></span>
             
@@ -302,9 +303,9 @@ This file is part of the web2py Web Framework Developed by Massimo Di
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">exec_environment</span>(<span class="sig-arg">pyfile</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">request</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">response</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">session</span>=<span class="sig-default">1</span>)</span>
+        <span class="sig-arg">request</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">response</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">session</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.shell-pysrc.html#exec_environment">source&nbsp;code</a></span>&nbsp;
@@ -338,8 +339,8 @@ This file is part of the web2py Web Framework Developed by Massimo Di
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">env</span>(<span class="sig-arg">a</span>,
         <span class="sig-arg">import_models</span>=<span class="sig-default">True</span>,
-        <span class="sig-arg">c</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">f</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">c</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">f</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">dir</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
         <span class="sig-arg">extra_request</span>=<span class="sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span>
   </h3>
@@ -369,8 +370,9 @@ This file is part of the web2py Web Framework Developed by Massimo Di
   <h3 class="epydoc"><span class="sig"><span class="sig-name">run</span>(<span class="sig-arg">appname</span>,
         <span class="sig-arg">plain</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">import_models</span>=<span class="sig-default">True</span>,
-        <span class="sig-arg">startfile</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">bpython</span>=<span class="sig-default">True</span>)</span>
+        <span class="sig-arg">startfile</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">bpython</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">python_code</span>=<span class="sig-default">True</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.shell-pysrc.html#run">source&nbsp;code</a></span>&nbsp;
@@ -465,7 +467,7 @@ This file is part of the web2py Web Framework Developed by Massimo Di
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:46:59 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:57 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

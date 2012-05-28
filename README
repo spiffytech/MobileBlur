@@ -1,12 +1,20 @@
-MobileBlur is a mobile-friendly interface to your Newsblur RSS feeds. It's written in Python with the web2py framework. 
+## Readme
 
-It's easy to deploy on your own- just clone the repo and run:
+web2py is a free open source full-stack framework for rapid development of fast, scalable, secure and portable database-driven web-based applications. 
+
+It is written and programmable in Python. LGPLv3 License
+
+Learn more:
+
+    http://web2py.com
+
+## Installation Instructions
+
+To start web2py there is NO NEED to install it. Just unzip and do:
 
     python web2py.py
 
-Thats is it!
-
-MobileBlur works hard to be secure for random users to use- it doesn't store anything on the server that can be used to log users in when they're not actively using the site. MobileBlur passes Newsblur's own authentication cookie to the user, and retrieves it whenever the user does something on MobileBlur.
+Thats is it!!!
 
 ## web2py directory structure
 
@@ -26,7 +34,7 @@ MobileBlur works hard to be secure for random users to use- it doesn't store any
                 ...
             examples/              > examples, docs, links
                 ...
-            welcome/               > the scaffolding app (copy it to start your application)
+            welcome/               > the scaffolding app (they all copy it)
                 ABOUT
                 LICENSE
                 models/

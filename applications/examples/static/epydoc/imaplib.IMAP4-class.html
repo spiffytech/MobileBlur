@@ -1,0 +1,2427 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>imaplib.IMAP4</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="web2py.gluon-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.web2py.com">web2py Web Framework</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        imaplib ::
+        IMAP4 ::
+        Class&nbsp;IMAP4
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="imaplib.IMAP4-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class IMAP4</h1><span class="codelink"><a href="imaplib-pysrc.html#IMAP4">source&nbsp;code</a></span><br /><br />
+<dl><dt>Known Subclasses:</dt>
+<dd>
+    <a href="imaplib.IMAP4_SSL-class.html">IMAP4_SSL</a>,
+    <a href="imaplib.IMAP4_stream-class.html">IMAP4_stream</a>
+</dd></dl>
+
+<hr />
+<pre class="literalblock">
+IMAP4 client class.
+
+Instantiate with: IMAP4([host[, port]])
+
+        host - host's name (default: localhost);
+        port - port number (default: standard IMAP4 port).
+
+All IMAP4rev1 commands are supported by methods of the same
+name (in lower-case).
+
+All arguments to commands are converted to strings, except for
+AUTHENTICATE, and the last argument to APPEND which is passed as
+an IMAP4 literal.  If necessary (the string contains any
+non-printing characters or white-space and isn't enclosed with
+either parentheses or double quotes) each string is quoted.
+However, the 'password' argument to the LOGIN command is always
+quoted.  If you want to avoid having an argument string quoted
+(eg: the 'flags' argument to STORE) then enclose the string in
+parentheses (eg: &quot;(\Deleted)&quot;).
+
+Each command returns a tuple: (type, [data, ...]) where 'type'
+is usually 'OK' or 'NO', and 'data' is either the text from the
+tagged response, or untagged results from command. Each 'data'
+is either a string, or a tuple. If a tuple, then the first part
+is the header of the response, and the second part contains
+the data (ie: 'literal' value).
+
+Errors raise the exception class &lt;instance&gt;.error(&quot;&lt;reason&gt;&quot;).
+IMAP4 server errors raise &lt;instance&gt;.abort(&quot;&lt;reason&gt;&quot;),
+which is a sub-class of 'error'. Mailbox status changes
+from READ-WRITE to READ-ONLY raise the exception class
+&lt;instance&gt;.readonly(&quot;&lt;reason&gt;&quot;), which is a sub-class of 'abort'.
+
+&quot;error&quot; exceptions imply a program error.
+&quot;abort&quot; exceptions imply the connection should be reset, and
+        the command re-tried.
+&quot;readonly&quot; exceptions imply the command should be re-tried.
+
+Note: to use this module, you must read the RFCs pertaining to the
+IMAP4 protocol, as the semantics of the arguments to each IMAP4
+command are left to the invoker, not to mention the results. Also,
+most IMAP servers implement a sub-set of the commands available here.
+
+</pre><br /><br />
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="imaplib.IMAP4.abort-class.html" class="summary-name">abort</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="imaplib.IMAP4.error-class.html" class="summary-name">error</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="imaplib.IMAP4.readonly-class.html" class="summary-name">readonly</a>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_CRAM_MD5_AUTH"></a><span class="summary-sig-name">_CRAM_MD5_AUTH</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">challenge</span>)</span><br />
+      Authobject to use with CRAM-MD5 authentication.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._CRAM_MD5_AUTH">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getattr__"></a><span class="summary-sig-name">__getattr__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">attr</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.__getattr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">host</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">port</span>=<span class="summary-sig-default">143</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_append_untagged"></a><span class="summary-sig-name">_append_untagged</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">typ</span>,
+        <span class="summary-sig-arg">dat</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._append_untagged">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_check_bye"></a><span class="summary-sig-name">_check_bye</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._check_bye">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_checkquote"></a><span class="summary-sig-name">_checkquote</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">arg</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._checkquote">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_command"></a><span class="summary-sig-name">_command</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">*args</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._command">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_command_complete"></a><span class="summary-sig-name">_command_complete</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">tag</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._command_complete">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_dump_ur"></a><span class="summary-sig-name">_dump_ur</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dict</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._dump_ur">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_get_line"></a><span class="summary-sig-name">_get_line</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._get_line">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_get_response"></a><span class="summary-sig-name">_get_response</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._get_response">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_get_tagged_response"></a><span class="summary-sig-name">_get_tagged_response</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">tag</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._get_tagged_response">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_log"></a><span class="summary-sig-name">_log</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">line</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._log">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_match"></a><span class="summary-sig-name">_match</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cre</span>,
+        <span class="summary-sig-arg">s</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._match">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_mesg"></a><span class="summary-sig-name">_mesg</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">secs</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._mesg">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_new_tag"></a><span class="summary-sig-name">_new_tag</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._new_tag">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_quote"></a><span class="summary-sig-name">_quote</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">arg</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._quote">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_simple_command"></a><span class="summary-sig-name">_simple_command</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">*args</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._simple_command">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_untagged_response"></a><span class="summary-sig-name">_untagged_response</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">typ</span>,
+        <span class="summary-sig-arg">dat</span>,
+        <span class="summary-sig-arg">name</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4._untagged_response">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#append" class="summary-sig-name">append</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>,
+        <span class="summary-sig-arg">flags</span>,
+        <span class="summary-sig-arg">date_time</span>,
+        <span class="summary-sig-arg">message</span>)</span><br />
+      Append message to named mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.append">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#authenticate" class="summary-sig-name">authenticate</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mechanism</span>,
+        <span class="summary-sig-arg">authobject</span>)</span><br />
+      Authenticate command - requires response processing.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.authenticate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="capability"></a><span class="summary-sig-name">capability</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      (typ, [data]) = &lt;instance&gt;.capability() Fetch capabilities 
+      list from server.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.capability">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#check" class="summary-sig-name">check</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Checkpoint mailbox on server.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.check">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Close currently selected mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.close">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#copy" class="summary-sig-name">copy</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">message_set</span>,
+        <span class="summary-sig-arg">new_mailbox</span>)</span><br />
+      Copy 'message_set' messages onto end of 'new_mailbox'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.copy">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#create" class="summary-sig-name">create</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>)</span><br />
+      Create new mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.create">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#delete" class="summary-sig-name">delete</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>)</span><br />
+      Delete old mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.delete">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#deleteacl" class="summary-sig-name">deleteacl</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>,
+        <span class="summary-sig-arg">who</span>)</span><br />
+      Delete the ACLs (remove any rights) set for who on mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.deleteacl">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#expunge" class="summary-sig-name">expunge</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Permanently remove deleted items from selected mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.expunge">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#fetch" class="summary-sig-name">fetch</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">message_set</span>,
+        <span class="summary-sig-arg">message_parts</span>)</span><br />
+      Fetch (parts of) messages.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.fetch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#getacl" class="summary-sig-name">getacl</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>)</span><br />
+      Get the ACLs for a mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.getacl">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getannotation"></a><span class="summary-sig-name">getannotation</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>,
+        <span class="summary-sig-arg">entry</span>,
+        <span class="summary-sig-arg">attribute</span>)</span><br />
+      (typ, [data]) = &lt;instance&gt;.getannotation(mailbox, entry, 
+      attribute) Retrieve ANNOTATIONs.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.getannotation">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#getquota" class="summary-sig-name">getquota</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">root</span>)</span><br />
+      Get the quota root's resource usage and limits.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.getquota">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#getquotaroot" class="summary-sig-name">getquotaroot</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>)</span><br />
+      Get the list of quota roots for the named mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.getquotaroot">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#list" class="summary-sig-name">list</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">directory</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">&quot;&quot;</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">pattern</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">*</code><code class="variable-quote">'</code></span>)</span><br />
+      List mailbox names in directory matching pattern.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.list">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#login" class="summary-sig-name">login</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">user</span>,
+        <span class="summary-sig-arg">password</span>)</span><br />
+      Identify client using plaintext password.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.login">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#login_cram_md5" class="summary-sig-name">login_cram_md5</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">user</span>,
+        <span class="summary-sig-arg">password</span>)</span><br />
+      Force use of CRAM-MD5 authentication.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.login_cram_md5">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#logout" class="summary-sig-name">logout</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Shutdown connection to server.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.logout">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#lsub" class="summary-sig-name">lsub</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">directory</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">&quot;&quot;</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">pattern</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">*</code><code class="variable-quote">'</code></span>)</span><br />
+      List 'subscribed' mailbox names in directory matching pattern.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.lsub">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#myrights" class="summary-sig-name">myrights</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>)</span><br />
+      Show my ACLs for a mailbox (i.e.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.myrights">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#namespace" class="summary-sig-name">namespace</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns IMAP namespaces ala rfc2342</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.namespace">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#noop" class="summary-sig-name">noop</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Send NOOP command.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.noop">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#open" class="summary-sig-name">open</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">host</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">port</span>=<span class="summary-sig-default">143</span>)</span><br />
+      Setup connection to remote server on &quot;host:port&quot;
+    (default: localhost:standard IMAP4 port).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.open">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#partial" class="summary-sig-name">partial</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">message_num</span>,
+        <span class="summary-sig-arg">message_part</span>,
+        <span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">length</span>)</span><br />
+      Fetch truncated part of a message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.partial">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="print_log"></a><span class="summary-sig-name">print_log</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.print_log">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#proxyauth" class="summary-sig-name">proxyauth</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">user</span>)</span><br />
+      Assume authentication as &quot;user&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.proxyauth">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="read"></a><span class="summary-sig-name">read</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">size</span>)</span><br />
+      Read 'size' bytes from remote.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.read">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="readline"></a><span class="summary-sig-name">readline</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Read line from remote.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.readline">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#recent" class="summary-sig-name">recent</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return most recent 'RECENT' responses if any exist, else prompt 
+      server for an update using the 'NOOP' command.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.recent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#rename" class="summary-sig-name">rename</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">oldmailbox</span>,
+        <span class="summary-sig-arg">newmailbox</span>)</span><br />
+      Rename old mailbox name to new.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.rename">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#response" class="summary-sig-name">response</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">code</span>)</span><br />
+      Return data for response 'code' if received, or None.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.response">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#search" class="summary-sig-name">search</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">charset</span>,
+        <span class="summary-sig-arg">*criteria</span>)</span><br />
+      Search mailbox for matching messages.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.search">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#select" class="summary-sig-name">select</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">INBOX</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">readonly</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Select a mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.select">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="send"></a><span class="summary-sig-name">send</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data</span>)</span><br />
+      Send data to remote.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.send">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#setacl" class="summary-sig-name">setacl</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>,
+        <span class="summary-sig-arg">who</span>,
+        <span class="summary-sig-arg">what</span>)</span><br />
+      Set a mailbox acl.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.setacl">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="setannotation"></a><span class="summary-sig-name">setannotation</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      (typ, [data]) = &lt;instance&gt;.setannotation(mailbox[, entry, 
+      attribute]+) Set ANNOTATIONs.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.setannotation">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#setquota" class="summary-sig-name">setquota</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">root</span>,
+        <span class="summary-sig-arg">limits</span>)</span><br />
+      Set the quota root's resource limits.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.setquota">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="shutdown"></a><span class="summary-sig-name">shutdown</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Close I/O established in &quot;open&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.shutdown">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#socket" class="summary-sig-name">socket</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return socket instance used to connect to IMAP4 server.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.socket">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#sort" class="summary-sig-name">sort</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">sort_criteria</span>,
+        <span class="summary-sig-arg">charset</span>,
+        <span class="summary-sig-arg">*search_criteria</span>)</span><br />
+      IMAP4rev1 extension SORT command.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.sort">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#status" class="summary-sig-name">status</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>,
+        <span class="summary-sig-arg">names</span>)</span><br />
+      Request named status conditions for mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.status">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#store" class="summary-sig-name">store</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">message_set</span>,
+        <span class="summary-sig-arg">command</span>,
+        <span class="summary-sig-arg">flags</span>)</span><br />
+      Alters flag dispositions for messages in mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.store">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#subscribe" class="summary-sig-name">subscribe</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>)</span><br />
+      Subscribe to new mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.subscribe">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#thread" class="summary-sig-name">thread</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">threading_algorithm</span>,
+        <span class="summary-sig-arg">charset</span>,
+        <span class="summary-sig-arg">*search_criteria</span>)</span><br />
+      IMAPrev1 extension THREAD command.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.thread">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#uid" class="summary-sig-name">uid</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">command</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      Execute &quot;command arg ...&quot; with messages identified by UID,
+        rather than message number.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.uid">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#unsubscribe" class="summary-sig-name">unsubscribe</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mailbox</span>)</span><br />
+      Unsubscribe from old mailbox.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.unsubscribe">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="imaplib.IMAP4-class.html#xatom" class="summary-sig-name">xatom</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">*args</span>)</span><br />
+      Allow simple extension commands
+        notified by server in CAPABILITY response.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="imaplib-pysrc.html#IMAP4.xatom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="mustquote"></a><span class="summary-name">mustquote</span> = <code title="re.compile(r'[^\w!#\$%&amp;\'\*\+,\.:;&lt;=&gt;\?\^`\|~-]')">re.compile(r'<code class="re-group">[</code><code class="re-op">^</code>\w!#\$%&amp;\'\*\+,\.:;&lt;=&gt;\?\^`\|~-<code class="re-group">]</code>')</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="append"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">append</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>,
+        <span class="sig-arg">flags</span>,
+        <span class="sig-arg">date_time</span>,
+        <span class="sig-arg">message</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.append">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+Append message to named mailbox.
+
+(typ, [data]) = &lt;instance&gt;.append(mailbox, flags, date_time, message)
+
+        All args except `message' can be None.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="authenticate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">authenticate</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mechanism</span>,
+        <span class="sig-arg">authobject</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.authenticate">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+Authenticate command - requires response processing.
+
+'mechanism' specifies which authentication mechanism is to
+be used - it must appear in &lt;instance&gt;.capabilities in the
+form AUTH=&lt;mechanism&gt;.
+
+'authobject' must be a callable object:
+
+        data = authobject(response)
+
+It will be called to process server continuation responses.
+It should return data that will be encoded and sent to server.
+It should return None if the client abort response '*' should
+be sent instead.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="check"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">check</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.check">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Checkpoint mailbox on server.</p>
+  (typ, [data]) = &lt;instance&gt;.check()
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="close"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.close">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Close currently selected mailbox.</p>
+  <p>Deleted messages are removed from writable mailbox. This is the 
+  recommended command before 'LOGOUT'.</p>
+  (typ, [data]) = &lt;instance&gt;.close()
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="copy"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copy</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">message_set</span>,
+        <span class="sig-arg">new_mailbox</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.copy">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Copy 'message_set' messages onto end of 'new_mailbox'.</p>
+  (typ, [data]) = &lt;instance&gt;.copy(message_set, new_mailbox)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="create"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">create</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.create">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Create new mailbox.</p>
+  (typ, [data]) = &lt;instance&gt;.create(mailbox)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="delete"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">delete</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.delete">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Delete old mailbox.</p>
+  (typ, [data]) = &lt;instance&gt;.delete(mailbox)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="deleteacl"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">deleteacl</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>,
+        <span class="sig-arg">who</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.deleteacl">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Delete the ACLs (remove any rights) set for who on mailbox.</p>
+  (typ, [data]) = &lt;instance&gt;.deleteacl(mailbox, who)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="expunge"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">expunge</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.expunge">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Permanently remove deleted items from selected mailbox.</p>
+  <p>Generates 'EXPUNGE' response for each deleted message.</p>
+  <p>(typ, [data]) = &lt;instance&gt;.expunge()</p>
+  'data' is list of 'EXPUNGE'd message numbers in order received.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="fetch"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">fetch</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">message_set</span>,
+        <span class="sig-arg">message_parts</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.fetch">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Fetch (parts of) messages.</p>
+  <p>(typ, [data, ...]) = &lt;instance&gt;.fetch(message_set, 
+  message_parts)</p>
+  <p>'message_parts' should be a string of selected parts enclosed in 
+  parentheses, eg: &quot;(UID BODY[TEXT])&quot;.</p>
+  'data' are tuples of message part envelope and data.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getacl"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getacl</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.getacl">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Get the ACLs for a mailbox.</p>
+  (typ, [data]) = &lt;instance&gt;.getacl(mailbox)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getquota"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getquota</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">root</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.getquota">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Get the quota root's resource usage and limits.</p>
+  <p>Part of the IMAP4 QUOTA extension defined in rfc2087.</p>
+  (typ, [data]) = &lt;instance&gt;.getquota(root)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getquotaroot"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getquotaroot</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.getquotaroot">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Get the list of quota roots for the named mailbox.</p>
+  (typ, [[QUOTAROOT responses...], [QUOTA responses]]) = 
+  &lt;instance&gt;.getquotaroot(mailbox)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="list"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">list</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">directory</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">&quot;&quot;</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">pattern</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">*</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.list">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>List mailbox names in directory matching pattern.</p>
+  <p>(typ, [data]) = &lt;instance&gt;.list(directory='&quot;&quot;', 
+  pattern='*')</p>
+  'data' is list of LIST responses.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="login"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">login</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">user</span>,
+        <span class="sig-arg">password</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.login">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Identify client using plaintext password.</p>
+  <p>(typ, [data]) = &lt;instance&gt;.login(user, password)</p>
+  NB: 'password' will be quoted.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="login_cram_md5"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">login_cram_md5</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">user</span>,
+        <span class="sig-arg">password</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.login_cram_md5">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Force use of CRAM-MD5 authentication.</p>
+  (typ, [data]) = &lt;instance&gt;.login_cram_md5(user, password)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="logout"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">logout</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.logout">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Shutdown connection to server.</p>
+  <p>(typ, [data]) = &lt;instance&gt;.logout()</p>
+  Returns server 'BYE' response.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="lsub"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">lsub</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">directory</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">&quot;&quot;</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">pattern</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">*</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.lsub">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>List 'subscribed' mailbox names in directory matching pattern.</p>
+  <p>(typ, [data, ...]) = &lt;instance&gt;.lsub(directory='&quot;&quot;', 
+  pattern='*')</p>
+  'data' are tuples of message part envelope and data.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="myrights"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">myrights</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.myrights">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Show my ACLs for a mailbox (i.e. the rights that I have on 
+  mailbox).</p>
+  (typ, [data]) = &lt;instance&gt;.myrights(mailbox)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="namespace"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">namespace</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.namespace">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Returns IMAP namespaces ala rfc2342</p>
+  (typ, [data, ...]) = &lt;instance&gt;.namespace()
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="noop"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">noop</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.noop">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Send NOOP command.</p>
+  (typ, [data]) = &lt;instance&gt;.noop()
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="open"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">open</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">host</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">port</span>=<span class="sig-default">143</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.open">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+Setup connection to remote server on &quot;host:port&quot;
+    (default: localhost:standard IMAP4 port).
+This connection will be used by the routines:
+    read, readline, send, shutdown.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="partial"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">partial</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">message_num</span>,
+        <span class="sig-arg">message_part</span>,
+        <span class="sig-arg">start</span>,
+        <span class="sig-arg">length</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.partial">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Fetch truncated part of a message.</p>
+  <p>(typ, [data, ...]) = &lt;instance&gt;.partial(message_num, 
+  message_part, start, length)</p>
+  'data' is tuple of message part envelope and data.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="proxyauth"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">proxyauth</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">user</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.proxyauth">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Assume authentication as &quot;user&quot;.</p>
+  <p>Allows an authorised administrator to proxy into any user's 
+  mailbox.</p>
+  (typ, [data]) = &lt;instance&gt;.proxyauth(user)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="recent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">recent</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.recent">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Return most recent 'RECENT' responses if any exist, else prompt server
+  for an update using the 'NOOP' command.</p>
+  <p>(typ, [data]) = &lt;instance&gt;.recent()</p>
+  'data' is None if no new messages, else list of RECENT responses, most
+  recent last.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="rename"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rename</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">oldmailbox</span>,
+        <span class="sig-arg">newmailbox</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.rename">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Rename old mailbox name to new.</p>
+  (typ, [data]) = &lt;instance&gt;.rename(oldmailbox, newmailbox)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="response"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">response</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">code</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.response">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Return data for response 'code' if received, or None.</p>
+  <p>Old value for response 'code' is cleared.</p>
+  (code, [data]) = &lt;instance&gt;.response(code)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="search"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">search</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">charset</span>,
+        <span class="sig-arg">*criteria</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.search">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Search mailbox for matching messages.</p>
+  <p>(typ, [data]) = &lt;instance&gt;.search(charset, criterion, ...)</p>
+  'data' is space separated list of matching message numbers.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="select"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">select</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">INBOX</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">readonly</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.select">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Select a mailbox.</p>
+  <p>Flush all untagged responses.</p>
+  <p>(typ, [data]) = &lt;instance&gt;.select(mailbox='INBOX', 
+  readonly=False)</p>
+  <p>'data' is count of messages in mailbox ('EXISTS' response).</p>
+  Mandated responses are ('FLAGS', 'EXISTS', 'RECENT', 'UIDVALIDITY'), 
+  so other responses should be obtained via 
+  &lt;instance&gt;.response('FLAGS') etc.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setacl"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setacl</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>,
+        <span class="sig-arg">who</span>,
+        <span class="sig-arg">what</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.setacl">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Set a mailbox acl.</p>
+  (typ, [data]) = &lt;instance&gt;.setacl(mailbox, who, what)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setquota"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setquota</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">root</span>,
+        <span class="sig-arg">limits</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.setquota">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Set the quota root's resource limits.</p>
+  (typ, [data]) = &lt;instance&gt;.setquota(root, limits)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="socket"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">socket</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.socket">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Return socket instance used to connect to IMAP4 server.</p>
+  socket = &lt;instance&gt;.socket()
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="sort"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">sort</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sort_criteria</span>,
+        <span class="sig-arg">charset</span>,
+        <span class="sig-arg">*search_criteria</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.sort">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>IMAP4rev1 extension SORT command.</p>
+  (typ, [data]) = &lt;instance&gt;.sort(sort_criteria, charset, 
+  search_criteria, ...)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="status"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">status</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>,
+        <span class="sig-arg">names</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.status">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Request named status conditions for mailbox.</p>
+  (typ, [data]) = &lt;instance&gt;.status(mailbox, names)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="store"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">store</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">message_set</span>,
+        <span class="sig-arg">command</span>,
+        <span class="sig-arg">flags</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.store">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Alters flag dispositions for messages in mailbox.</p>
+  (typ, [data]) = &lt;instance&gt;.store(message_set, command, 
+  flags)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="subscribe"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">subscribe</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.subscribe">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Subscribe to new mailbox.</p>
+  (typ, [data]) = &lt;instance&gt;.subscribe(mailbox)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="thread"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">thread</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">threading_algorithm</span>,
+        <span class="sig-arg">charset</span>,
+        <span class="sig-arg">*search_criteria</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.thread">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>IMAPrev1 extension THREAD command.</p>
+  (type, [data]) = &lt;instance&gt;.thread(threading_alogrithm, charset,
+  search_criteria, ...)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="uid"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">uid</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">command</span>,
+        <span class="sig-arg">*args</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.uid">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+Execute &quot;command arg ...&quot; with messages identified by UID,
+        rather than message number.
+
+(typ, [data]) = &lt;instance&gt;.uid(command, arg1, arg2, ...)
+
+Returns response appropriate to 'command'.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="unsubscribe"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">unsubscribe</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mailbox</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.unsubscribe">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <p>Unsubscribe from old mailbox.</p>
+  (typ, [data]) = &lt;instance&gt;.unsubscribe(mailbox)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="xatom"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">xatom</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">*args</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="imaplib-pysrc.html#IMAP4.xatom">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+Allow simple extension commands
+        notified by server in CAPABILITY response.
+
+Assumes command is legal in current state.
+
+(typ, [data]) = &lt;instance&gt;.xatom(name, arg, ...)
+
+Returns response appropriate to extension command `name'.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="web2py.gluon-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://www.web2py.com">web2py Web Framework</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:57 2012
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>

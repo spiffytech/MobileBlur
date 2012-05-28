@@ -1,12 +1,14 @@
 import gluon.template
 
-markmin_dict = dict(template=lambda \
-                    code:gluon.template.render(code,context=globals()),
-                    sup=lambda \
-                        code:'<sup style="font-size:0.5em;">%s</sup>'%code,
-                    br=lambda n:'<br>'*int(n),
-                    groupdates=lambda group:group_feed_reader(group),
-                    )
+markmin_dict = dict(
+    code_python=lambda code: str(CODE(code)),
+    template=lambda \
+        code:gluon.template.render(code,context=globals()),
+    sup=lambda \
+        code:'<sup style="font-size:0.5em;">%s</sup>'%code,
+    br=lambda n:'<br>'*int(n),
+    groupdates=lambda group:group_feed_reader(group),
+    )
 
 def get_content(b=None,\
                 c=request.controller,\
@@ -35,3 +37,4 @@ def get_content(b=None,\
     openedfile.close()
 
     return html
+

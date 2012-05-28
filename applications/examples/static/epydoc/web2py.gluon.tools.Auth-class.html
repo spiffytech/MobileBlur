@@ -83,14 +83,14 @@ Includes:
 - role creation and assignment
 - user defined group/role based permission
 
-Authentication Example::
+Authentication Example:
 
     from contrib.utils import *
     mail=Mail()
     mail.settings.server='smtp.gmail.com:587'
     mail.settings.sender='you@somewhere.com'
     mail.settings.login='username:password'
-    auth=Auth(globals(), db)
+    auth=Auth(db)
     auth.settings.mailer=mail
     # auth.settings....=...
     auth.define_tables()
@@ -112,39 +112,39 @@ exposes:
 On registration a group with role=new_user.id is created
 and user is given membership of this group.
 
-You can create a group with::
+You can create a group with:
 
     group_id=auth.add_group('Manager', 'can access the manage action')
     auth.add_permission(group_id, 'access to manage')
 
 Here &quot;access to manage&quot; is just a user defined string.
-You can give access to a user::
+You can give access to a user:
 
     auth.add_membership(group_id, user_id)
 
 If user id is omitted, the logged in user is assumed
 
-Then you can decorate any action::
+Then you can decorate any action:
 
     @auth.requires_permission('access to manage')
     def manage():
         return dict()
 
-You can restrict a permission to a specific table::
+You can restrict a permission to a specific table:
 
     auth.add_permission(group_id, 'edit', db.sometable)
     @auth.requires_permission('edit', db.sometable)
 
-Or to a specific record::
+Or to a specific record:
 
     auth.add_permission(group_id, 'edit', db.sometable, 45)
     @auth.requires_permission('edit', db.sometable, 45)
 
-If authorization is not granted calls::
+If authorization is not granted calls:
 
     auth.settings.on_failed_authorization
 
-Other options::
+Other options:
 
     auth.settings.mailer=None
     auth.settings.expiration=3600 # seconds
@@ -180,9 +180,9 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="url"></a><span class="summary-sig-name">url</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">f</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default"><code class="variable-group">[</code><code class="variable-group">]</code></span>,
-        <span class="summary-sig-arg">vars</span>=<span class="summary-sig-default"><code class="variable-group">{</code><code class="variable-group">}</code></span>)</span></td>
+        <span class="summary-sig-arg">f</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">vars</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.url">source&nbsp;code</a></span>
             
@@ -198,12 +198,31 @@ Other options::
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a name="here"></a><span class="summary-sig-name">here</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.here">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">environment</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">db</span>=<span class="summary-sig-default">1</span>,
+        <span class="summary-sig-arg">environment</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">db</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">mailer</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">hmac_key</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">controller</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">default</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">cas_provider</span>=<span class="summary-sig-default">1</span>)</span><br />
-      auth=Auth(globals(), db)...</td>
+        <span class="summary-sig-arg">function</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">user</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">cas_provider</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
+      auth=Auth(db)...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.__init__">source&nbsp;code</a></span>
             
@@ -274,7 +293,8 @@ Other options::
         <tr>
           <td><span class="summary-sig"><a name="navbar"></a><span class="summary-sig-name">navbar</span>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">prefix</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">Welcome</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">action</span>=<span class="summary-sig-default">1</span>)</span></td>
+        <span class="summary-sig-arg">action</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">separators</span>=<span class="summary-sig-default"><code class="variable-group">(</code><code class="variable-quote">'</code><code class="variable-string"> [ </code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string"> | </code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string"> ] </code><code class="variable-quote">'</code><code class="variable-group">)</code></span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.navbar">source&nbsp;code</a></span>
             
@@ -312,7 +332,12 @@ Other options::
         <span class="summary-sig-arg">username</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">migrate</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">fake_migrate</span>=<span class="summary-sig-default">True</span>)</span><br />
-      to be called unless tables are defined manually</td>
+      to be called unless tables are defined manually
+
+usages:
+
+    # defines all needed tables and table files
+    # 'myprefix_auth_user.table', ...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.define_tables">source&nbsp;code</a></span>
             
@@ -330,8 +355,9 @@ Other options::
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#log_event" class="summary-sig-name">log_event</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">description</span>,
+        <span class="summary-sig-arg">vars</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
         <span class="summary-sig-arg">origin</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">auth</code><code class="variable-quote">'</code></span>)</span><br />
-      usage:</td>
+      usage:...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.log_event">source&nbsp;code</a></span>
             
@@ -402,11 +428,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="cas_login"></a><span class="summary-sig-name">cas_login</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">version</span>=<span class="summary-sig-default">1</span>)</span></td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">version</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.cas_login">source&nbsp;code</a></span>
             
@@ -423,7 +449,8 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="cas_validate"></a><span class="summary-sig-name">cas_validate</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">version</span>=<span class="summary-sig-default">1</span>)</span></td>
+        <span class="summary-sig-arg">version</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">proxy</span>=<span class="summary-sig-default">True</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.cas_validate">source&nbsp;code</a></span>
             
@@ -440,13 +467,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#login" class="summary-sig-name">login</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      returns a login form
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      returns a login form...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.login">source&nbsp;code</a></span>
             
@@ -463,12 +488,10 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#logout" class="summary-sig-name">logout</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onlogout</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      logout and redirects to login
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onlogout</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      logout and redirects to login...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.logout">source&nbsp;code</a></span>
             
@@ -485,13 +508,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#register" class="summary-sig-name">register</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      returns a registration form
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      returns a registration form...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.register">source&nbsp;code</a></span>
             
@@ -525,12 +546,10 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#verify_email" class="summary-sig-name">verify_email</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      action user to verify the registration email, XXXXXXXXXXXXXXXX
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      action user to verify the registration email, XXXXXXXXXXXXXXXX...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.verify_email">source&nbsp;code</a></span>
             
@@ -547,14 +566,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#retrieve_username" class="summary-sig-name">retrieve_username</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      returns a form to retrieve the user username
-(only if there is a username field)
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      returns a form to retrieve the user username...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.retrieve_username">source&nbsp;code</a></span>
             
@@ -587,13 +603,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#reset_password_deprecated" class="summary-sig-name">reset_password_deprecated</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      returns a form to reset the user password (deprecated)
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      returns a form to reset the user password (deprecated)...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.reset_password_deprecated">source&nbsp;code</a></span>
             
@@ -610,13 +624,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#reset_password" class="summary-sig-name">reset_password</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      returns a form to reset the user password
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      returns a form to reset the user password...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.reset_password">source&nbsp;code</a></span>
             
@@ -633,13 +645,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#request_reset_password" class="summary-sig-name">request_reset_password</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      returns a form to reset the user password
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      returns a form to reset the user password...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.request_reset_password">source&nbsp;code</a></span>
             
@@ -656,10 +666,10 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="retrieve_password"></a><span class="summary-sig-name">retrieve_password</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span></td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span></td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.retrieve_password">source&nbsp;code</a></span>
             
@@ -676,13 +686,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#change_password" class="summary-sig-name">change_password</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      returns a form that lets the user change password
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      returns a form that lets the user change password...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.change_password">source&nbsp;code</a></span>
             
@@ -699,13 +707,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#profile" class="summary-sig-name">profile</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
-      returns a form that lets the user change his/her profile
-
-..</td>
+        <span class="summary-sig-arg">next</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onvalidation</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">onaccept</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="summary-sig-arg">log</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
+      returns a form that lets the user change his/her profile...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.profile">source&nbsp;code</a></span>
             
@@ -738,12 +744,28 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#impersonate" class="summary-sig-name">impersonate</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span><br />
+        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span><br />
       usage: POST TO http://..../impersonate 
       request.post_vars.user_id=&lt;id&gt; set request.post_vars.user_id to
       0 to restore original user.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.impersonate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="update_groups"></a><span class="summary-sig-name">update_groups</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.update_groups">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -793,7 +815,8 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="requires"></a><span class="summary-sig-name">requires</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">condition</span>)</span><br />
+        <span class="summary-sig-arg">condition</span>,
+        <span class="summary-sig-arg">requires_login</span>=<span class="summary-sig-default">True</span>)</span><br />
       decorator that prevents access to action if not logged in</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.requires">source&nbsp;code</a></span>
@@ -828,8 +851,8 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#requires_membership" class="summary-sig-name">requires_membership</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">role</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">group_id</span>=<span class="summary-sig-default">1</span>)</span><br />
+        <span class="summary-sig-arg">role</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">group_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
       decorator that prevents access to action if not logged in or if 
       user logged in is not a member of group_id.</td>
           <td align="right" valign="top">
@@ -943,7 +966,7 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#user_group" class="summary-sig-name">user_group</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">1</span>)</span><br />
+        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
       returns the group_id of the group uniquely associated to this user
       i.e.</td>
           <td align="right" valign="top">
@@ -962,9 +985,9 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="has_membership"></a><span class="summary-sig-name">has_membership</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">group_id</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">role</span>=<span class="summary-sig-default">1</span>)</span><br />
+        <span class="summary-sig-arg">group_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">role</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
       checks if user is member of group_id or role</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.has_membership">source&nbsp;code</a></span>
@@ -982,10 +1005,10 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="add_membership"></a><span class="summary-sig-name">add_membership</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">group_id</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">role</span>=<span class="summary-sig-default">1</span>)</span><br />
-      gives user_id membership of group_id or role if user_id==None than
+        <span class="summary-sig-arg">group_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">role</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
+      gives user_id membership of group_id or role if user is None than 
       user_id is that of current logged in user</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.add_membership">source&nbsp;code</a></span>
@@ -1003,11 +1026,11 @@ Other options::
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="del_membership"></a><span class="summary-sig-name">del_membership</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">group_id</span>,
-        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">role</span>=<span class="summary-sig-default">1</span>)</span><br />
-      revokes membership from group_id to user_id if user_id==None than 
-      user_id is that of current logged in user</td>
+        <span class="summary-sig-arg">group_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">role</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
+      revokes membership from group_id to user_id if user_id is None 
+      than user_id is that of current logged in user</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.del_membership">source&nbsp;code</a></span>
             
@@ -1027,8 +1050,8 @@ Other options::
         <span class="summary-sig-arg">name</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">any</code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">table_name</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string"></code><code class="variable-quote">'</code></span>,
         <span class="summary-sig-arg">record_id</span>=<span class="summary-sig-default">0</span>,
-        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">1</span>,
-        <span class="summary-sig-arg">group_id</span>=<span class="summary-sig-default">1</span>)</span><br />
+        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">group_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
       checks if user_id or current logged in user is member of a group 
       that has 'name' permission on 'table_name' and 'record_id' if 
       group_id is passed, it checks whether the group has the 
@@ -1093,10 +1116,8 @@ Other options::
           <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#accessible_query" class="summary-sig-name">accessible_query</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">name</span>,
         <span class="summary-sig-arg">table</span>,
-        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">1</span>)</span><br />
-      returns a query with all accessible records for user_id or the 
-      current logged in user this method does not work on GAE because uses 
-      JOIN and IN</td>
+        <span class="summary-sig-arg">user_id</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
+      returns a query with all accessible records for user_id or...</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.accessible_query">source&nbsp;code</a></span>
             
@@ -1119,6 +1140,73 @@ Other options::
       <code>__setattr__</code>,
       <code>__str__</code>
       </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Static Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-StaticMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_or_create_key"></a><span class="summary-sig-name">get_or_create_key</span>(<span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.get_or_create_key">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="web2py.gluon.tools.Auth-class.html#archive" class="summary-sig-name">archive</a>(<span class="summary-sig-arg">form</span>,
+        <span class="summary-sig-arg">archive_table</span>=<span class="summary-sig-default">global_settings.applications_parent</span>,
+        <span class="summary-sig-arg">current_record</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">current_record</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">archive_current</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">fields</span>=<span class="summary-sig-default">global_settings.applications_parent</span>)</span><br />
+      If you have a table (db.mytable) that needs full revision history you can just do:
+
+    form=crud.update(db.mytable,myrecord,onaccept=auth.archive)
+
+or
+
+    form=SQLFORM(db.mytable,myrecord).process(onaccept=auth.archive)
+
+crud.archive will define a new table &quot;mytable_archive&quot; and store
+a copy of the current record (if archive_current=True)
+or a copy of the previous record (if archive_current=False)
+in the newly created table including a reference
+to the current record.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.archive">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
     </td>
   </tr>
 </table>
@@ -1181,10 +1269,13 @@ Other options::
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">environment</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">db</span>=<span class="sig-default">1</span>,
+        <span class="sig-arg">environment</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">db</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">mailer</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">hmac_key</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">controller</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">default</code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">cas_provider</span>=<span class="sig-default">1</span>)</span>
+        <span class="sig-arg">function</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">user</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">cas_provider</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -1194,10 +1285,14 @@ Other options::
   
   <pre class="literalblock">
 
-auth=Auth(globals(), db)
+auth=Auth(db)
 
 - environment is there for legacy but unused (awful)
 - db has to be the database where to create tables for authentication
+- mailer=Mail(...) or None (no mailed) or True (make a mailer)
+- hmac_key can be a hmac_key or hmac_key=Auth.get_or_create_key()
+- controller (where is the user action?)
+- cas_provider (delegate authentication to the URL, CAS2)
 
 </pre>
   <dl class="fields">
@@ -1245,15 +1340,19 @@ auth=Auth(globals(), db)
     </td>
   </table>
   
-  <p>to be called unless tables are defined manually</p>
-  usages:
-<pre class="literalblock">
-   # defines all needed tables and table files
-   # 'myprefix_auth_user.table', ...
-   auth.define_tables(migrate='myprefix_')
+  <pre class="literalblock">
 
-   # defines all needed tables without migration/table files
-   auth.define_tables(migrate=False)
+to be called unless tables are defined manually
+
+usages:
+
+    # defines all needed tables and table files
+    # 'myprefix_auth_user.table', ...
+    auth.define_tables(migrate='myprefix_')
+
+    # defines all needed tables without migration/table files
+    auth.define_tables(migrate=False)
+
 </pre>
   <dl class="fields">
   </dl>
@@ -1268,6 +1367,7 @@ auth=Auth(globals(), db)
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">log_event</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">description</span>,
+        <span class="sig-arg">vars</span>=<span class="sig-default">global_settings.applications_parent</span>,
         <span class="sig-arg">origin</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">auth</code><code class="variable-quote">'</code></span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -1275,9 +1375,12 @@ auth=Auth(globals(), db)
     </td>
   </table>
   
-  usage:
-<pre class="literalblock">
-   auth.log_event(description='this happened', origin='auth')
+  <pre class="literalblock">
+
+usage:
+
+    auth.log_event(description='this happened', origin='auth')
+
 </pre>
   <dl class="fields">
   </dl>
@@ -1317,10 +1420,10 @@ Used for alternate login methods:
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">login</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.login">source&nbsp;code</a></span>&nbsp;
@@ -1331,7 +1434,7 @@ Used for alternate login methods:
 
 returns a login form
 
-.. method:: Auth.login([next=DEFAULT [, onvalidation=DEFAULT
+method: Auth.login([next=DEFAULT [, onvalidation=DEFAULT
     [, onaccept=DEFAULT [, log=DEFAULT]]]])
 
 </pre>
@@ -1347,9 +1450,9 @@ returns a login form
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">logout</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onlogout</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onlogout</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.logout">source&nbsp;code</a></span>&nbsp;
@@ -1360,7 +1463,7 @@ returns a login form
 
 logout and redirects to login
 
-.. method:: Auth.logout ([next=DEFAULT[, onlogout=DEFAULT[,
+method: Auth.logout ([next=DEFAULT[, onlogout=DEFAULT[,
     log=DEFAULT]]])
 
 </pre>
@@ -1376,10 +1479,10 @@ logout and redirects to login
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">register</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.register">source&nbsp;code</a></span>&nbsp;
@@ -1390,7 +1493,7 @@ logout and redirects to login
 
 returns a registration form
 
-.. method:: Auth.register([next=DEFAULT [, onvalidation=DEFAULT
+method: Auth.register([next=DEFAULT [, onvalidation=DEFAULT
     [, onaccept=DEFAULT [, log=DEFAULT]]]])
 
 </pre>
@@ -1426,9 +1529,9 @@ returns a registration form
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">verify_email</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.verify_email">source&nbsp;code</a></span>&nbsp;
@@ -1439,7 +1542,7 @@ returns a registration form
 
 action user to verify the registration email, XXXXXXXXXXXXXXXX
 
-.. method:: Auth.verify_email([next=DEFAULT [, onvalidation=DEFAULT
+method: Auth.verify_email([next=DEFAULT [, onvalidation=DEFAULT
     [, onaccept=DEFAULT [, log=DEFAULT]]]])
 
 </pre>
@@ -1455,10 +1558,10 @@ action user to verify the registration email, XXXXXXXXXXXXXXXX
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">retrieve_username</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.retrieve_username">source&nbsp;code</a></span>&nbsp;
@@ -1470,7 +1573,7 @@ action user to verify the registration email, XXXXXXXXXXXXXXXX
 returns a form to retrieve the user username
 (only if there is a username field)
 
-.. method:: Auth.retrieve_username([next=DEFAULT
+method: Auth.retrieve_username([next=DEFAULT
     [, onvalidation=DEFAULT [, onaccept=DEFAULT [, log=DEFAULT]]]])
 
 </pre>
@@ -1486,10 +1589,10 @@ returns a form to retrieve the user username
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">reset_password_deprecated</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.reset_password_deprecated">source&nbsp;code</a></span>&nbsp;
@@ -1500,7 +1603,7 @@ returns a form to retrieve the user username
 
 returns a form to reset the user password (deprecated)
 
-.. method:: Auth.reset_password_deprecated([next=DEFAULT
+method: Auth.reset_password_deprecated([next=DEFAULT
     [, onvalidation=DEFAULT [, onaccept=DEFAULT [, log=DEFAULT]]]])
 
 </pre>
@@ -1516,10 +1619,10 @@ returns a form to reset the user password (deprecated)
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">reset_password</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.reset_password">source&nbsp;code</a></span>&nbsp;
@@ -1530,7 +1633,7 @@ returns a form to reset the user password (deprecated)
 
 returns a form to reset the user password
 
-.. method:: Auth.reset_password([next=DEFAULT
+method: Auth.reset_password([next=DEFAULT
     [, onvalidation=DEFAULT [, onaccept=DEFAULT [, log=DEFAULT]]]])
 
 </pre>
@@ -1546,10 +1649,10 @@ returns a form to reset the user password
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">request_reset_password</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.request_reset_password">source&nbsp;code</a></span>&nbsp;
@@ -1560,7 +1663,7 @@ returns a form to reset the user password
 
 returns a form to reset the user password
 
-.. method:: Auth.reset_password([next=DEFAULT
+method: Auth.reset_password([next=DEFAULT
     [, onvalidation=DEFAULT [, onaccept=DEFAULT [, log=DEFAULT]]]])
 
 </pre>
@@ -1576,10 +1679,10 @@ returns a form to reset the user password
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">change_password</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.change_password">source&nbsp;code</a></span>&nbsp;
@@ -1590,7 +1693,7 @@ returns a form to reset the user password
 
 returns a form that lets the user change password
 
-.. method:: Auth.change_password([next=DEFAULT[, onvalidation=DEFAULT[,
+method: Auth.change_password([next=DEFAULT[, onvalidation=DEFAULT[,
     onaccept=DEFAULT[, log=DEFAULT]]]])
 
 </pre>
@@ -1606,10 +1709,10 @@ returns a form that lets the user change password
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">profile</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>,
-        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">next</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onvalidation</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">onaccept</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>,
+        <span class="sig-arg">log</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.profile">source&nbsp;code</a></span>&nbsp;
@@ -1620,7 +1723,7 @@ returns a form that lets the user change password
 
 returns a form that lets the user change his/her profile
 
-.. method:: Auth.profile([next=DEFAULT [, onvalidation=DEFAULT
+method: Auth.profile([next=DEFAULT [, onvalidation=DEFAULT
     [, onaccept=DEFAULT [, log=DEFAULT]]]])
 
 </pre>
@@ -1636,7 +1739,7 @@ returns a form that lets the user change his/her profile
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">impersonate</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">user_id</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x26ba500&gt;</span>)</span>
+        <span class="sig-arg">user_id</span>=<span class="sig-default">&lt;function &lt;lambda&gt; at 0x2fbf7d0&gt;</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.impersonate">source&nbsp;code</a></span>&nbsp;
@@ -1660,8 +1763,8 @@ returns a form that lets the user change his/her profile
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">requires_membership</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">role</span>=<span class="sig-default">1</span>,
-        <span class="sig-arg">group_id</span>=<span class="sig-default">1</span>)</span>
+        <span class="sig-arg">role</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">group_id</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.requires_membership">source&nbsp;code</a></span>&nbsp;
@@ -1704,7 +1807,7 @@ returns a form that lets the user change his/her profile
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">user_group</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">user_id</span>=<span class="sig-default">1</span>)</span>
+        <span class="sig-arg">user_id</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.user_group">source&nbsp;code</a></span>&nbsp;
@@ -1727,19 +1830,99 @@ returns a form that lets the user change his/her profile
   <h3 class="epydoc"><span class="sig"><span class="sig-name">accessible_query</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">name</span>,
         <span class="sig-arg">table</span>,
-        <span class="sig-arg">user_id</span>=<span class="sig-default">1</span>)</span>
+        <span class="sig-arg">user_id</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.accessible_query">source&nbsp;code</a></span>&nbsp;
     </td>
   </table>
   
-  <p>returns a query with all accessible records for user_id or the current
-  logged in user this method does not work on GAE because uses JOIN and 
-  IN</p>
-  example:
-<pre class="literalblock">
-  db(auth.accessible_query('read', db.mytable)).select(db.mytable.ALL)
+  <pre class="literalblock">
+
+returns a query with all accessible records for user_id or
+the current logged in user
+this method does not work on GAE because uses JOIN and IN
+
+example:
+
+   db(auth.accessible_query('read', db.mytable)).select(db.mytable.ALL)
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="archive"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">archive</span>(<span class="sig-arg">form</span>,
+        <span class="sig-arg">archive_table</span>=<span class="sig-default">global_settings.applications_parent</span>,
+        <span class="sig-arg">current_record</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">current_record</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">archive_current</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">fields</span>=<span class="sig-default">global_settings.applications_parent</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="web2py.gluon.tools-pysrc.html#Auth.archive">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </table>
+  
+  <pre class="literalblock">
+
+If you have a table (db.mytable) that needs full revision history you can just do:
+
+    form=crud.update(db.mytable,myrecord,onaccept=auth.archive)
+
+or
+
+    form=SQLFORM(db.mytable,myrecord).process(onaccept=auth.archive)
+
+crud.archive will define a new table &quot;mytable_archive&quot; and store
+a copy of the current record (if archive_current=True)
+or a copy of the previous record (if archive_current=False)
+in the newly created table including a reference
+to the current record.
+
+fields allows to specify extra fields that need to be archived.
+
+If you want to access such table you need to define it yourself
+in a model:
+
+    db.define_table('mytable_archive',
+        Field('current_record',db.mytable),
+        db.mytable)
+
+Notice such table includes all fields of db.mytable plus one: current_record.
+crud.archive does not timestamp the stored record unless your original table
+has a fields like:
+
+    db.define_table(...,
+        Field('saved_on','datetime',
+             default=request.now,update=request.now,writable=False),
+        Field('saved_by',auth.user,
+             default=auth.user_id,update=auth.user_id,writable=False),
+
+there is nothing special about these fields since they are filled before
+the record is archived.
+
+If you want to change the archive table name and the name of the reference field
+you can do, for example:
+
+    db.define_table('myhistory',
+        Field('parent_record',db.mytable),
+        db.mytable)
+
+and use it as:
+
+    form=crud.update(db.mytable,myrecord,
+                     onaccept=lambda form:crud.archive(form,
+                     archive_table=db.myhistory,
+                     current_record='parent_record'))
+
 </pre>
   <dl class="fields">
   </dl>
@@ -1778,14 +1961,14 @@ returns a form that lets the user change his/her profile
     </dd>
     <dt>Set Method:</dt>
     <dd class="value"><table><tr><td><pre class="variable">
-1
+global_settings.applications_parent
 </pre></td></tr></table>
 
         - PyMySQL: A pure-Python drop-in replacement for MySQLdb.
     </dd>
     <dt>Delete Method:</dt>
     <dd class="value"><table><tr><td><pre class="variable">
-1
+global_settings.applications_parent
 </pre></td></tr></table>
 
         - PyMySQL: A pure-Python drop-in replacement for MySQLdb.
@@ -1825,7 +2008,7 @@ returns a form that lets the user change his/her profile
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu Aug  4 00:47:01 2011
+    Generated by Epydoc 3.0beta1 on Sun Mar  4 22:11:59 2012
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
