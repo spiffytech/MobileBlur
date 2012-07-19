@@ -10,7 +10,7 @@
     for story in stories: 
         intel = get_intelligence_rating(story)
 
-        if story["read_status"] != 0:
+        if "read_status" in story.keys() and story["read_status"] != 0:
             story_status = "read"
         else:
             story_status = "unread"
