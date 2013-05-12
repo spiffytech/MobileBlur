@@ -22,10 +22,10 @@ func (feed *MyFeed) IsStale() (bool) {
     return true
 }
 
-func (feedlist *FeedList) Refresh(force bool) {
+func (feedlist *FeedList) Refresh(nb newsblur.Newsblur, force bool) {
     for _, feed := range feedlist.Feeds {
         if feed.IsStale() || force == true {
-            feed.Refresh()
+            feed.Refresh(nb)
         }
     }
 }
@@ -39,12 +39,12 @@ func retrieveCookie() (string) {
 func main() {
     var nb newsblur.Newsblur
 
-    nbCookie := nb.Login("mbtest1", "mbtest1");
-    fmt.Println("nb_cookie =", nbCookie)
+    nb.Login("mbtest1", "mbtest1");
 
     feeds := nb.RetrieveProfile()
+    fmt.Println(feeds)
 
     for _, feed := range feeds {
-        feed.Refresh()
+        feed.Refresh(nb)
     }
 }
