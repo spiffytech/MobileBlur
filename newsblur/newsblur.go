@@ -53,6 +53,9 @@ type StoryList struct {
 }
 
 
+var nbURL = "http://www.newsblur.com"
+
+
 func (feed *Feed) Refresh() {
     b, err := ioutil.ReadFile("stories.json")
     if err != nil {
@@ -69,7 +72,6 @@ func (feed *Feed) Refresh() {
 
 
 func (nb *Newsblur) Login(username, password string) (string) {
-    nbURL := "http://www.newsblur.com"
     resp, err := http.PostForm(nbURL + "/api/login", url.Values{"username": {username}, "password": {password}})
     if err != nil {
         panic(err)
@@ -88,13 +90,31 @@ func (nb *Newsblur) Login(username, password string) (string) {
 }
 
 
+func (nb *Newsblur) NewRequest(method, path string) (*http.Request) {
+    req, err := http.NewRequest("GET", nbURL + "/reader/feeds", nil)
+    if err != nil {
+        panic(err)
+    }
+    cookie  := http.Cookie{Name: "newsblur_sessionid", Value: nb.Cookie}
+    req.AddCookie(&cookie)
+    return req
+}
+
+
 func (nb *Newsblur) RetrieveProfile() (map[string]Feed) {
-    b, err := ioutil.ReadFile("profile.json")
+    req := nb.NewRequest("GET", "/reader/feeds")
+    client := http.Client{}
+    resp, err := client.Do(req)
     if err != nil {
         panic(err)
     }
 
     var profile Profile
+
+    b, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        panic(err)
+    }
     json.Unmarshal(b, &profile)
     return profile.Feeds
 }

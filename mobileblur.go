@@ -42,7 +42,6 @@ func main() {
     nbCookie := nb.Login("mbtest1", "mbtest1");
     fmt.Println("nb_cookie =", nbCookie)
 
-    return
     feeds := nb.RetrieveProfile()
 
     for _, feed := range feeds {
