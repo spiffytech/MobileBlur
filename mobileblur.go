@@ -1,84 +1,51 @@
 package main
 
 import (
-    "encoding/json"
+    //"encoding/json"
     "fmt"
-    "io/ioutil"
+    //"io/ioutil"
+    "./newsblur"
 //    "strconv"
 //    "strings"
-    "time"
 )
 
-type Feed struct {
-    ID int `json:"id"`
-    PS int `json:"ps"`
-    NT int `json:"nt"`
-    NG int `json:"ng"`
-    UpdatedSecondsAgo int `json:"updated_seconds_ago"`
-    Address string `json:"feed_address"`
-    Title string `json:"feed_title"`
-    Link string `json:"feed_link"`
+type MyFeed struct {
+    *newsblur.Feed
 }
 
-type Profile struct {
-    Folders []interface{} `json:"folders"`
-    Feeds map[string]Feed
+type FeedList struct {
+    Feeds []MyFeed
 }
 
-type Intelligence struct {
-    Feed int `json:"feed"`
-    Tags int `json:"tags"`
-    Author int `json:"author"`
-    Title int `json:"title"`
+func (feed *MyFeed) IsStale() (bool) {
+    // TODO: Need to flesh this out to check the cache when I actually have a cache mechanism to check
+    return true
 }
 
-var _ time.Time
-type Story struct {
-    ID string `json:"id"`
-    GUID string `json:"guid_hash"`
-    //Date time.Time `json:"story_date"`
-    Title string `json:"story_title"`
-    Content string `json:"story_content"`
-    Permalink string `json:"story_permalink"`
-    ReadStatus int `json:"read_status"`
-    Tags []string `json:"story_tags"`
-    HasModifications int `json:"has_modifications"`
-    Intelligence Intelligence `json:"intelligence"`
+func (feedlist *FeedList) Refresh(force bool) {
+    for _, feed := range feedlist.Feeds {
+        if feed.IsStale() || force == true {
+            feed.Refresh()
+        }
+    }
 }
 
-type StoryList struct {
-    Stories []Story `json:"stories"`
+func retrieveCookie() (string) {
+    // TODO: Retrieve cookie from user response here, instead of logging in to Newsblur
+    var nb newsblur.Newsblur
+    return nb.Login("mbtest1", "mbtest1");
 }
 
 func main() {
-    feeds := refreshFeeds()
-    //fmt.Println(feeds)
+    var nb newsblur.Newsblur
+
+    nbCookie := nb.Login("mbtest1", "mbtest1");
+    fmt.Println("nb_cookie =", nbCookie)
+
+    return
+    feeds := nb.RetrieveProfile()
 
     for _, feed := range feeds {
         feed.Refresh()
-    }
-}
-
-func refreshFeeds() (map[string]Feed) {
-    b, err := ioutil.ReadFile("profile.json")
-    if err != nil {
-        panic(err)
-    }
-
-    var profile Profile
-    json.Unmarshal(b, &profile)
-    return profile.Feeds
-}
-
-func (feed *Feed) Refresh() {
-    b, err := ioutil.ReadFile("stories.json")
-    if err != nil {
-        panic(err)
-    }
-
-    var storyList StoryList
-    json.Unmarshal(b, &storyList)
-    for _, story := range storyList.Stories {
-        fmt.Println(story.Permalink)
     }
 }
