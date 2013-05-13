@@ -2,6 +2,7 @@ package newsblur
 
 import (
     "encoding/json"
+    "errors"
     "fmt"
     "io/ioutil"
     "net/http"
@@ -11,6 +12,7 @@ import (
 
 type Newsblur struct {
     Cookie string
+    Feeds map[int]Feed
 }
 
 type Feed struct {
@@ -27,6 +29,15 @@ type Feed struct {
 type Profile struct {
     Folders []interface{} `json:"folders"`
     Feeds map[string]Feed
+}
+
+
+type UserProfile struct {
+    Username string `json:"username"`
+}
+
+type RealProfile struct {
+    UserProfile UserProfile `json:"user_profile"`
 }
 
 type Intelligence struct {
@@ -57,7 +68,39 @@ type StoryList struct {
 var nbURL = "http://www.newsblur.com"
 
 
-func (feed *Feed) Refresh(nb Newsblur) {
+func (feed *Feed) IsStale() (bool) {
+    // TODO: Need to flesh this out to check the cache when I actually have a cache mechanism to check
+    return true
+}
+
+
+func (nb *Newsblur) GetFeeds() {
+    feeds := make(map[int]Feed)
+
+    profile := nb.RetrieveProfile()
+    for feedID, feed := range profile.Feeds {
+        feedIDInt, err := strconv.Atoi(feedID)
+        if err != nil {
+            panic(err)
+        }
+        feeds[feedIDInt] = feed
+    }
+    nb.Feeds = feeds
+}
+
+
+func (nb *Newsblur) RefreshFeedStories(force bool) {
+    nb.GetFeeds()
+
+    for _, feed := range nb.Feeds {
+        if feed.IsStale() || force == true {
+            feed.RefreshStories(nb)
+        }
+    }
+}
+
+
+func (feed *Feed) RefreshStories(nb *Newsblur) (StoryList) {
     req := nb.NewRequest("GET", "/reader/feed/" + strconv.Itoa(feed.ID))
     client := http.Client{}
     resp, err := client.Do(req)
@@ -76,6 +119,8 @@ func (feed *Feed) Refresh(nb Newsblur) {
     for _, story := range storyList.Stories {
         fmt.Println(story.Permalink)
     }
+
+    return storyList
 }
 
 
@@ -89,8 +134,32 @@ func (nb *Newsblur) NewRequest(method, path string) (*http.Request) {
     return req
 }
 
+func (nb *Newsblur) RetrieveRealProfile() (RealProfile) {
+    // TODO: Cache this, keyed on the session cookie value
+    req := nb.NewRequest("GET", "/social/profile")
+    client := http.Client{}
+    resp, err := client.Do(req)
+    if err != nil {
+        panic(err)
+    }
 
-func (nb *Newsblur) Login(username, password string) (string) {
+    var profile RealProfile
+
+    b, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        panic(err)
+    }
+    json.Unmarshal(b, &profile)
+    return profile
+}
+
+func (nb *Newsblur) GetUsername() (string) {
+    profile := nb.RetrieveRealProfile()
+    return profile.UserProfile.Username
+}
+
+
+func (nb *Newsblur) Login(username, password string) (error) {
     resp, err := http.PostForm(nbURL + "/api/login", url.Values{"username": {username}, "password": {password}})
     if err != nil {
         panic(err)
@@ -99,17 +168,15 @@ func (nb *Newsblur) Login(username, password string) (string) {
     for _, cookie := range resp.Cookies() {
         if cookie.Name == "newsblur_sessionid" {
             nb.Cookie = cookie.Value
-            return nb.Cookie
+            return nil
         }
     }
 
-    // TODO: Make the login thing check that the login was actually successful
-    // Return an error if it wasn't, instead of just panicing.
-    panic("No newsblur_sessionid cookie returned")
+    return errors.New("No newsblur_sessionid cookie returned by login operation")
 }
 
 
-func (nb *Newsblur) RetrieveProfile() (map[string]Feed) {
+func (nb *Newsblur) RetrieveProfile() (Profile) {
     req := nb.NewRequest("GET", "/reader/feeds")
     client := http.Client{}
     resp, err := client.Do(req)
@@ -123,7 +190,10 @@ func (nb *Newsblur) RetrieveProfile() (map[string]Feed) {
     if err != nil {
         panic(err)
     }
-    json.Unmarshal(b, &profile)
+    err = json.Unmarshal(b, &profile)
+    if err != nil {
+        panic(err)
+    }
 
-    return profile.Feeds
+    return profile
 }

@@ -7,44 +7,32 @@ import (
     "./newsblur"
 //    "strconv"
 //    "strings"
+    "time"
+
+    gocache "github.com/pmylund/go-cache"
+
 )
 
-type MyFeed struct {
-    *newsblur.Feed
-}
+var cache = gocache.New(2*time.Minute, 30*time.Second)
 
-type FeedList struct {
-    Feeds []MyFeed
-}
-
-func (feed *MyFeed) IsStale() (bool) {
-    // TODO: Need to flesh this out to check the cache when I actually have a cache mechanism to check
-    return true
-}
-
-func (feedlist *FeedList) Refresh(nb newsblur.Newsblur, force bool) {
-    for _, feed := range feedlist.Feeds {
-        if feed.IsStale() || force == true {
-            feed.Refresh(nb)
-        }
-    }
-}
-
-func retrieveCookie() (string) {
+func initNewsblur() (newsblur.Newsblur, error) {
     // TODO: Retrieve cookie from user response here, instead of logging in to Newsblur
     var nb newsblur.Newsblur
-    return nb.Login("mbtest1", "mbtest1");
+    err := nb.Login("mbtest1", "mbtest1");
+    if err != nil {
+        return nb, err
+    }
+
+    return nb, nil
 }
 
+
 func main() {
-    var nb newsblur.Newsblur
-
-    nb.Login("mbtest1", "mbtest1");
-
-    feeds := nb.RetrieveProfile()
-    fmt.Println(feeds)
-
-    for _, feed := range feeds {
-        feed.Refresh(nb)
+    nb, err := initNewsblur()
+    if err != nil {
+        panic(err)
     }
+
+    nb.RefreshFeedStories(false)
+    _ = fmt.Println
 }
