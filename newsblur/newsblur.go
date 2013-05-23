@@ -24,6 +24,7 @@ type Feed struct {
     Address string `json:"feed_address"`
     Title string `json:"feed_title"`
     Link string `json:"feed_link"`
+    Stories StoryList
 }
 
 type Profile struct {
@@ -74,7 +75,7 @@ func (feed *Feed) IsStale() (bool) {
 }
 
 
-func (nb *Newsblur) GetFeeds() {
+func (nb *Newsblur) GetFeeds() (map[int]Feed) {
     feeds := make(map[int]Feed)
 
     profile := nb.RetrieveProfile()
@@ -86,17 +87,23 @@ func (nb *Newsblur) GetFeeds() {
         feeds[feedIDInt] = feed
     }
     nb.Feeds = feeds
+    return feeds
 }
 
 
-func (nb *Newsblur) RefreshFeedStories(force bool) {
+func (nb *Newsblur) RefreshFeedStories(force bool) (map[int]Feed) {
     nb.GetFeeds()
 
     for _, feed := range nb.Feeds {
+        // TODO: Do this in a goroutine
+        // TODO: Make sure nb.Feeds gets updated, and that I'm not doing pass-by-value
+        // TODO: Set cache keys and key directories appropriately for this logic. Wherever they go in the call chain.
         if feed.IsStale() || force == true {
             feed.RefreshStories(nb)
         }
     }
+
+    return nb.Feeds
 }
 
 
@@ -120,6 +127,7 @@ func (feed *Feed) RefreshStories(nb *Newsblur) (StoryList) {
         fmt.Println(story.Permalink)
     }
 
+    feed.Stories = storyList
     return storyList
 }
 
