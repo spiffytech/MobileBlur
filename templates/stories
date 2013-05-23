@@ -31,13 +31,25 @@
 
 
         <div class="container">
-            {{.}}
-            {{with .Feeds}}
-                {{range .}}
-            {{.}}
-                    <p><a href="/feeds/{{.ID}}">{{.Title}}</a></p>
+            <div class="row">
+                {{with .Stories}}
+                    {{range .}}
+                        <div class="row">
+                            <div class="small-6">
+                                <h3>{{.Title}}</h3>
+                            </div>
+                            <div class="small-6">
+                                <!-- date -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            {{with .Content}}
+                                {{.}}
+                            {{end}}
+                        </div>
+                    {{end}}
                 {{end}}
-            {{end}}
+            </div>
         </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

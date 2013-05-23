@@ -3,7 +3,7 @@ package newsblur
 import (
     "encoding/json"
     "errors"
-    "fmt"
+    "html/template"
     "io/ioutil"
     "net/http"
     "net/url"
@@ -53,7 +53,7 @@ type Story struct {
     GUID string `json:"guid_hash"`
     //Date time.Time `json:"story_date"`
     Title string `json:"story_title"`
-    Content string `json:"story_content"`
+    Content template.HTML `json:"story_content"`
     Permalink string `json:"story_permalink"`
     ReadStatus int `json:"read_status"`
     Tags []string `json:"story_tags"`
@@ -123,9 +123,6 @@ func (feed *Feed) RefreshStories(nb *Newsblur) (StoryList) {
     var storyList StoryList
     json.Unmarshal(b, &storyList)
     // TODO: Store this stuff in the cache
-    for _, story := range storyList.Stories {
-        fmt.Println(story.Permalink)
-    }
 
     feed.Stories = storyList
     return storyList

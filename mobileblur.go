@@ -4,6 +4,7 @@ import (
     "fmt"
     "net/http"
     "html/template"
+    "strconv"
     "time"
 
     "./newsblur"
@@ -55,7 +56,6 @@ func initNewsblur() (newsblur.Newsblur, error) {
         return "look, it's stuff!"
     }
 func index (w http.ResponseWriter, r *http.Request) {
-
     /*
     test1 := Test1{Val1: "Val1str", Val2: 2}
     test2 := Test2{Val3: "Val3str", Val4: 4}
@@ -86,10 +86,36 @@ func index (w http.ResponseWriter, r *http.Request) {
 }
 
 
+func stories (w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+
+    nb, err := initNewsblur()
+    if err != nil {
+        panic(err)
+    }
+
+    //feeds := nb.RefreshFeedStories(false)
+    nb.GetFeeds()
+
+    feed_id, err := strconv.Atoi(vars["feed_id"])
+    if err != nil {
+        panic(err)
+    }
+    feed := nb.Feeds[feed_id]
+    stories := feed.RefreshStories(&nb).Stories
+
+    vals := map[string]interface{}{"Stories": stories}
+
+    t := template.Must(template.New("stories").ParseFiles("templates/stories"))
+    t.Execute(w, vals)
+}
+
+
 func main() {
     _ = fmt.Println
     r := mux.NewRouter()
     r.HandleFunc("/", index)
+    r.HandleFunc("/feeds/{feed_id}", stories)
 
     fmt.Println("Listening for browser connections")
     http.Handle("/", r)
