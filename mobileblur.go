@@ -81,7 +81,7 @@ func index (w http.ResponseWriter, r *http.Request) {
 
     vals := map[string]interface{}{"Feeds": feeds}
 
-    t := template.Must(template.New("index").ParseFiles("templates/index"))
+    t := template.Must(template.New("index").ParseFiles("templates/wrapper.html", "templates/index"))
     t.Execute(w, vals)
 }
 
@@ -106,7 +106,7 @@ func stories (w http.ResponseWriter, r *http.Request) {
 
     vals := map[string]interface{}{"Stories": stories}
 
-    t := template.Must(template.New("stories").ParseFiles("templates/stories"))
+    t := template.Must(template.New("stories").ParseFiles("templates/wrapper.html", "templates/stories"))
     t.Execute(w, vals)
 }
 
