@@ -76,7 +76,6 @@ func index (w http.ResponseWriter, r *http.Request) {
         panic(err)
     }
 
-    //feeds := nb.RefreshFeedStories(false)
     feeds := nb.GetFeeds()
 
     vals := map[string]interface{}{"Feeds": feeds}
@@ -94,15 +93,21 @@ func stories (w http.ResponseWriter, r *http.Request) {
         panic(err)
     }
 
-    //feeds := nb.RefreshFeedStories(false)
     nb.GetFeeds()
 
     feed_id, err := strconv.Atoi(vars["feed_id"])
     if err != nil {
         panic(err)
     }
+
+    page, err := strconv.Atoi(r.URL.Query().Get("p"))
+    if err != nil {
+        page = 1
+        fmt.Println("Page not set explicitly")
+    }
+
     feed := nb.Feeds[feed_id]
-    stories := feed.RefreshStories(&nb).Stories
+    stories := feed.GetStoryPage(&nb, page, false).Stories
 
     vals := map[string]interface{}{
         "Stories": stories,

@@ -3,12 +3,15 @@ package newsblur
 import (
     "encoding/json"
     "errors"
+    "fmt"
     "html/template"
     "io/ioutil"
     "net/http"
     "net/url"
     "strconv"
 )
+
+var _ = fmt.Println
 
 type Newsblur struct {
     Cookie string
@@ -91,24 +94,11 @@ func (nb *Newsblur) GetFeeds() (map[int]Feed) {
 }
 
 
-func (nb *Newsblur) RefreshFeedStories(force bool) (map[int]Feed) {
-    nb.GetFeeds()
-
-    for _, feed := range nb.Feeds {
-        // TODO: Do this in a goroutine
-        // TODO: Make sure nb.Feeds gets updated, and that I'm not doing pass-by-value
-        // TODO: Set cache keys and key directories appropriately for this logic. Wherever they go in the call chain.
-        if feed.IsStale() || force == true {
-            feed.RefreshStories(nb)
-        }
-    }
-
-    return nb.Feeds
-}
-
-
-func (feed *Feed) RefreshStories(nb *Newsblur) (StoryList) {
-    req := nb.NewRequest("GET", "/reader/feed/" + strconv.Itoa(feed.ID))
+func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) (StoryList) {
+    url := url.Values{"page": {strconv.Itoa(page)}}
+    renderedURL := "/reader/feed/" + strconv.Itoa(feed.ID) + "?" + url.Encode()
+    fmt.Println(renderedURL)
+    req := nb.NewRequest("GET", renderedURL)
     client := http.Client{}
     resp, err := client.Do(req)
     if err != nil {
