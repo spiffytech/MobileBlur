@@ -1,5 +1,8 @@
-{{template "header"}}
-<div class="row">
+{{if .notAJAX}}
+    {{template "header"}}
+{{end}}
+
+<div id="stories" class="row">
     {{with .Stories}}
         {{range .}}
             <div class="row">
@@ -18,4 +21,19 @@
         {{end}}
     {{end}}
 </div>
-{{template "footer"}}
+
+{{define "scripts"}}
+    <script type="text/javascript">
+        jQuery(window).scrollAppend({
+            url: "/feeds/{{.feed_id}}",
+            params: {},
+            appendTo: "#stories",
+            footerClass: "#footer",
+            disableCache: true
+        });
+    </script>
+{{end}}
+
+{{if .notAJAX}}
+    {{template "footer" .}}
+{{end}}

@@ -104,7 +104,16 @@ func stories (w http.ResponseWriter, r *http.Request) {
     feed := nb.Feeds[feed_id]
     stories := feed.RefreshStories(&nb).Stories
 
-    vals := map[string]interface{}{"Stories": stories}
+    vals := map[string]interface{}{
+        "Stories": stories,
+        "feed_id": feed_id,
+    }
+
+    if r.Header.Get("X-Requested-With") == "XMLHttpRequest" {
+        vals["notAJAX"] = false
+    } else {
+        vals["notAJAX"] = true
+    }
 
     t := template.Must(template.New("stories").ParseFiles("templates/wrapper.html", "templates/stories"))
     t.Execute(w, vals)
