@@ -32,29 +32,21 @@ func (cache *MyCache) get(key string, f func() interface{}, duration time.Durati
 var cache = gocache.New(2*time.Minute, 30*time.Second)
 
 func initNewsblur() (newsblur.Newsblur, error) {
-    // TODO: Retrieve cookie from user response here, instead of logging in to Newsblur
+    // TODO: Retrieve cookie from user response here, instead of logging in to Newsblur with a test account
     var nb newsblur.Newsblur
     err := nb.Login("mbtest1", "mbtest1");
     if err != nil {
         return nb, err
     }
 
+    nb.GetProfile()
+    nb.GetFeeds()
+    nb.GetFolders()
+
     return nb, nil
 }
 
 
-    type Test1 struct {
-        Val1 string
-        Val2 int
-    }
-    type Test2 struct {
-        Val3 string
-        Val4 int
-    }
-
-    func (t *Test2) Dostuff() (string) {
-        return "look, it's stuff!"
-    }
 func index (w http.ResponseWriter, r *http.Request) {
     /*
     test1 := Test1{Val1: "Val1str", Val2: 2}
@@ -76,14 +68,15 @@ func index (w http.ResponseWriter, r *http.Request) {
         panic(err)
     }
 
-    feeds := nb.GetFeeds()
-    folders := nb.Profile.Folder
-
     // TODO: Uncapitalize 'Feeds'
-    vals := map[string]interface{}{"Feeds": feeds, "folders": folders}
+    vals := map[string]interface{}{"feeds": nb.Profile.Feeds, "folder": nb.Profile.Folder}
+    fmt.Println(vals)
 
     t := template.Must(template.New("index").ParseFiles("templates/wrapper.html", "templates/index"))
-    t.Execute(w, vals)
+    err = t.Execute(w, vals)
+    if err != nil {
+        fmt.Println(err)
+    }
 }
 
 

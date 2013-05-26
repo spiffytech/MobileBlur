@@ -33,7 +33,7 @@ type Feed struct {
 
 type Folder struct {
     Name string
-    Feeds map[int]Feed
+    Feeds []Feed
     Folders []Folder
 }
 
@@ -93,19 +93,35 @@ func (feed *Feed) IsStale() (bool) {
 
 
 func (nb *Newsblur) GetFolders() (folder Folder) {
-    profile := nb.GetProfile()
+    profile := nb.Profile
 
     fmt.Println(profile.RawFolders)
 
     //folder.Feeds = getFolderFeeds(folder)
-    folder.Folders = getFolderFolders(profile.RawFolders)
+    folder.Folders = getFolderFolders(nb, profile.RawFolders)
     nb.Profile.Folder = folder
 
     return folder
 }
 
 
-func getFolderFolders(folder []interface{}) (folders []Folder) {
+func getFolderFeeds(nb *Newsblur, folder []interface{}) (feeds []Feed) {
+    for _, item := range folder {
+        fmt.Println(item)
+        switch item.(type) {
+            case float64:
+                feedID := strconv.Itoa(int(item.(float64)))
+                // TODO: Find a way to grab a reference to the feed, instead of a copy
+                feeds = append(feeds, nb.Profile.Feeds[feedID])
+            case interface{}:
+        }
+    }
+    fmt.Println("Feeds: ", feeds)
+    return feeds
+}
+
+
+func getFolderFolders(nb *Newsblur, folder []interface{}) (folders []Folder) {
     for _, item := range folder {
         fmt.Println(item)
         switch item.(type) {
@@ -115,7 +131,8 @@ func getFolderFolders(folder []interface{}) (folders []Folder) {
                     folder := Folder{}
                     folder.Name = folderName
                     //folder.Feeds = getFolderFeeds(folder)
-                    folder.Folders = getFolderFolders(val.([]interface{}))
+                    folder.Feeds = getFolderFeeds(nb, val.([]interface{}))
+                    folder.Folders = getFolderFolders(nb, val.([]interface{}))
                     folders = append(folders, folder)
                 }
         }

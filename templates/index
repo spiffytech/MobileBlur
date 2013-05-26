@@ -1,9 +1,44 @@
 {{template "header"}}
 
-{{with .Feeds}}
+{{with .feeds}}
     {{range .}}
-        <p><a href="/feeds/{{.ID}}">{{.Title}}</a></p>
+        {{template "feed" .}}
     {{end}}
 {{end}}
+
+<!-- Kick off the folders. First folder is a top-level folder. Weird nesting stuff that should probably be fixed. Somehow. -->
+{{with .folder.Folders}}
+    {{range .}}
+        {{with .Folders}}
+            {{range .}}
+                {{template "folder" .}}
+            {{end}}
+        {{end}}
+    {{end}}
+{{end}}
+
+{{define "feed"}}
+    <p><a href="/feeds/{{.ID}}">{{.Title}}</a></p>
+{{end}}
+
+{{define "folder"}}
+    <h3>{{.Name}}</h3>
+    {{with .Feeds}}
+        {{range .}}
+            {{template "feed" .}}
+        {{end}}
+    {{end}}
+
+    {{with .Folders}}
+        {{range .}}
+            <div style="margin-left: 10%">
+                {{template "folder" .}}
+            </div>
+        {{end}}
+    {{end}}
+{{end}}
+
+
+{{define "scripts"}}{{end}}
 
 {{template "footer"}}
