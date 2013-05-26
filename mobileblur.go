@@ -110,6 +110,7 @@ func stories (w http.ResponseWriter, r *http.Request) {
     vals := map[string]interface{}{
         "Stories": stories,
         "feed_id": feed_id,
+        "page": page,  // use this instead of feed ID in template to collapse things
     }
 
     if r.Header.Get("X-Requested-With") == "XMLHttpRequest" {

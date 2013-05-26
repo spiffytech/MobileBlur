@@ -98,6 +98,7 @@ func (nb *Newsblur) GetFolders() (folder Folder) {
     fmt.Println(profile.RawFolders)
 
     //folder.Feeds = getFolderFeeds(folder)
+    folder.Feeds = getFolderFeeds(nb, profile.RawFolders)
     folder.Folders = getFolderFolders(nb, profile.RawFolders)
     nb.Profile.Folder = folder
 

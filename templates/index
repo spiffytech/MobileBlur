@@ -1,20 +1,7 @@
 {{template "header"}}
 
-{{with .feeds}}
-    {{range .}}
-        {{template "feed" .}}
-    {{end}}
-{{end}}
-
-<!-- Kick off the folders. First folder is a top-level folder. Weird nesting stuff that should probably be fixed. Somehow. -->
-{{with .folder.Folders}}
-    {{range .}}
-        {{with .Folders}}
-            {{range .}}
-                {{template "folder" .}}
-            {{end}}
-        {{end}}
-    {{end}}
+{{with .folder}}
+        {{template "folder" .}}
 {{end}}
 
 {{define "feed"}}
@@ -31,7 +18,7 @@
 
     {{with .Folders}}
         {{range .}}
-            <div style="margin-left: 10%">
+            <div style="margin-left: 5%">
                 {{template "folder" .}}
             </div>
         {{end}}

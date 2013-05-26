@@ -2,38 +2,50 @@
     {{template "header"}}
 {{end}}
 
-<div id="stories" class="row">
-    {{if .notAJAX}}
-    {{else}}
-        {{with .Stories}}
-            {{range .}}
+{{if .notAJAX}}
+    <div id="stories" class="row"></div>
+{{else}}
+    {{$pageID := .page}}
+    {{with .Stories}}
+        {{range .}}
+            <div class="story story-page-{{$pageID}}">
                 <div class="row">
-                    <div class="small-6">
+                    <div class="small-6 title">
                         <h3>{{.Title}}</h3>
                     </div>
-                    <div class="small-6">
+                    <div class="small-6 pubdate">
                         <!-- date -->
                     </div>
                 </div>
-                <div class="row">
+                <div class="row content">
                     {{with .Content}}
                         {{.}}
                     {{end}}
                 </div>
-            {{end}}
+            </div>
         {{end}}
     {{end}}
-</div>
+    <script type="text/javascript">
+        jQuery(".story-page-{{$pageID}} .content").hide();
+    </script>
+{{end}}
 
 {{define "scripts"}}
     <script type="text/javascript">
-        jQuery(window).scrollAppend({
-            url: "/feeds/{{.feed_id}}",
-            params: {},
-            appendTo: "#stories",
-            footerClass: "#footer",
-            disableCache: true,
-            pagesToPause: 999999
+        jQuery(document).ready(function() {
+            jQuery(window).scrollAppend({
+                url: "/feeds/{{.feed_id}}",
+                params: {},
+                appendTo: "#stories",
+                footerClass: "#footer",
+                disableCache: true,
+                pagesToPause: 999999
+            });
+
+            jQuery(document).on("click", ".story", function() {
+                jQuery(".story .content").hide();
+                jQuery(this).find(".content").show();
+            });
         });
     </script>
 {{end}}
