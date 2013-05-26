@@ -163,12 +163,15 @@ func (nb *Newsblur) GetFeeds() (map[int]Feed) {
 
 
 func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) (StoryList) {
-    url := url.Values{"page": {strconv.Itoa(page)}}
-    renderedURL := "/reader/feed/" + strconv.Itoa(feed.ID) + "?" + url.Encode()
-    fmt.Println(renderedURL)
-    req := nb.NewRequest("GET", renderedURL)
-    client := http.Client{}
-    resp, err := client.Do(req)
+    u, err := url.Parse(nbURL + "/reader/feed/" + strconv.Itoa(feed.ID))
+    if err != nil {
+        panic(err)
+    }
+    q := u.Query()
+    q.Set("page", strconv.Itoa(page))
+    u.RawQuery = q.Encode()
+    client := nb.NewClient()
+    resp, err := client.Get(u.String())
     if err != nil {
         panic(err)
     }
@@ -200,21 +203,12 @@ func (nb *Newsblur) NewClient() (*http.Client) {
     client.Jar = cookieJar
     return &client
 }
-func (nb *Newsblur) NewRequest(method, path string) (*http.Request) {
-    req, err := http.NewRequest("GET", nbURL + path, nil)
-    if err != nil {
-        panic(err)
-    }
-    cookie  := http.Cookie{Name: "newsblur_sessionid", Value: nb.Cookie}
-    req.AddCookie(&cookie)
-    return req
-}
+
 
 func (nb *Newsblur) RetrieveRealProfile() (RealProfile) {
     // TODO: Cache this, keyed on the session cookie value
-    req := nb.NewRequest("GET", "/social/profile")
-    client := http.Client{}
-    resp, err := client.Do(req)
+    client := nb.NewClient()
+    resp, err := client.Get(nbURL + "/social/profile")
     if err != nil {
         panic(err)
     }
@@ -253,9 +247,8 @@ func (nb *Newsblur) Login(username, password string) (error) {
 
 
 func (nb *Newsblur) GetProfile() (Profile) {
-    req := nb.NewRequest("GET", "/reader/feeds")
-    client := http.Client{}
-    resp, err := client.Do(req)
+    client := nb.NewClient()
+    resp, err := client.Get(nbURL + "/reader/feeds")
     if err != nil {
         panic(err)
     }
