@@ -16,6 +16,7 @@ var _ = fmt.Println
 type Newsblur struct {
     Cookie string
     Feeds map[int]Feed
+    Profile Profile
 }
 
 type Feed struct {
@@ -30,8 +31,21 @@ type Feed struct {
     Stories StoryList
 }
 
+type Folder struct {
+    Name string
+    Feeds map[int]Feed
+    Folders []Folder
+}
+
+type FeedList struct {
+    Feeds map[int]Feed
+    Folders []Folder
+    //Blurblogs map[int]Blurblogs
+}
+
 type Profile struct {
-    Folders []interface{} `json:"folders"`
+    RawFolders []interface{} `json:"folders"`
+    Folder Folder
     Feeds map[string]Feed
 }
 
@@ -78,10 +92,44 @@ func (feed *Feed) IsStale() (bool) {
 }
 
 
+func (nb *Newsblur) GetFolders() (folder Folder) {
+    profile := nb.GetProfile()
+
+    fmt.Println(profile.RawFolders)
+
+    //folder.Feeds = getFolderFeeds(folder)
+    folder.Folders = getFolderFolders(profile.RawFolders)
+    nb.Profile.Folder = folder
+
+    return folder
+}
+
+
+func getFolderFolders(folder []interface{}) (folders []Folder) {
+    for _, item := range folder {
+        fmt.Println(item)
+        switch item.(type) {
+            case float64:
+            case interface{}:
+                for folderName, val := range item.(map[string]interface{}) {
+                    folder := Folder{}
+                    folder.Name = folderName
+                    //folder.Feeds = getFolderFeeds(folder)
+                    folder.Folders = getFolderFolders(val.([]interface{}))
+                    folders = append(folders, folder)
+                }
+        }
+    }
+    fmt.Println(folders)
+
+    return folders
+}
+
+
 func (nb *Newsblur) GetFeeds() (map[int]Feed) {
     feeds := make(map[int]Feed)
 
-    profile := nb.RetrieveProfile()
+    profile := nb.GetProfile()
     for feedID, feed := range profile.Feeds {
         feedIDInt, err := strconv.Atoi(feedID)
         if err != nil {
@@ -171,7 +219,7 @@ func (nb *Newsblur) Login(username, password string) (error) {
 }
 
 
-func (nb *Newsblur) RetrieveProfile() (Profile) {
+func (nb *Newsblur) GetProfile() (Profile) {
     req := nb.NewRequest("GET", "/reader/feeds")
     client := http.Client{}
     resp, err := client.Do(req)
@@ -190,5 +238,6 @@ func (nb *Newsblur) RetrieveProfile() (Profile) {
         panic(err)
     }
 
+    nb.Profile = profile
     return profile
 }

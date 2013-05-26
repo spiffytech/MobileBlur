@@ -77,8 +77,10 @@ func index (w http.ResponseWriter, r *http.Request) {
     }
 
     feeds := nb.GetFeeds()
+    folders := nb.Profile.Folder
 
-    vals := map[string]interface{}{"Feeds": feeds}
+    // TODO: Uncapitalize 'Feeds'
+    vals := map[string]interface{}{"Feeds": feeds, "folders": folders}
 
     t := template.Must(template.New("index").ParseFiles("templates/wrapper.html", "templates/index"))
     t.Execute(w, vals)
@@ -90,8 +92,11 @@ func stories (w http.ResponseWriter, r *http.Request) {
 
     nb, err := initNewsblur()
     if err != nil {
+        // TODO: This should not panic
         panic(err)
     }
+
+    nb.GetFolders()
 
     nb.GetFeeds()
 
