@@ -1,6 +1,7 @@
 package newsblur
 
 import (
+    "net/http/cookiejar"
     "encoding/json"
     "errors"
     "fmt"
@@ -144,6 +145,7 @@ func getFolderFolders(nb *Newsblur, folder []interface{}) (folders []Folder) {
 }
 
 
+// TODO: Do I need things like this function since I refactored for folder support?
 func (nb *Newsblur) GetFeeds() (map[int]Feed) {
     feeds := make(map[int]Feed)
 
@@ -185,6 +187,19 @@ func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) (StoryList) {
 }
 
 
+func (nb *Newsblur) NewClient() (*http.Client) {
+    client := http.Client{}
+    cookie := http.Cookie{Name: "newsblur_sessionid", Value: nb.Cookie}
+    cookieJar, err := cookiejar.New(nil)
+    if err != nil {
+        panic(err)
+    }
+
+    u, _ := url.Parse("http://www.newsblur.com")
+    cookieJar.SetCookies(u, []*http.Cookie{&cookie})
+    client.Jar = cookieJar
+    return &client
+}
 func (nb *Newsblur) NewRequest(method, path string) (*http.Request) {
     req, err := http.NewRequest("GET", nbURL + path, nil)
     if err != nil {
@@ -258,4 +273,35 @@ func (nb *Newsblur) GetProfile() (Profile) {
 
     nb.Profile = profile
     return profile
+}
+
+
+func (nb *Newsblur) MarkStoryRead(feedID int, storyID string) (error) {
+    client := nb.NewClient()
+    resp, err := client.PostForm(nbURL + "/reader/mark_story_as_read", url.Values{"feed_id": {strconv.Itoa(feedID)}, "story_id": {storyID}})
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    type Response struct {
+        Result string `json:"result"`
+    }
+    var response Response
+
+    b, err := ioutil.ReadAll(resp.Body)
+    fmt.Println(string(b))
+    if err != nil {
+        panic(err)
+    }
+    err = json.Unmarshal(b, &response)
+    if err != nil {
+        panic(err)
+    }
+
+    if response.Result == "ok" {
+        return nil
+    } else {
+        return errors.New("Feed not could not be marked read")
+    }
 }

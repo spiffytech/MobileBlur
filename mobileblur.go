@@ -124,11 +124,36 @@ func stories (w http.ResponseWriter, r *http.Request) {
 }
 
 
+func mark_story_read (w http.ResponseWriter, r *http.Request) {
+    nb, err := initNewsblur()
+    if err != nil {
+        // TODO: This should not panic
+        panic(err)
+    }
+
+    feed_id, err := strconv.Atoi(r.URL.Query().Get("feed_id"))
+    story_id := r.URL.Query().Get("story_id")
+    if err != nil {
+        panic(err)
+    }
+
+    if err = nb.MarkStoryRead(feed_id, story_id); err != nil {
+        w.WriteHeader(http.StatusInternalServerError)
+        fmt.Fprintf(w, "true")
+        return
+    }
+
+    fmt.Fprintf(w, "true")
+}
+
+
 func main() {
     _ = fmt.Println
     r := mux.NewRouter()
     r.HandleFunc("/", index)
+    r.HandleFunc("/feeds", index)
     r.HandleFunc("/feeds/{feed_id}", stories)
+    r.HandleFunc("/stories/mark_read", mark_story_read)
 
     fmt.Println("Listening for browser connections")
     http.Handle("/", r)

@@ -8,7 +8,7 @@
     {{$pageID := .page}}
     {{with .Stories}}
         {{range .}}
-            <div class="story story-page-{{$pageID}}">
+            <div id="{{.ID}}" class="story story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}">
                 <div class="row">
                     <div class="small-6 title">
                         <h3>{{.Title}}</h3>
@@ -43,6 +43,18 @@
             });
 
             jQuery(document).on("click", ".story", function() {
+                var that = this
+                jQuery.get(
+                    "/stories/mark_read",
+                    {
+                        "feed_id": {{.feed_id}},
+                        "story_id": jQuery(this).attr("id")
+                    },
+                    function() {
+                        jQuery(that).removeClass("unread");
+                    }
+                );
+
                 jQuery(".story .content").hide();
                 jQuery(this).find(".content").show();
             });
