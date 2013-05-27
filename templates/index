@@ -1,5 +1,13 @@
 {{template "header"}}
 
+<h3>Social stuff</h3>
+{{with .socialFeeds}}
+    {{range .}}
+        {{template "feed" .}}
+    {{end}}
+{{end}}
+
+<h3>Feeds</h3>
 {{with .folder}}
         {{template "folder" .}}
 {{end}}
@@ -9,7 +17,7 @@
 {{end}}
 
 {{define "folder"}}
-    <h3>{{.Name}}</h3>
+    <h4>{{.Name}}</h4>
     {{with .Feeds}}
         {{range .}}
             {{template "feed" .}}
@@ -18,7 +26,7 @@
 
     {{with .Folders}}
         {{range .}}
-            <div style="margin-left: 5%">
+            <div style="margin-left: 2.5%">
                 {{template "folder" .}}
             </div>
         {{end}}

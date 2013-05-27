@@ -68,8 +68,11 @@ func index (w http.ResponseWriter, r *http.Request) {
         panic(err)
     }
 
-    // TODO: Uncapitalize 'Feeds'
-    vals := map[string]interface{}{"feeds": nb.Profile.Feeds, "folder": nb.Profile.Folder}
+    vals := map[string]interface{}{
+        "feeds": nb.Profile.Feeds,
+        "folder": nb.Profile.Folder,
+        "socialFeeds": nb.Profile.Social,
+    }
     fmt.Println(vals)
 
     t := template.Must(template.New("index").ParseFiles("templates/wrapper.html", "templates/index"))

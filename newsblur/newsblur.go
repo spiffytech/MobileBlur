@@ -48,6 +48,7 @@ type Profile struct {
     RawFolders []interface{} `json:"folders"`
     Folder Folder
     Feeds map[string]Feed
+    Social []SocialFeed `json:"social_feeds"`
 }
 
 
@@ -69,8 +70,8 @@ type Intelligence struct {
 type Story struct {
     ID string `json:"id"`
     GUID string `json:"guid_hash"`
-    //Date time.Time `json:"story_date"`
     Title string `json:"story_title"`
+    //Date time.Time `json:"story_date"`
     Content template.HTML `json:"story_content"`
     Permalink string `json:"story_permalink"`
     ReadStatus int `json:"read_status"`
@@ -81,6 +82,33 @@ type Story struct {
 
 type StoryList struct {
     Stories []Story `json:"stories"`
+}
+
+type SocialFeed struct {
+    Title string `json:"feed_title"`
+    ID string `json:"id"`
+    SocialID int `json:"subscription_user_id"`
+    Link string `json:"feed_link"`
+    PS int `json:"ps"`
+    NT int `json:"nt"`
+    NG int `json:"ng"`
+    Stories []SocialStory
+}
+
+type SocialStory struct {
+    ID string `json:"id"`
+    GUID string `json:"guid_hash"`
+    Title string `json:"story_title"`
+    Author string `json:"story_authors"`
+    //Date time.Time `json:"story_date"`
+    Content template.HTML `json:"story_content"`
+    Permalink string `json:"story_permalink"`
+    ReadStatus int `json:"read_status"`
+    Tags []string `json:"story_tags"`
+    HasModifications int `json:"has_modifications"`
+    Intelligence Intelligence `json:"intelligence"`
+    CommentCount int `json:"comment_count"`
+    Stories []SocialStory
 }
 
 
