@@ -20,6 +20,13 @@ type Newsblur struct {
     Profile Profile
 }
 
+type NBCoreResponse struct {
+    Result string `json:"result"`
+    Code int `json:"code"`
+    Errors []string `json:"errors"`
+    Payload interface{} `json:"payload"`
+}
+
 type Feed struct {
     ID int `json:"id"`
     PS int `json:"ps"`
@@ -48,7 +55,8 @@ type Profile struct {
     RawFolders []interface{} `json:"folders"`
     Folder Folder
     Feeds map[string]Feed
-    Social []SocialFeed `json:"social_feeds"`
+    RawSocialFeeds []SocialFeed `json:"social_feeds"`
+    SocialFeeds map[string]SocialFeed
 }
 
 
@@ -84,6 +92,10 @@ type StoryList struct {
     Stories []Story `json:"stories"`
 }
 
+type SocialStoryList struct {
+    Stories []SocialStory `json:"stories"`
+}
+
 type SocialFeed struct {
     Title string `json:"feed_title"`
     ID string `json:"id"`
@@ -104,6 +116,7 @@ type SocialStory struct {
     Content template.HTML `json:"story_content"`
     Permalink string `json:"story_permalink"`
     ReadStatus int `json:"read_status"`
+    StoryFeedID int `json:"story_feed_id"`
     Tags []string `json:"story_tags"`
     HasModifications int `json:"has_modifications"`
     Intelligence Intelligence `json:"intelligence"`
@@ -124,8 +137,6 @@ func (feed *Feed) IsStale() (bool) {
 func (nb *Newsblur) GetFolders() (folder Folder) {
     profile := nb.Profile
 
-    fmt.Println(profile.RawFolders)
-
     //folder.Feeds = getFolderFeeds(folder)
     folder.Feeds = getFolderFeeds(nb, profile.RawFolders)
     folder.Folders = getFolderFolders(nb, profile.RawFolders)
@@ -137,7 +148,6 @@ func (nb *Newsblur) GetFolders() (folder Folder) {
 
 func getFolderFeeds(nb *Newsblur, folder []interface{}) (feeds []Feed) {
     for _, item := range folder {
-        fmt.Println(item)
         switch item.(type) {
             case float64:
                 feedID := strconv.Itoa(int(item.(float64)))
@@ -146,14 +156,12 @@ func getFolderFeeds(nb *Newsblur, folder []interface{}) (feeds []Feed) {
             case interface{}:
         }
     }
-    fmt.Println("Feeds: ", feeds)
     return feeds
 }
 
 
 func getFolderFolders(nb *Newsblur, folder []interface{}) (folders []Folder) {
     for _, item := range folder {
-        fmt.Println(item)
         switch item.(type) {
             case float64:
             case interface{}:
@@ -167,7 +175,6 @@ func getFolderFolders(nb *Newsblur, folder []interface{}) (folders []Folder) {
                 }
         }
     }
-    fmt.Println(folders)
 
     return folders
 }
@@ -214,6 +221,34 @@ func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) (StoryList) {
     // TODO: Store this stuff in the cache
 
     feed.Stories = storyList
+    return storyList
+}
+
+
+func (feed *SocialFeed) GetSocialStoryPage(nb *Newsblur, page int, force bool) (SocialStoryList) {
+    u, err := url.Parse(nbURL + "/social/stories/" + strconv.Itoa(feed.SocialID) + "/")  // Trailing slash is necessary or Newsblur 404s
+    if err != nil {
+        panic(err)
+    }
+    q := u.Query()
+    q.Set("page", strconv.Itoa(page))
+    u.RawQuery = q.Encode()
+    client := nb.NewClient()
+    resp, err := client.Get(u.String())
+    if err != nil {
+        panic(err)
+    }
+
+    b, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        panic(err)
+    }
+
+    var storyList SocialStoryList
+    json.Unmarshal(b, &storyList)
+    // TODO: Store this stuff in the cache
+
+    feed.Stories = storyList.Stories
     return storyList
 }
 
@@ -292,6 +327,11 @@ func (nb *Newsblur) GetProfile() (Profile) {
         panic(err)
     }
 
+    profile.SocialFeeds = make(map[string]SocialFeed)
+    for _, feed := range profile.RawSocialFeeds {
+        profile.SocialFeeds[feed.ID] = feed
+    }
+
     nb.Profile = profile
     return profile
 }
@@ -300,6 +340,47 @@ func (nb *Newsblur) GetProfile() (Profile) {
 func (nb *Newsblur) MarkStoryRead(feedID int, storyID string) (error) {
     client := nb.NewClient()
     resp, err := client.PostForm(nbURL + "/reader/mark_story_as_read", url.Values{"feed_id": {strconv.Itoa(feedID)}, "story_id": {storyID}})
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    type Response struct {
+        Result string `json:"result"`
+    }
+    var response Response
+
+    b, err := ioutil.ReadAll(resp.Body)
+    fmt.Println(string(b))
+    if err != nil {
+        panic(err)
+    }
+    err = json.Unmarshal(b, &response)
+    if err != nil {
+        panic(err)
+    }
+
+    if response.Result == "ok" {
+        return nil
+    } else {
+        return errors.New("Feed not could not be marked read")
+    }
+}
+
+
+func (nb *Newsblur) MarkSocialStoryRead(socialFeedID string, feedID string, storyID string) (error) {
+    if res, err := strconv.Atoi(feedID); res == 0 || err != nil {
+        if err != nil {
+            panic(err)
+        } else {
+            panic("Feed ID is zero")
+        }
+    }
+
+    body := fmt.Sprintf(`{"%s": {"%s": ["%s"]}}`, socialFeedID, feedID, storyID)
+
+    client := nb.NewClient()
+    resp, err := client.PostForm(nbURL + "/reader/mark_social_stories_as_read", url.Values{"users_feeds_stories": {body}})
     if err != nil {
         return err
     }

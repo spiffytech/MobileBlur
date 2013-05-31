@@ -5,6 +5,7 @@ import (
     "net/http"
     "html/template"
     "strconv"
+    "strings"
     "time"
 
     "./newsblur"
@@ -71,14 +72,13 @@ func index (w http.ResponseWriter, r *http.Request) {
     vals := map[string]interface{}{
         "feeds": nb.Profile.Feeds,
         "folder": nb.Profile.Folder,
-        "socialFeeds": nb.Profile.Social,
+        "socialFeeds": nb.Profile.SocialFeeds,
     }
-    fmt.Println(vals)
 
     t := template.Must(template.New("index").ParseFiles("templates/wrapper.html", "templates/index"))
     err = t.Execute(w, vals)
     if err != nil {
-        fmt.Println(err)
+        panic(err)
     }
 }
 
@@ -93,7 +93,6 @@ func stories (w http.ResponseWriter, r *http.Request) {
     }
 
     nb.GetFolders()
-
     nb.GetFeeds()
 
     feed_id, err := strconv.Atoi(vars["feed_id"])
@@ -114,6 +113,7 @@ func stories (w http.ResponseWriter, r *http.Request) {
         "Stories": stories,
         "feed_id": feed_id,
         "page": page,  // use this instead of feed ID in template to collapse things
+        "isSocial": false,
     }
 
     if r.Header.Get("X-Requested-With") == "XMLHttpRequest" {
@@ -123,24 +123,89 @@ func stories (w http.ResponseWriter, r *http.Request) {
     }
 
     t := template.Must(template.New("stories").ParseFiles("templates/wrapper.html", "templates/stories"))
-    t.Execute(w, vals)
+    err = t.Execute(w, vals)
+    if err != nil {
+        panic(err)
+    }
 }
 
 
-func mark_story_read (w http.ResponseWriter, r *http.Request) {
+func socialStories (w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+
     nb, err := initNewsblur()
     if err != nil {
         // TODO: This should not panic
         panic(err)
     }
 
-    feed_id, err := strconv.Atoi(r.URL.Query().Get("feed_id"))
+    feed_id := vars["feed_id"]
+
+    page, err := strconv.Atoi(r.URL.Query().Get("p"))
+    if err != nil {
+        page = 1
+        fmt.Println("Page not set explicitly")
+    }
+
+    feed := nb.Profile.SocialFeeds[feed_id]
+    stories := feed.GetSocialStoryPage(&nb, page, false).Stories
+
+    vals := map[string]interface{}{
+        "Stories": stories,
+        "feed_id": feed_id,
+        "page": page,  // TODO: use this instead of feed ID in template to collapse things
+        "isSocial": true,
+    }
+
+    if r.Header.Get("X-Requested-With") == "XMLHttpRequest" {
+        vals["notAJAX"] = false
+    } else {
+        vals["notAJAX"] = true
+    }
+
+    t := template.Must(template.New("stories").ParseFiles("templates/wrapper.html", "templates/stories"))
+    err = t.Execute(w, vals)
+    if err != nil {
+        panic(err)
+    }
+}
+
+
+func markStoryRead (w http.ResponseWriter, r *http.Request) {
+    nb, err := initNewsblur()
+    if err != nil {
+        // TODO: This should not panic
+        panic(err)
+    }
+
+    feed_id := r.URL.Query().Get("feed_id")
+
+    var isSocial bool
+    if strings.Contains(feed_id, ":") {
+        isSocial = true
+    } else {
+        isSocial = false
+    }
+
     story_id := r.URL.Query().Get("story_id")
     if err != nil {
         panic(err)
     }
 
-    if err = nb.MarkStoryRead(feed_id, story_id); err != nil {
+    // TODO: Make this support social story (string) IDs. Or better, find the equivalent social story function
+    if isSocial == true {
+        storyFeedID := r.URL.Query().Get("storyFeedID")
+        socialFeedID := strings.Split(feed_id, ":")[1]
+        err = nb.MarkSocialStoryRead(socialFeedID, storyFeedID, story_id)
+    } else {
+        feed_id_int, err := strconv.Atoi(feed_id)
+        if err != nil {
+            panic(err)
+        }
+        err = nb.MarkStoryRead(feed_id_int, story_id)
+    }
+
+    if err != nil {
         w.WriteHeader(http.StatusInternalServerError)
         fmt.Fprintf(w, "true")
         return
@@ -151,12 +216,12 @@ func mark_story_read (w http.ResponseWriter, r *http.Request) {
 
 
 func main() {
-    _ = fmt.Println
     r := mux.NewRouter()
     r.HandleFunc("/", index)
     r.HandleFunc("/feeds", index)
     r.HandleFunc("/feeds/{feed_id}", stories)
-    r.HandleFunc("/stories/mark_read", mark_story_read)
+    r.HandleFunc("/social/{feed_id}", socialStories)
+    r.HandleFunc("/stories/mark_read", markStoryRead)
 
     fmt.Println("Listening for browser connections")
     http.Handle("/", r)

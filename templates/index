@@ -3,7 +3,7 @@
 <h3>Social stuff</h3>
 {{with .socialFeeds}}
     {{range .}}
-        {{template "feed" .}}
+        <p><a href="/social/{{.ID}}">{{.Title}}</a></p>
     {{end}}
 {{end}}
 

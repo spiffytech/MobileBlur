@@ -1,3 +1,5 @@
+{{$isSocial := .isSocial}}
+
 {{if .notAJAX}}
     {{template "header"}}
 {{end}}
@@ -8,7 +10,7 @@
     {{$pageID := .page}}
     {{with .Stories}}
         {{range .}}
-            <div id="{{.ID}}" class="story story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}">
+            <div id="{{.ID}}" class="story story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}" {{if $isSocial}}data-story-feed-id="{{.StoryFeedID}}"{{end}}>
                 <div class="row">
                     <div class="small-6 title">
                         <h3>{{.Title}}</h3>
@@ -34,12 +36,12 @@
     <script type="text/javascript">
         jQuery(document).ready(function() {
             jQuery(window).scrollAppend({
-                url: "/feeds/{{.feed_id}}",
+                url: "/{{if .isSocial}}social{{else}}feeds{{end}}/{{.feed_id}}",
                 params: {},
                 appendTo: "#stories",
                 footerClass: "#footer",
                 disableCache: true,
-                pagesToPause: 999999
+                pagesToPause: 99999
             });
 
             jQuery(document).on("click", ".story", function() {
@@ -48,6 +50,7 @@
                     "/stories/mark_read",
                     {
                         "feed_id": {{.feed_id}},
+                        {{if .isSocial}}"storyFeedID": jQuery(this).attr("data-story-feed-id"),{{end}}
                         "story_id": jQuery(this).attr("id")
                     },
                     function() {
