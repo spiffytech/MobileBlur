@@ -14,7 +14,12 @@
 {{end}}
 
 {{define "feed"}}
-    <p><a href="/feeds/{{.ID}}">{{.Title}}</a></p>
+    <p>
+        <span class="feed-ps">{{.PS}}</span>
+        <span class="feed-nt">{{.NT}}</span>
+        <span class="feed-ng">{{.NG}}</span>
+        <a href="/feeds/{{.ID}}">{{.Title}}</a>
+    </p>
 {{end}}
 
 {{define "folder"}}

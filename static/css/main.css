@@ -8,12 +8,12 @@
     color: orange;
 }
 
-.story.score-ps {
+.feed-ps, .story.score-ps {
     background-color: green;
 }
-.story.score-nt {
+.feed-nt, .story.score-nt {
     background-color: white;
 }
-.story.score-ng {
+.feed-ng, .story.score-ng {
     background-color: red;
 }
