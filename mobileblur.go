@@ -242,7 +242,31 @@ func markReadBulk(w http.ResponseWriter, r *http.Request) {
     }
 
     err = nb.MarkStoriesReadBulk(stories)
-    fmt.Println(err)
+
+    if err != nil {
+        w.WriteHeader(http.StatusInternalServerError)
+        fmt.Fprintf(w, "true")
+        return
+    }
+
+    fmt.Fprintf(w, "true")
+}
+
+
+func markUnread(w http.ResponseWriter, r *http.Request) {
+    nb, err := initNewsblur()
+    if err != nil {
+        // TODO: This should not panic
+        panic(err)
+    }
+
+    r.ParseForm()
+    rawStory := r.Form.Get("story")
+    fields := strings.SplitN(rawStory, "-", 3)
+    feedID := fields[1]
+    storyID := fields[2]
+
+    err = nb.MarkStoryUnread(feedID, storyID)
 
     if err != nil {
         w.WriteHeader(http.StatusInternalServerError)
@@ -262,6 +286,7 @@ func main() {
     r.HandleFunc("/social/{feed_id}", socialStories)
     r.HandleFunc("/stories/mark_read", markStoryRead)
     r.HandleFunc("/stories/markReadBulk", markReadBulk)
+    r.HandleFunc("/stories/markUnread", markUnread)
 
     fmt.Println("Listening for browser connections")
     http.Handle("/", r)

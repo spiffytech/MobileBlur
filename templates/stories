@@ -17,17 +17,24 @@
     </form>
 {{else}}
     {{$pageID := .page}}
+
     {{with .Stories}}
         {{range .}}
             <div id="{{.ID}}" class="story story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}" {{if $isSocial}}data-story-feed-id="{{.StoryFeedID}}"{{end}}>
                 <div class="row">
-                    <div class="small-8 columns opener">
+                    <div class="small-7 columns opener">
                         <h3 class="title">{{.Title}}</h3>
                     </div>
                     <div class="small-3 columns pubdate opener">
                         <!-- date -->
                     </div>
-                    <div class="small-1 columns">
+                    <div class="small-2 columns">
+                        {{$hash := .HashStory}}
+                        <a href="#" data-dropdown="drop-{{$hash}}" class="button tiny dropdown">Gear</a>
+                        <ul id="drop-{{$hash}}" class="f-dropdown">
+                            <li><a class="markUnread" data-story="story-{{$feed.ID}}-{{.ID}}" href="#">Mark Unread</a></li>
+                        </ul>
+
                         <input type="checkbox" name='story-{{$feed.ID}}-{{.ID}}'>
                     </div>
                 </div>
@@ -80,14 +87,24 @@
             });
 
             jQuery("#markStoriesRead").on("click", function() {
-                jQuery("form[name=markStoriesRead] input:checked").removeClass("unread");
-
                 jQuery.post(
                     jQuery("form[name=markStoriesRead]").attr("action"),
                     jQuery("form[name=markStoriesRead]").serialize(),
-                    function(data) {}
+                    function(data) {
+                        jQuery("form[name=markStoriesRead] input:checked").removeClass("unread");
+                        jQuery("form[name=markStoriesRead] input:checked").attr(checked, false);
+                    }
                 );
-
+            });
+            jQuery(document).on("click", "a.markUnread", function() {
+                var that = this;
+                jQuery.post(
+                    "/stories/markUnread",
+                    {"story": jQuery(this).attr("data-story")},
+                    function(data) {
+                        jQuery(that).parents(".story").addClass("unread");
+                    }
+                );
             });
         });
     </script>

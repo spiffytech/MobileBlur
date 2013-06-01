@@ -1,13 +1,14 @@
 package newsblur
 
 import (
-    "net/http/cookiejar"
+    "crypto/sha512"
     "encoding/json"
     "errors"
     "fmt"
     "html/template"
     "io/ioutil"
     "net/http"
+    "net/http/cookiejar"
     "net/url"
     "strconv"
 )
@@ -125,6 +126,14 @@ type SocialStory struct {
 
 var nbURL = "http://www.newsblur.com"
 
+
+func (story *Story) HashStory() string {
+    b := []byte(story.ID)
+    hasher := sha512.New()
+    hasher.Write(b)
+    sha := fmt.Sprintf("%x", hasher.Sum(nil))
+    return sha
+}
 
 func (feed *Feed) IsStale() (bool) {
     // TODO: Need to flesh this out to check the cache when I actually have a cache mechanism to check
@@ -447,5 +456,42 @@ func (nb *Newsblur) MarkSocialStoryRead(socialFeedID string, feedID string, stor
         return nil
     } else {
         return errors.New("Feed not could not be marked read")
+    }
+}
+
+
+func (nb *Newsblur) MarkStoryUnread(feedID, storyID string) (error) {
+    client := nb.NewClient()
+    resp, err := client.PostForm(
+        nbURL + "/reader/mark_story_as_unread",
+        url.Values{
+            "feed_id": {feedID},
+            "story_id": {storyID},
+        },
+    )
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    type Response struct {
+        Result string `json:"result"`
+    }
+    var response Response
+
+    b, err := ioutil.ReadAll(resp.Body)
+    fmt.Println(string(b))
+    if err != nil {
+        panic(err)
+    }
+    err = json.Unmarshal(b, &response)
+    if err != nil {
+        panic(err)
+    }
+
+    if response.Result == "ok" {
+        return nil
+    } else {
+        return errors.New("Feeds not could not be marked read")
     }
 }
