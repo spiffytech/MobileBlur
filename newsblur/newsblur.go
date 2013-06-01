@@ -127,7 +127,15 @@ type SocialStory struct {
 var nbURL = "http://www.newsblur.com"
 
 
+// TODO: Deduplicate this logic
 func (story *Story) HashStory() string {
+    b := []byte(story.ID)
+    hasher := sha512.New()
+    hasher.Write(b)
+    sha := fmt.Sprintf("%x", hasher.Sum(nil))
+    return sha
+}
+func (story *SocialStory) HashStory() string {
     b := []byte(story.ID)
     hasher := sha512.New()
     hasher.Write(b)

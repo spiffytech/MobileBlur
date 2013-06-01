@@ -32,7 +32,7 @@
                         {{$hash := .HashStory}}
                         <a href="#" data-dropdown="drop-{{$hash}}" class="button tiny dropdown">Gear</a>
                         <ul id="drop-{{$hash}}" class="f-dropdown">
-                            <li><a class="markUnread" data-story="story-{{$feed.ID}}-{{.ID}}" href="#">Mark Unread</a></li>
+                            <li><a class="markUnread" data-story="story-{{if $isSocial}}{{.StoryFeedID}}{{else}}{{$feed.ID}}{{end}}-{{.ID}}" href="#">Mark Unread</a></li>
                         </ul>
 
                         <input type="checkbox" name='story-{{$feed.ID}}-{{.ID}}'>
