@@ -108,10 +108,14 @@ func stories (w http.ResponseWriter, r *http.Request) {
 
     feed := nb.Feeds[feed_id]
     stories := feed.GetStoryPage(&nb, page, false).Stories
+    if len(stories) == 0 {
+        fmt.Fprintf(w, "false")
+        return
+    }
 
     vals := map[string]interface{}{
         "Stories": stories,
-        "feed_id": feed_id,
+        "feed": feed,
         "page": page,  // use this instead of feed ID in template to collapse things
         "isSocial": false,
     }
@@ -149,10 +153,14 @@ func socialStories (w http.ResponseWriter, r *http.Request) {
 
     feed := nb.Profile.SocialFeeds[feed_id]
     stories := feed.GetSocialStoryPage(&nb, page, false).Stories
+    if len(stories) == 0 {
+        fmt.Fprintf(w, "false")
+        return
+    }
 
     vals := map[string]interface{}{
         "Stories": stories,
-        "feed_id": feed_id,
+        "feed": feed,
         "page": page,  // TODO: use this instead of feed ID in template to collapse things
         "isSocial": true,
     }
@@ -171,7 +179,7 @@ func socialStories (w http.ResponseWriter, r *http.Request) {
 }
 
 
-func markStoryRead (w http.ResponseWriter, r *http.Request) {
+func markStoryRead(w http.ResponseWriter, r *http.Request) {
     nb, err := initNewsblur()
     if err != nil {
         // TODO: This should not panic

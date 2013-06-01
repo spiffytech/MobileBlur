@@ -12,8 +12,6 @@ import (
     "strconv"
 )
 
-var _ = fmt.Println
-
 type Newsblur struct {
     Cookie string
     Feeds map[int]Feed

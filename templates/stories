@@ -1,7 +1,11 @@
 {{$isSocial := .isSocial}}
 
+{{define "header1"}}
+    {{.feed.Title}}
+{{end}}
+
 {{if .notAJAX}}
-    {{template "header"}}
+    {{template "header" .}}
 {{end}}
 
 {{if .notAJAX}}
@@ -36,7 +40,7 @@
     <script type="text/javascript">
         jQuery(document).ready(function() {
             jQuery(window).scrollAppend({
-                url: "/{{if .isSocial}}social{{else}}feeds{{end}}/{{.feed_id}}",
+                url: "/{{if .isSocial}}social{{else}}feeds{{end}}/{{.feed.ID}}",
                 params: {},
                 appendTo: "#stories",
                 footerClass: "#footer",
@@ -49,7 +53,7 @@
                 jQuery.get(
                     "/stories/mark_read",
                     {
-                        "feed_id": {{.feed_id}},
+                        "feed_id": {{.feed.ID}},
                         {{if .isSocial}}"storyFeedID": jQuery(this).attr("data-story-feed-id"),{{end}}
                         "story_id": jQuery(this).attr("id")
                     },

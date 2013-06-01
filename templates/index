@@ -1,4 +1,5 @@
-{{template "header"}}
+{{define "header1"}}{{end}}
+{{template "header" .}}
 
 <h3>Social stuff</h3>
 {{with .socialFeeds}}
