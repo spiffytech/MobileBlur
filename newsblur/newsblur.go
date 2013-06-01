@@ -337,7 +337,10 @@ func (nb *Newsblur) GetProfile() (Profile) {
 
 func (nb *Newsblur) MarkStoryRead(feedID int, storyID string) (error) {
     client := nb.NewClient()
-    resp, err := client.PostForm(nbURL + "/reader/mark_story_as_read", url.Values{"feed_id": {strconv.Itoa(feedID)}, "story_id": {storyID}})
+    resp, err := client.PostForm(
+        nbURL + "/reader/mark_story_as_read",
+        url.Values{"feed_id": {strconv.Itoa(feedID)}, "story_id": {storyID}},
+    )
     if err != nil {
         return err
     }
@@ -366,6 +369,44 @@ func (nb *Newsblur) MarkStoryRead(feedID int, storyID string) (error) {
 }
 
 
+func (nb *Newsblur) MarkStoriesReadBulk(stories map[string][]string) (error) {
+    b, err := json.Marshal(stories)
+    if err != nil {
+        panic(err)
+    }
+
+    client := nb.NewClient()
+    resp, err := client.PostForm(
+        nbURL + "/reader/mark_feed_stories_as_read",
+        url.Values{"feeds_stories": {string(b)}},
+    )
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    type Response struct {
+        Result string `json:"result"`
+    }
+    var response Response
+
+    b, err = ioutil.ReadAll(resp.Body)
+    if err != nil {
+        panic(err)
+    }
+    err = json.Unmarshal(b, &response)
+    if err != nil {
+        panic(err)
+    }
+
+    if response.Result == "ok" {
+        return nil
+    } else {
+        return errors.New("Feeds not could not be marked read")
+    }
+}
+
+
 func (nb *Newsblur) MarkSocialStoryRead(socialFeedID string, feedID string, storyID string) (error) {
     if res, err := strconv.Atoi(feedID); res == 0 || err != nil {
         if err != nil {
@@ -378,7 +419,10 @@ func (nb *Newsblur) MarkSocialStoryRead(socialFeedID string, feedID string, stor
     body := fmt.Sprintf(`{"%s": {"%s": ["%s"]}}`, socialFeedID, feedID, storyID)
 
     client := nb.NewClient()
-    resp, err := client.PostForm(nbURL + "/reader/mark_social_stories_as_read", url.Values{"users_feeds_stories": {body}})
+    resp, err := client.PostForm(
+        nbURL + "/reader/mark_social_stories_as_read",
+        url.Values{"users_feeds_stories": {body}},
+    )
     if err != nil {
         return err
     }

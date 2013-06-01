@@ -1,7 +1,10 @@
 {{$isSocial := .isSocial}}
+{{$feed := .feed}}
 
 {{define "header1"}}
     {{.feed.Title}}
+    <input type="button" id="markStoriesRead" class="button" value="Mark Selected Read">
+    <input type="button" id="checkAll" class="button" value="Select All">
 {{end}}
 
 {{if .notAJAX}}
@@ -9,18 +12,23 @@
 {{end}}
 
 {{if .notAJAX}}
-    <div id="stories" class="row"></div>
+    <form name="markStoriesRead" action="/stories/markReadBulk" method="post">
+        <div id="stories" class="row"></div>
+    </form>
 {{else}}
     {{$pageID := .page}}
     {{with .Stories}}
         {{range .}}
             <div id="{{.ID}}" class="story story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}" {{if $isSocial}}data-story-feed-id="{{.StoryFeedID}}"{{end}}>
                 <div class="row">
-                    <div class="small-6 title">
+                    <div class="small-8 columns title">
                         <h3>{{.Title}}</h3>
                     </div>
-                    <div class="small-6 pubdate">
+                    <div class="small-3 columns pubdate">
                         <!-- date -->
+                    </div>
+                    <div class="small-1 columns pubdate">
+                        <input type="checkbox" name='story-{{$feed.ID}}-{{.ID}}'>
                     </div>
                 </div>
                 <div class="row content">
@@ -64,6 +72,18 @@
 
                 jQuery(".story .content").hide();
                 jQuery(this).find(".content").show();
+            });
+
+            jQuery("#checkAll").on("click", function() {
+                jQuery("form[name=markStoriesRead] input[type=checkbox]").attr("checked", true);
+            });
+
+            jQuery("#markStoriesRead").on("click", function() {
+                jQuery.post(
+                    jQuery("form[name=markStoriesRead]").attr("action"),
+                    jQuery("form[name=markStoriesRead]").serialize(),
+                    function(data) {}
+                );
             });
         });
     </script>

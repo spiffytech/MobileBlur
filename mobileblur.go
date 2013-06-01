@@ -223,6 +223,37 @@ func markStoryRead(w http.ResponseWriter, r *http.Request) {
 }
 
 
+func markReadBulk(w http.ResponseWriter, r *http.Request) {
+    nb, err := initNewsblur()
+    if err != nil {
+        // TODO: This should not panic
+        panic(err)
+    }
+
+    stories := make(map[string][]string)
+    r.ParseForm()
+    for story, _ := range r.Form {
+        fields := strings.SplitN(story, "-", 3)
+        if fields[0] != "story" {
+            continue
+        }
+
+        stories[fields[1]] = append(stories[fields[1]], fields[2])
+    }
+
+    err = nb.MarkStoriesReadBulk(stories)
+    fmt.Println(err)
+
+    if err != nil {
+        w.WriteHeader(http.StatusInternalServerError)
+        fmt.Fprintf(w, "true")
+        return
+    }
+
+    fmt.Fprintf(w, "true")
+}
+
+
 func main() {
     r := mux.NewRouter()
     r.HandleFunc("/", index)
@@ -230,6 +261,7 @@ func main() {
     r.HandleFunc("/feeds/{feed_id}", stories)
     r.HandleFunc("/social/{feed_id}", socialStories)
     r.HandleFunc("/stories/mark_read", markStoryRead)
+    r.HandleFunc("/stories/markReadBulk", markReadBulk)
 
     fmt.Println("Listening for browser connections")
     http.Handle("/", r)
