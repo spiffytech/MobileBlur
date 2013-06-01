@@ -129,6 +129,55 @@ type SocialStory struct {
 
 var nbURL = "http://www.newsblur.com"
 
+func Login(username, password string) (cookie string, error error) {
+    resp, err := http.PostForm(
+        nbURL + "/api/login",
+        url.Values{
+            "username": {username},
+            "password": {password},
+        },
+    )
+    if err != nil {
+        return "", err
+    }
+    defer resp.Body.Close()
+
+    type Response struct {
+        Result string `json:"result"`
+        Errors interface{} `json:"errors"`
+        Code int
+    }
+    var response Response
+
+    b, err := ioutil.ReadAll(resp.Body)
+    fmt.Println(string(b))
+    if err != nil {
+        panic(err)
+    }
+    err = json.Unmarshal(b, &response)
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Println(response)
+
+    if response.Errors != nil {
+        return "", errors.New("Could not log you in")
+    } else {
+        for _, c := range resp.Cookies() {
+            if c.Name == "newsblur_sessionid" {
+                cookie = c.Value
+            }
+        }
+
+        if cookie == "" {
+            return "", errors.New("Newsblur didn't give us a cookie")
+        }
+
+        return cookie, nil
+    }
+
+}
 
 // TODO: Deduplicate this logic
 func (story *Story) HashStory() string {

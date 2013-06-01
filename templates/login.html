@@ -1,0 +1,20 @@
+{{define "header1"}}{{end}}
+{{template "header" .}}
+
+<p>{{.error}}</p>
+<form name="login" action="/login" method="post">
+    <label>
+        Username
+        <input name="username" value="{{.username}}">
+    </label>
+    <label>
+        Password
+        <input name="password" value="{{.password}}">
+    </label>
+
+    <input type="submit" value="Log in">
+</form>
+
+{{define "scripts"}}{{end}}
+
+{{template "footer"}}

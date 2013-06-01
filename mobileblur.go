@@ -48,22 +48,7 @@ func initNewsblur() (newsblur.Newsblur, error) {
 }
 
 
-func index (w http.ResponseWriter, r *http.Request) {
-    /*
-    test1 := Test1{Val1: "Val1str", Val2: 2}
-    test2 := Test2{Val3: "Val3str", Val4: 4}
-    d := make(map[string]interface{})
-    d["test1"] = &test1
-    //d["test2"] = &test2
-    _ = &test2
-    rendered, err := mustache.MustRenderFile("templates/index.mustache", d)
-    if err != nil {
-        panic(err)
-    }
-    //rendered := mustache.RenderFile("templates/index.mustache", d)
-    fmt.Fprintf(w, rendered)
-    */
-
+func index(w http.ResponseWriter, r *http.Request) {
     nb, err := initNewsblur()
     if err != nil {
         panic(err)
@@ -83,7 +68,43 @@ func index (w http.ResponseWriter, r *http.Request) {
 }
 
 
-func stories (w http.ResponseWriter, r *http.Request) {
+func login(w http.ResponseWriter, r *http.Request) {
+    var username string
+    var password string
+    var err error
+    if r.Method == "POST" {
+        r.ParseForm()
+        username = r.Form.Get("username")
+        password = r.Form.Get("password")
+        cookie, err := newsblur.Login(username, password)
+        if err == nil {
+            c := http.Cookie{
+                Name: "newsblur_sessionid",
+                Value: cookie,
+                Path: "/",
+                Domain: ".mbtest.spiffyte.ch",
+                MaxAge: 315360000,
+            }
+            http.SetCookie(w, &c)
+        }
+        // TODO: Show form again, or redirect to /
+    }
+
+    vals := map[string]interface{}{
+        "username": username,
+        "password": password,
+        "error": err,
+    }
+
+    t := template.Must(template.New("login.html").ParseFiles("templates/wrapper.html", "templates/login.html"))
+    err = t.Execute(w, vals)
+    if err != nil {
+        panic(err)
+    }
+}
+
+
+func stories(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
 
     nb, err := initNewsblur()
@@ -133,7 +154,7 @@ func stories (w http.ResponseWriter, r *http.Request) {
 }
 
 
-func socialStories (w http.ResponseWriter, r *http.Request) {
+func socialStories(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
 
     nb, err := initNewsblur()
@@ -306,6 +327,7 @@ func markUnread(w http.ResponseWriter, r *http.Request) {
 func main() {
     r := mux.NewRouter()
     r.HandleFunc("/", index)
+    r.HandleFunc("/login", login)
     r.HandleFunc("/feeds", index)
     r.HandleFunc("/feeds/{feed_id}", stories)
     r.HandleFunc("/social/{feed_id}", socialStories)
