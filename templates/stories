@@ -20,13 +20,14 @@
 
     {{with .Stories}}
         {{range .}}
-            <div id="{{.ID}}" class="story story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}" {{if $isSocial}}data-story-feed-id="{{.StoryFeedID}}"{{end}}>
+            {{$score := .Score}}
+            <div id="{{.ID}}" class="story score-{{$score}} story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}" {{if $isSocial}}data-story-feed-id="{{.StoryFeedID}}"{{end}}>
                 <div class="row">
                     <div class="small-7 columns opener">
                         <h3 class="title">{{.Title}}</h3>
                     </div>
                     <div class="small-3 columns pubdate opener">
-                        <!-- date -->
+                        {{.PrettyDate}}
                     </div>
                     <div class="small-2 columns">
                         {{$hash := .HashStory}}

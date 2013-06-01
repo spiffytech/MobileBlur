@@ -103,7 +103,6 @@ func stories (w http.ResponseWriter, r *http.Request) {
     page, err := strconv.Atoi(r.URL.Query().Get("p"))
     if err != nil {
         page = 1
-        fmt.Println("Page not set explicitly")
     }
 
     feed := nb.Feeds[feed_id]

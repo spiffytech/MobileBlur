@@ -7,3 +7,13 @@
 .story.unread .title {
     color: orange;
 }
+
+.story.score-ps {
+    background-color: green;
+}
+.story.score-nt {
+    background-color: white;
+}
+.story.score-ng {
+    background-color: red;
+}

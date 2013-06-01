@@ -7,6 +7,7 @@ import (
     "fmt"
     "html/template"
     "io/ioutil"
+    "math"
     "net/http"
     "net/http/cookiejar"
     "net/url"
@@ -79,6 +80,7 @@ type Story struct {
     GUID string `json:"guid_hash"`
     Title string `json:"story_title"`
     //Date time.Time `json:"story_date"`
+    PrettyDate string `json:"short_parsed_date"`
     Content template.HTML `json:"story_content"`
     Permalink string `json:"story_permalink"`
     ReadStatus int `json:"read_status"`
@@ -112,6 +114,7 @@ type SocialStory struct {
     Title string `json:"story_title"`
     Author string `json:"story_authors"`
     //Date time.Time `json:"story_date"`
+    PrettyDate string `json:"short_parsed_date"`
     Content template.HTML `json:"story_content"`
     Permalink string `json:"story_permalink"`
     ReadStatus int `json:"read_status"`
@@ -497,4 +500,41 @@ func (nb *Newsblur) MarkStoryUnread(feedID, storyID string) (error) {
     } else {
         return errors.New("Feeds not could not be marked read")
     }
+}
+
+func (story *Story) Score() (score string) {
+    return scoreStory(story.Intelligence)
+}
+func (story *SocialStory) Score() (score string) {
+    return scoreStory(story.Intelligence)
+}
+
+func scoreStory(intelligence Intelligence) (score string) {
+    maxScore := 0.0
+    maxScore = math.Max(maxScore, float64(intelligence.Tags))
+    maxScore = math.Max(maxScore, float64(intelligence.Author))
+    maxScore = math.Max(maxScore, float64(intelligence.Title))
+
+    minScore := 0.0
+    minScore = math.Min(minScore, float64(intelligence.Tags))
+    minScore = math.Min(minScore, float64(intelligence.Author))
+    minScore = math.Min(minScore, float64(intelligence.Title))
+
+    if maxScore > 0 {
+        score = "ps";
+    } else if minScore < 0 {
+        score = "ng";
+    }
+
+    if (score == "") {
+        if intelligence.Feed > 0 {
+            score = "ps"
+        } else if intelligence.Feed < 0 {
+            score = "ng"
+        } else {
+            score = "nt"
+        }
+    }
+
+    return;
 }
