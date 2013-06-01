@@ -424,21 +424,16 @@ func (nb *Newsblur) MarkStoriesReadBulk(stories map[string][]string) (error) {
 }
 
 
-func (nb *Newsblur) MarkSocialStoryRead(socialFeedID string, feedID string, storyID string) (error) {
-    if res, err := strconv.Atoi(feedID); res == 0 || err != nil {
-        if err != nil {
-            panic(err)
-        } else {
-            panic("Feed ID is zero")
-        }
+func (nb *Newsblur) MarkSocialStoriesRead(stories map[string]map[string][]string) (error) {
+    b, err := json.Marshal(stories)
+    if err != nil {
+        panic(err)
     }
-
-    body := fmt.Sprintf(`{"%s": {"%s": ["%s"]}}`, socialFeedID, feedID, storyID)
 
     client := nb.NewClient()
     resp, err := client.PostForm(
         nbURL + "/reader/mark_social_stories_as_read",
-        url.Values{"users_feeds_stories": {body}},
+        url.Values{"users_feeds_stories": {string(b)}},
     )
     if err != nil {
         return err
@@ -450,7 +445,7 @@ func (nb *Newsblur) MarkSocialStoryRead(socialFeedID string, feedID string, stor
     }
     var response Response
 
-    b, err := ioutil.ReadAll(resp.Body)
+    b, err = ioutil.ReadAll(resp.Body)
     fmt.Println(string(b))
     if err != nil {
         panic(err)

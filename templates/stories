@@ -12,7 +12,7 @@
 {{end}}
 
 {{if .notAJAX}}
-    <form name="markStoriesRead" action="/stories/markReadBulk" method="post">
+    <form name="markStoriesRead" action="/stories/markReadBulk?isSocial={{.isSocial}}" method="post">
         <div id="stories" class="row"></div>
     </form>
 {{else}}
@@ -35,7 +35,7 @@
                             <li><a class="markUnread" data-story="story-{{if $isSocial}}{{.StoryFeedID}}{{else}}{{$feed.ID}}{{end}}-{{.ID}}" href="#">Mark Unread</a></li>
                         </ul>
 
-                        <input type="checkbox" name='story-{{$feed.ID}}-{{.ID}}'>
+                        <input type="checkbox" name='story-{{$feed.ID}}-{{if $isSocial}}{{.StoryFeedID}}-{{end}}{{.ID}}'>
                     </div>
                 </div>
                 <div class="row content">
@@ -87,9 +87,10 @@
             });
 
             jQuery("#markStoriesRead").on("click", function() {
+                var data = jQuery("form[name=markStoriesRead]").serialize();
                 jQuery.post(
                     jQuery("form[name=markStoriesRead]").attr("action"),
-                    jQuery("form[name=markStoriesRead]").serialize(),
+                    data,
                     function(data) {
                         jQuery("form[name=markStoriesRead] input:checked").removeClass("unread");
                         jQuery("form[name=markStoriesRead] input:checked").attr(checked, false);

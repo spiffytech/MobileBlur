@@ -195,7 +195,7 @@ func markStoryRead(w http.ResponseWriter, r *http.Request) {
         isSocial = false
     }
 
-    story_id := r.URL.Query().Get("story_id")
+    storyID := r.URL.Query().Get("story_id")
     if err != nil {
         panic(err)
     }
@@ -203,14 +203,19 @@ func markStoryRead(w http.ResponseWriter, r *http.Request) {
     // TODO: Make this support social story (string) IDs. Or better, find the equivalent social story function
     if isSocial == true {
         storyFeedID := r.URL.Query().Get("storyFeedID")
-        socialFeedID := strings.Split(feed_id, ":")[1]
-        err = nb.MarkSocialStoryRead(socialFeedID, storyFeedID, story_id)
+        feedID := strings.Split(feed_id, ":")[1]
+        stories := make(map[string]map[string][]string)
+        if stories[feedID] == nil {
+            stories[feedID] = make(map[string][]string)
+        }
+        stories[feedID][storyFeedID] = append(stories[feedID][storyFeedID], storyID)
+        err = nb.MarkSocialStoriesRead(stories)
     } else {
         feed_id_int, err := strconv.Atoi(feed_id)
         if err != nil {
             panic(err)
         }
-        err = nb.MarkStoryRead(feed_id_int, story_id)
+        err = nb.MarkStoryRead(feed_id_int, storyID)
     }
 
     if err != nil {
@@ -230,18 +235,39 @@ func markReadBulk(w http.ResponseWriter, r *http.Request) {
         panic(err)
     }
 
-    stories := make(map[string][]string)
     r.ParseForm()
-    for story, _ := range r.Form {
-        fields := strings.SplitN(story, "-", 3)
-        if fields[0] != "story" {
-            continue
+    if r.URL.Query().Get("isSocial") == "true" {
+        stories := make(map[string]map[string][]string)
+        for story, _ := range r.Form {
+            fields := strings.SplitN(story, "-", 4)
+            if fields[0] != "story" {
+                continue
+            }
+
+            feedID := strings.Split(fields[1], ":")[1]
+            storyFeedID := fields[2]
+            storyID := fields[3]
+
+            if stories[feedID] == nil {
+                stories[feedID] = make(map[string][]string)
+            }
+            stories[feedID][storyFeedID] = append(stories[feedID][storyFeedID], storyID)
         }
 
-        stories[fields[1]] = append(stories[fields[1]], fields[2])
-    }
+        err = nb.MarkSocialStoriesRead(stories)
+    } else {
+        stories := make(map[string][]string)
+        for story, _ := range r.Form {
+            fields := strings.SplitN(story, "-", 3)
+            if fields[0] != "story" {
+                continue
+            }
 
-    err = nb.MarkStoriesReadBulk(stories)
+            stories[fields[1]] = append(stories[fields[1]], fields[2])
+        }
+
+        err = nb.MarkStoriesReadBulk(stories)
+    }
 
     if err != nil {
         w.WriteHeader(http.StatusInternalServerError)
