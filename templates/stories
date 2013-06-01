@@ -21,13 +21,13 @@
         {{range .}}
             <div id="{{.ID}}" class="story story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}" {{if $isSocial}}data-story-feed-id="{{.StoryFeedID}}"{{end}}>
                 <div class="row">
-                    <div class="small-8 columns title">
-                        <h3>{{.Title}}</h3>
+                    <div class="small-8 columns opener">
+                        <h3 class="title">{{.Title}}</h3>
                     </div>
-                    <div class="small-3 columns pubdate">
+                    <div class="small-3 columns pubdate opener">
                         <!-- date -->
                     </div>
-                    <div class="small-1 columns pubdate">
+                    <div class="small-1 columns">
                         <input type="checkbox" name='story-{{$feed.ID}}-{{.ID}}'>
                     </div>
                 </div>
@@ -56,14 +56,15 @@
                 pagesToPause: 99999
             });
 
-            jQuery(document).on("click", ".story", function() {
-                var that = this
+            jQuery(document).on("click", ".story .opener", function() {
+                var that = jQuery(this).parents(".story");
+                that.removeClass("unread");
                 jQuery.get(
                     "/stories/mark_read",
                     {
                         "feed_id": {{.feed.ID}},
-                        {{if .isSocial}}"storyFeedID": jQuery(this).attr("data-story-feed-id"),{{end}}
-                        "story_id": jQuery(this).attr("id")
+                        {{if .isSocial}}"storyFeedID": that.attr("data-story-feed-id"),{{end}}
+                        "story_id": that.attr("id")
                     },
                     function() {
                         jQuery(that).removeClass("unread");
@@ -71,7 +72,7 @@
                 );
 
                 jQuery(".story .content").hide();
-                jQuery(this).find(".content").show();
+                that.find(".content").show();
             });
 
             jQuery("#checkAll").on("click", function() {
@@ -79,11 +80,14 @@
             });
 
             jQuery("#markStoriesRead").on("click", function() {
+                jQuery("form[name=markStoriesRead] input:checked").removeClass("unread");
+
                 jQuery.post(
                     jQuery("form[name=markStoriesRead]").attr("action"),
                     jQuery("form[name=markStoriesRead]").serialize(),
                     function(data) {}
                 );
+
             });
         });
     </script>
