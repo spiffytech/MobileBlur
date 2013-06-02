@@ -129,7 +129,7 @@ type SocialStory struct {
 
 var nbURL = "http://www.newsblur.com"
 
-func Login(username, password string) (cookie string, error error) {
+func (nb *Newsblur) Login(username, password string) (cookie string, error error) {
     resp, err := http.PostForm(
         nbURL + "/api/login",
         url.Values{
@@ -174,6 +174,7 @@ func Login(username, password string) (cookie string, error error) {
             return "", errors.New("Newsblur didn't give us a cookie")
         }
 
+        nb.Cookie = cookie
         return cookie, nil
     }
 
@@ -356,23 +357,6 @@ func (nb *Newsblur) RetrieveRealProfile() (RealProfile) {
 func (nb *Newsblur) GetUsername() (string) {
     profile := nb.RetrieveRealProfile()
     return profile.UserProfile.Username
-}
-
-
-func (nb *Newsblur) Login(username, password string) (error) {
-    resp, err := http.PostForm(nbURL + "/api/login", url.Values{"username": {username}, "password": {password}})
-    if err != nil {
-        panic(err)
-    }
-
-    for _, cookie := range resp.Cookies() {
-        if cookie.Name == "newsblur_sessionid" {
-            nb.Cookie = cookie.Value
-            return nil
-        }
-    }
-
-    return errors.New("No newsblur_sessionid cookie returned by login operation")
 }
 
 

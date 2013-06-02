@@ -1,6 +1,7 @@
 package main
 
 import (
+    "errors"
     "fmt"
     "net/http"
     "html/template"
@@ -32,12 +33,15 @@ func (cache *MyCache) get(key string, f func() interface{}, duration time.Durati
 
 var cache = gocache.New(2*time.Minute, 30*time.Second)
 
-func initNewsblur() (newsblur.Newsblur, error) {
+func initNewsblur(w *http.ResponseWriter, r *http.Request) (newsblur.Newsblur, error) {
     // TODO: Retrieve cookie from user response here, instead of logging in to Newsblur with a test account
     var nb newsblur.Newsblur
-    err := nb.Login("mbtest1", "mbtest1");
-    if err != nil {
-        return nb, err
+        if cookie, err := r.Cookie("newsblur_sessionid"); err == nil {
+        nb.Cookie = cookie.Value
+    } else {
+        fmt.Println(r.Cookies())
+        http.Redirect(*w, r, "/login", http.StatusSeeOther)
+        return nb, errors.New("You need to log in")
     }
 
     nb.GetProfile()
@@ -49,9 +53,9 @@ func initNewsblur() (newsblur.Newsblur, error) {
 
 
 func index(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur()
+    nb, err := initNewsblur(&w, r)
     if err != nil {
-        panic(err)
+        return
     }
 
     vals := map[string]interface{}{
@@ -76,7 +80,8 @@ func login(w http.ResponseWriter, r *http.Request) {
         r.ParseForm()
         username = r.Form.Get("username")
         password = r.Form.Get("password")
-        cookie, err := newsblur.Login(username, password)
+        var nb newsblur.Newsblur
+        cookie, err := nb.Login(username, password)
         if err == nil {
             c := http.Cookie{
                 Name: "newsblur_sessionid",
@@ -86,6 +91,8 @@ func login(w http.ResponseWriter, r *http.Request) {
                 MaxAge: 315360000,
             }
             http.SetCookie(w, &c)
+            http.Redirect(w, r, "/", http.StatusSeeOther)
+            return
         }
         // TODO: Show form again, or redirect to /
     }
@@ -107,10 +114,9 @@ func login(w http.ResponseWriter, r *http.Request) {
 func stories(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
 
-    nb, err := initNewsblur()
+    nb, err := initNewsblur(&w, r)
     if err != nil {
-        // TODO: This should not panic
-        panic(err)
+        return
     }
 
     nb.GetFolders()
@@ -157,10 +163,9 @@ func stories(w http.ResponseWriter, r *http.Request) {
 func socialStories(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
 
-    nb, err := initNewsblur()
+    nb, err := initNewsblur(&w, r)
     if err != nil {
-        // TODO: This should not panic
-        panic(err)
+        return
     }
 
     feed_id := vars["feed_id"]
@@ -200,10 +205,9 @@ func socialStories(w http.ResponseWriter, r *http.Request) {
 
 
 func markStoryRead(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur()
+    nb, err := initNewsblur(&w, r)
     if err != nil {
-        // TODO: This should not panic
-        panic(err)
+        return
     }
 
     feed_id := r.URL.Query().Get("feed_id")
@@ -249,10 +253,9 @@ func markStoryRead(w http.ResponseWriter, r *http.Request) {
 
 
 func markReadBulk(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur()
+    nb, err := initNewsblur(&w, r)
     if err != nil {
-        // TODO: This should not panic
-        panic(err)
+        return
     }
 
     r.ParseForm()
@@ -300,10 +303,10 @@ func markReadBulk(w http.ResponseWriter, r *http.Request) {
 
 
 func markUnread(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur()
+    nb, err := initNewsblur(&w, r)
     if err != nil {
         // TODO: This should not panic
-        panic(err)
+        return
     }
 
     r.ParseForm()
