@@ -39,7 +39,6 @@ func initNewsblur(w *http.ResponseWriter, r *http.Request) (newsblur.Newsblur, e
         if cookie, err := r.Cookie("newsblur_sessionid"); err == nil {
         nb.Cookie = cookie.Value
     } else {
-        fmt.Println(r.Cookies())
         http.Redirect(*w, r, "/login", http.StatusSeeOther)
         return nb, errors.New("You need to log in")
     }
@@ -108,6 +107,19 @@ func login(w http.ResponseWriter, r *http.Request) {
     if err != nil {
         panic(err)
     }
+}
+
+
+func logout(w http.ResponseWriter, r *http.Request) {
+    c := http.Cookie{
+        Name: "newsblur_sessionid",
+        Value: "deleted",
+        Path: "/",
+        Domain: ".mbtest.spiffyte.ch",
+        Expires: time.Unix(1000000, 0),
+    }
+    http.SetCookie(w, &c)
+    http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 
@@ -331,6 +343,7 @@ func main() {
     r := mux.NewRouter()
     r.HandleFunc("/", index)
     r.HandleFunc("/login", login)
+    r.HandleFunc("/logout", logout)
     r.HandleFunc("/feeds", index)
     r.HandleFunc("/feeds/{feed_id}", stories)
     r.HandleFunc("/social/{feed_id}", socialStories)
