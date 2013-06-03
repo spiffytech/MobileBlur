@@ -34,7 +34,6 @@ func (cache *MyCache) get(key string, f func() interface{}, duration time.Durati
 var cache = gocache.New(2*time.Minute, 30*time.Second)
 
 func initNewsblur(w *http.ResponseWriter, r *http.Request) (newsblur.Newsblur, error) {
-    // TODO: Retrieve cookie from user response here, instead of logging in to Newsblur with a test account
     var nb newsblur.Newsblur
         if cookie, err := r.Cookie("newsblur_sessionid"); err == nil {
         nb.Cookie = cookie.Value
@@ -43,31 +42,31 @@ func initNewsblur(w *http.ResponseWriter, r *http.Request) (newsblur.Newsblur, e
         return nb, errors.New("You need to log in")
     }
 
+    thresholdCookie, err := r.Cookie("intelligence_threshold")
+    if err != nil {
+        c := http.Cookie{
+            Name: "intelligence_threshold",
+            Value: strconv.Itoa(-1),
+            Path: "/",
+            Domain: ".mbtest.spiffyte.ch",
+            MaxAge: 315360000,
+        }
+        http.SetCookie(*w, &c)
+        nb.Threshold = -1
+    } else {
+        threshold, err := strconv.Atoi(thresholdCookie.Value)
+        if err != nil {
+            panic(err)
+        }
+        nb.Threshold = threshold
+    }
+    nb.ShowUnread = true
+
     nb.GetProfile()
     nb.GetFeeds()
     nb.GetFolders()
 
     return nb, nil
-}
-
-
-func index(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur(&w, r)
-    if err != nil {
-        return
-    }
-
-    vals := map[string]interface{}{
-        "feeds": nb.Profile.Feeds,
-        "folder": nb.Profile.Folder,
-        "socialFeeds": nb.Profile.SocialFeeds,
-    }
-
-    t := template.Must(template.New("index").ParseFiles("templates/wrapper.html", "templates/index"))
-    err = t.Execute(w, vals)
-    if err != nil {
-        panic(err)
-    }
 }
 
 
@@ -91,6 +90,18 @@ func login(w http.ResponseWriter, r *http.Request) {
             }
             http.SetCookie(w, &c)
             http.Redirect(w, r, "/", http.StatusSeeOther)
+
+            if _, err = r.Cookie("intelligence_threshold"); err != nil {
+                c := http.Cookie{
+                    Name: "intelligence_threshold",
+                    Value: strconv.Itoa(-1),
+                    Path: "/",
+                    Domain: ".mbtest.spiffyte.ch",
+                    MaxAge: 315360000,
+                }
+                http.SetCookie(w, &c)
+            }
+
             return
         }
         // TODO: Show form again, or redirect to /
@@ -123,6 +134,27 @@ func logout(w http.ResponseWriter, r *http.Request) {
 }
 
 
+func index(w http.ResponseWriter, r *http.Request) {
+    nb, err := initNewsblur(&w, r)
+    if err != nil {
+        return
+    }
+
+    vals := map[string]interface{}{
+        "nb": nb,
+        "feeds": nb.Profile.Feeds,
+        "folder": nb.Profile.Folder,
+        "socialFeeds": nb.Profile.SocialFeeds,
+    }
+
+    t := template.Must(template.New("index").Funcs(template.FuncMap{"showFeed": showFeed(nb)}).ParseFiles("templates/wrapper.html", "templates/index"))
+    err = t.Execute(w, vals)
+    if err != nil {
+        panic(err)
+    }
+}
+
+
 func stories(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
 
@@ -152,6 +184,7 @@ func stories(w http.ResponseWriter, r *http.Request) {
     }
 
     vals := map[string]interface{}{
+        "nb": nb,
         "Stories": stories,
         "feed": feed,
         "page": page,  // use this instead of feed ID in template to collapse things
@@ -164,7 +197,7 @@ func stories(w http.ResponseWriter, r *http.Request) {
         vals["notAJAX"] = true
     }
 
-    t := template.Must(template.New("stories").ParseFiles("templates/wrapper.html", "templates/stories"))
+    t := template.Must(template.New("stories").Funcs(template.FuncMap{"showStory": showStory(nb)}).ParseFiles("templates/wrapper.html", "templates/stories"))
     err = t.Execute(w, vals)
     if err != nil {
         panic(err)
@@ -196,6 +229,7 @@ func socialStories(w http.ResponseWriter, r *http.Request) {
     }
 
     vals := map[string]interface{}{
+        "nb": nb,
         "Stories": stories,
         "feed": feed,
         "page": page,  // TODO: use this instead of feed ID in template to collapse things
@@ -208,7 +242,7 @@ func socialStories(w http.ResponseWriter, r *http.Request) {
         vals["notAJAX"] = true
     }
 
-    t := template.Must(template.New("stories").ParseFiles("templates/wrapper.html", "templates/stories"))
+    t := template.Must(template.New("stories").Funcs(template.FuncMap{"showStory": showStory(nb)}).ParseFiles("templates/wrapper.html", "templates/stories"))
     err = t.Execute(w, vals)
     if err != nil {
         panic(err)
@@ -336,6 +370,34 @@ func markUnread(w http.ResponseWriter, r *http.Request) {
     }
 
     fmt.Fprintf(w, "true")
+}
+
+
+func PassesThreshold(story newsblur.Story, nb newsblur.Newsblur) (bool) {
+    return story.Score() > nb.Threshold
+}
+
+
+func showFeed(nb newsblur.Newsblur) func(newsblur.FeedInt) (bool) {
+    return func(feed newsblur.FeedInt) (bool) {
+        numAboveThreshold := 0
+        numAboveThreshold += feed.GetPS()
+        if nb.Threshold < 1 {
+            numAboveThreshold += feed.GetNT()
+        }
+        if nb.Threshold < 0 {
+            numAboveThreshold += feed.GetNG()
+        }
+
+        return numAboveThreshold > 0 || nb.ShowUnread == true
+    }
+}
+
+
+func showStory(nb newsblur.Newsblur) func(newsblur.StoryInt) (bool) {
+    return func(story  newsblur.StoryInt) (bool) {
+        return story.Score() >= nb.Threshold
+    }
 }
 
 

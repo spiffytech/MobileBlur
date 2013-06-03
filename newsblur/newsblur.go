@@ -18,6 +18,8 @@ type Newsblur struct {
     Cookie string
     Feeds map[int]Feed
     Profile Profile
+    Threshold int
+    ShowUnread bool
 }
 
 type NBCoreResponse struct {
@@ -37,6 +39,30 @@ type Feed struct {
     Title string `json:"feed_title"`
     Link string `json:"feed_link"`
     Stories StoryList
+}
+
+type FeedInt interface {
+    GetPS() int
+    GetNT() int
+    GetNG() int
+}
+func (feed *SocialFeed) GetPS() int {
+    return feed.PS
+}
+func (feed *SocialFeed) GetNT() int {
+    return feed.NT
+}
+func (feed *SocialFeed) GetNG() int {
+    return feed.NG
+}
+func (feed *Feed) GetPS() int {
+    return feed.PS
+}
+func (feed *Feed) GetNT() int {
+    return feed.NT
+}
+func (feed *Feed) GetNG() int {
+    return feed.NG
 }
 
 type Folder struct {
@@ -87,6 +113,10 @@ type Story struct {
     Tags []string `json:"story_tags"`
     HasModifications int `json:"has_modifications"`
     Intelligence Intelligence `json:"intelligence"`
+}
+
+type StoryInt interface {
+    Score() int
 }
 
 type StoryList struct {
@@ -200,7 +230,6 @@ func (feed *Feed) IsStale() (bool) {
     // TODO: Need to flesh this out to check the cache when I actually have a cache mechanism to check
     return true
 }
-
 
 func (nb *Newsblur) GetFolders() (folder Folder) {
     profile := nb.Profile
@@ -535,14 +564,14 @@ func (nb *Newsblur) MarkStoryUnread(feedID, storyID string) (error) {
     }
 }
 
-func (story *Story) Score() (score string) {
+func (story *Story) Score() (score int) {
     return scoreStory(story.Intelligence)
 }
-func (story *SocialStory) Score() (score string) {
+func (story *SocialStory) Score() (score int) {
     return scoreStory(story.Intelligence)
 }
 
-func scoreStory(intelligence Intelligence) (score string) {
+func scoreStory(intelligence Intelligence) (score int) {
     maxScore := 0.0
     maxScore = math.Max(maxScore, float64(intelligence.Tags))
     maxScore = math.Max(maxScore, float64(intelligence.Author))
@@ -554,18 +583,18 @@ func scoreStory(intelligence Intelligence) (score string) {
     minScore = math.Min(minScore, float64(intelligence.Title))
 
     if maxScore > 0 {
-        score = "ps";
+        score = 1;
     } else if minScore < 0 {
-        score = "ng";
+        score = -1;
     }
 
-    if (score == "") {
+    if (score == 0) {
         if intelligence.Feed > 0 {
-            score = "ps"
+            score = 1
         } else if intelligence.Feed < 0 {
-            score = "ng"
+            score = -1
         } else {
-            score = "nt"
+            score = 0
         }
     }
 

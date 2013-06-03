@@ -5,15 +5,15 @@
    ========================================================================== */
 
 .story.unread .title {
-    color: orange;
+    color: ora-1e;
 }
 
-.feed-ps, .story.score-ps {
+.feed-1, .story.score-1 {
     background-color: green;
 }
-.feed-nt, .story.score-nt {
-    background-color: white;
+.feed-0, .story.score-0 {
+    background-color: yellow;
 }
-.feed-ng, .story.score-ng {
+.feed--1, .story.score--1 {
     background-color: red;
 }

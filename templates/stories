@@ -20,31 +20,33 @@
 
     {{with .Stories}}
         {{range .}}
-            {{$score := .Score}}
-            <div id="{{.ID}}" class="story score-{{$score}} story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}" {{if $isSocial}}data-story-feed-id="{{.StoryFeedID}}"{{end}}>
-                <div class="row">
-                    <div class="small-7 columns opener">
-                        <h3 class="title">{{.Title}}</h3>
-                    </div>
-                    <div class="small-3 columns pubdate opener">
-                        {{.PrettyDate}}
-                    </div>
-                    <div class="small-2 columns">
-                        {{$hash := .HashStory}}
-                        <a href="#" data-dropdown="drop-{{$hash}}" class="button tiny dropdown">Gear</a>
-                        <ul id="drop-{{$hash}}" class="f-dropdown">
-                            <li><a class="markUnread" data-story="story-{{if $isSocial}}{{.StoryFeedID}}{{else}}{{$feed.ID}}{{end}}-{{.ID}}" href="#">Mark Unread</a></li>
-                        </ul>
+            {{if showStory .}}
+                {{$score := .Score}}
+                <div id="{{.ID}}" class="story score-{{$score}} story-page-{{$pageID}} {{if .ReadStatus}}{{else}}unread{{end}}" {{if $isSocial}}data-story-feed-id="{{.StoryFeedID}}"{{end}}>
+                    <div class="row">
+                        <div class="small-7 columns opener">
+                            <h3 class="title">{{.Title}}</h3>
+                        </div>
+                        <div class="small-3 columns pubdate opener">
+                            {{.PrettyDate}}
+                        </div>
+                        <div class="small-2 columns">
+                            {{$hash := .HashStory}}
+                            <a href="#" data-dropdown="drop-{{$hash}}" class="button tiny dropdown">Gear</a>
+                            <ul id="drop-{{$hash}}" class="f-dropdown">
+                                <li><a class="markUnread" data-story="story-{{if $isSocial}}{{.StoryFeedID}}{{else}}{{$feed.ID}}{{end}}-{{.ID}}" href="#">Mark Unread</a></li>
+                            </ul>
 
-                        <input type="checkbox" name='story-{{$feed.ID}}-{{if $isSocial}}{{.StoryFeedID}}-{{end}}{{.ID}}'>
+                            <input type="checkbox" name='story-{{$feed.ID}}-{{if $isSocial}}{{.StoryFeedID}}-{{end}}{{.ID}}'>
+                        </div>
+                    </div>
+                    <div class="row content">
+                        {{with .Content}}
+                            {{.}}
+                        {{end}}
                     </div>
                 </div>
-                <div class="row content">
-                    {{with .Content}}
-                        {{.}}
-                    {{end}}
-                </div>
-            </div>
+            {{end}}
         {{end}}
     {{end}}
     <script type="text/javascript">

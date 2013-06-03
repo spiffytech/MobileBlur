@@ -26,7 +26,9 @@
     <h4>{{.Name}}</h4>
     {{with .Feeds}}
         {{range .}}
-            {{template "feed" .}}
+            {{if showFeed .}}
+                {{template "feed" .}}
+            {{end}}
         {{end}}
     {{end}}
 
