@@ -42,25 +42,31 @@ func initNewsblur(w *http.ResponseWriter, r *http.Request) (newsblur.Newsblur, e
         return nb, errors.New("You need to log in")
     }
 
-    thresholdCookie, err := r.Cookie("intelligence_threshold")
-    if err != nil {
-        c := http.Cookie{
-            Name: "intelligence_threshold",
-            Value: strconv.Itoa(-1),
-            Path: "/",
-            Domain: ".mbtest.spiffyte.ch",
-            MaxAge: 315360000,
-        }
-        http.SetCookie(*w, &c)
+    threshold := setCookie(w, *r, "threshold", "-1", false)
+    if threshold, err := strconv.Atoi(threshold); err != nil {
+        setCookie(w, *r, "threshold", "-1", true)
         nb.Threshold = -1
     } else {
-        threshold, err := strconv.Atoi(thresholdCookie.Value)
-        if err != nil {
-            panic(err)
-        }
         nb.Threshold = threshold
     }
-    nb.ShowUnread = true
+
+    showRead := setCookie(w, *r, "showRead", "true", false)
+    if showRead, err := strconv.ParseBool(showRead); err != nil {
+        setCookie(w, *r, "showRead", "true", true)
+        nb.ShowRead = true
+    } else {
+        nb.ShowRead = showRead
+    }
+
+    emptyFeeds := setCookie(w, *r, "emptyFeeds", "-1", false)
+    if emptyFeeds, err := strconv.ParseBool(emptyFeeds); err != nil {
+        setCookie(w, *r, "emptyFeeds", "true", true)
+        nb.EmptyFeeds = true
+    } else {
+        nb.EmptyFeeds = emptyFeeds
+    }
+
+    fmt.Println(nb.Threshold, nb.ShowRead, nb.EmptyFeeds)
 
     nb.GetProfile()
     nb.GetFeeds()
@@ -351,7 +357,6 @@ func markReadBulk(w http.ResponseWriter, r *http.Request) {
 func markUnread(w http.ResponseWriter, r *http.Request) {
     nb, err := initNewsblur(&w, r)
     if err != nil {
-        // TODO: This should not panic
         return
     }
 
@@ -373,6 +378,55 @@ func markUnread(w http.ResponseWriter, r *http.Request) {
 }
 
 
+func settings(w http.ResponseWriter, r *http.Request) {
+    nb, err := initNewsblur(&w, r)
+    if err != nil {
+        return
+    }
+
+    if r.Method == "POST" {
+        r.ParseForm()
+        if threshold, err := strconv.Atoi(r.Form.Get("threshold")); err == nil {
+            setCookie(&w, *r, "threshold", strconv.Itoa(threshold), true)
+        }
+
+        if r.Form.Get("showRead") != "" {
+            setCookie(&w, *r, "showRead", "true", true)
+        } else {
+            setCookie(&w, *r, "showRead", "false", true)
+        }
+
+        if r.Form.Get("emptyFeeds") != "" {
+            setCookie(&w, *r, "emptyFeeds", "true", true)
+        } else {
+            setCookie(&w, *r, "emptyFeeds", "false", true)
+        }
+
+        http.Redirect(w, r, "/settings", http.StatusSeeOther)
+    }
+
+    vals := map[string]interface{}{
+        "nb": nb,
+        "threshold": nb.Threshold,
+        "showRead": nb.ShowRead,
+        "emptyFeeds": nb.EmptyFeeds,
+        "isSocial": true,
+    }
+
+    if r.Header.Get("X-Requested-With") == "XMLHttpRequest" {
+        vals["notAJAX"] = false
+    } else {
+        vals["notAJAX"] = true
+    }
+
+    t := template.Must(template.New("settings.html").ParseFiles("templates/wrapper.html", "templates/settings.html"))
+    err = t.Execute(w, vals)
+    if err != nil {
+        panic(err)
+    }
+}
+
+
 func PassesThreshold(story newsblur.Story, nb newsblur.Newsblur) (bool) {
     return story.Score() > nb.Threshold
 }
@@ -389,17 +443,37 @@ func showFeed(nb newsblur.Newsblur) func(newsblur.FeedInt) (bool) {
             numAboveThreshold += feed.GetNG()
         }
 
-        return numAboveThreshold > 0 || nb.ShowUnread == true
+        fmt.Println(nb.EmptyFeeds)
+        return numAboveThreshold > 0 || nb.EmptyFeeds == true
     }
 }
 
 
 func showStory(nb newsblur.Newsblur) func(newsblur.StoryInt) (bool) {
     return func(story  newsblur.StoryInt) (bool) {
-        return story.Score() >= nb.Threshold
+        fmt.Println(story.GetReadStatus())
+        return story.Score() >= nb.Threshold && (story.GetReadStatus() == 0 || nb.ShowRead == true)
     }
 }
 
+func setCookie(w *http.ResponseWriter, r http.Request, name string, defaultValue string, stomp bool) (value string) {
+    c, err := r.Cookie(name)
+    if err != nil || stomp == true {
+        c := http.Cookie{
+            Name: name,
+            Value: defaultValue,
+            Path: "/",
+            Domain: ".mbtest.spiffyte.ch",
+            MaxAge: 315360000,
+        }
+        http.SetCookie(*w, &c)
+        value = defaultValue
+    } else {
+        value = c.Value
+    }
+
+    return
+}
 
 func main() {
     r := mux.NewRouter()
@@ -412,9 +486,10 @@ func main() {
     r.HandleFunc("/stories/mark_read", markStoryRead)
     r.HandleFunc("/stories/markReadBulk", markReadBulk)
     r.HandleFunc("/stories/markUnread", markUnread)
+    r.HandleFunc("/settings", settings)
 
-    fmt.Println("Listening for browser connections")
     http.Handle("/", r)
 
     http.ListenAndServe(":4001", nil)
+    fmt.Println("Listening for browser connections")
 }

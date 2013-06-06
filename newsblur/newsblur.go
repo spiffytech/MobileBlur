@@ -19,7 +19,8 @@ type Newsblur struct {
     Feeds map[int]Feed
     Profile Profile
     Threshold int
-    ShowUnread bool
+    ShowRead bool
+    EmptyFeeds bool
 }
 
 type NBCoreResponse struct {
@@ -117,6 +118,7 @@ type Story struct {
 
 type StoryInt interface {
     Score() int
+    GetReadStatus() int
 }
 
 type StoryList struct {
@@ -404,6 +406,7 @@ func (nb *Newsblur) GetProfile() (Profile) {
     }
     err = json.Unmarshal(b, &profile)
     if err != nil {
+        fmt.Println(string(b))
         panic(err)
     }
 
@@ -562,6 +565,13 @@ func (nb *Newsblur) MarkStoryUnread(feedID, storyID string) (error) {
     } else {
         return errors.New("Feeds not could not be marked read")
     }
+}
+
+func (story *Story) GetReadStatus() (int) {
+    return story.ReadStatus
+}
+func (story *SocialStory) GetReadStatus() (int) {
+    return story.ReadStatus
 }
 
 func (story *Story) Score() (score int) {

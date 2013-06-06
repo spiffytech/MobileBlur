@@ -63,7 +63,7 @@
                 appendTo: "#stories",
                 footerClass: "#footer",
                 disableCache: true,
-                pagesToPause: 99999
+                pagesToPause: 5
             });
 
             jQuery(document).on("click", ".story .opener", function() {
