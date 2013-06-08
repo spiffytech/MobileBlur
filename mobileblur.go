@@ -490,6 +490,6 @@ func main() {
 
     http.Handle("/", r)
 
-    http.ListenAndServe(":4001", nil)
     fmt.Println("Listening for browser connections")
+    http.ListenAndServe(":4001", nil)
 }

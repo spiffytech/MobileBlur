@@ -12,6 +12,7 @@ import (
     "net/http/cookiejar"
     "net/url"
     "strconv"
+    "time"
 )
 
 type Newsblur struct {
@@ -352,8 +353,9 @@ func (feed *SocialFeed) GetSocialStoryPage(nb *Newsblur, page int, force bool) (
 }
 
 
-func (nb *Newsblur) NewClient() (*http.Client) {
-    client := http.Client{}
+func (nb *Newsblur) NewClient() (*NBClient) {
+    client := NBClient{}
+    client.Client = &http.Client{}
     cookie := http.Cookie{Name: "newsblur_sessionid", Value: nb.Cookie}
     cookieJar, err := cookiejar.New(nil)
     if err != nil {
@@ -362,7 +364,7 @@ func (nb *Newsblur) NewClient() (*http.Client) {
 
     u, _ := url.Parse("http://www.newsblur.com")
     cookieJar.SetCookies(u, []*http.Cookie{&cookie})
-    client.Jar = cookieJar
+    client.Client.Jar = cookieJar
     return &client
 }
 
@@ -609,4 +611,24 @@ func scoreStory(intelligence Intelligence) (score int) {
     }
 
     return;
+}
+
+type NBClient struct {
+    *http.Client
+}
+
+func (client *NBClient) Get(url string) (resp *http.Response, clientErr error) {
+    // Handles Newsblur's rate limiting transparently
+    for {
+        resp, clientErr = client.Client.Get(url)
+        if resp.StatusCode == 429 {
+            fmt.Println("Waiting for the rate limit (" + url + ")")
+            time.Sleep(30 * time.Second)
+        } else {
+            fmt.Println("No more rate limit!")
+            break
+        }
+    }
+
+    return resp, clientErr
 }
