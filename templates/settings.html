@@ -1,0 +1,24 @@
+{{define "header1"}}{{end}}
+{{template "header" .}}
+
+<p>{{.error}}</p>
+<form name="settings" action="/settings" method="post">
+    <label>
+        Intelligence threshold
+        <input name="threshold" value="{{.threshold}}">
+    </label>
+    <label>
+        Show read stories
+        <input name="showRead" type="checkbox" {{if .showRead}}checked{{end}}>
+    </label>
+    <label>
+        Show feeds with no new stories
+        <input name="emptyFeeds" type="checkbox" {{if .emptyFeeds}}checked{{end}}>
+    </label>
+
+    <input type="submit" value="Save settings">
+</form>
+
+{{define "scripts"}}{{end}}
+
+{{template "footer"}}
