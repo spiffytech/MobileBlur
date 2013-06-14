@@ -40,11 +40,7 @@
                             <input type="checkbox" name='story-{{$feed.ID}}-{{if $isSocial}}{{.StoryFeedID}}-{{end}}{{.ID}}'>
                         </div>
                     </div>
-                    <div class="row content">
-                        {{with .Content}}
-                            {{.}}
-                        {{end}}
-                    </div>
+                    <div class="row content">{{.Content}}</div>
                 </div>
             {{end}}
         {{end}}

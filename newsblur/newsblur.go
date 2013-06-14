@@ -17,7 +17,6 @@ import (
 
 type Newsblur struct {
     Cookie string
-    Feeds map[int]Feed
     Profile Profile
     Threshold int
     ShowRead bool
@@ -104,22 +103,29 @@ type Intelligence struct {
 }
 
 type Story struct {
-    ID string `json:"id"`
-    GUID string `json:"guid_hash"`
-    Title string `json:"story_title"`
+    JSONId string `json:"id"`
+    JSONGuid string `json:"guid_hash"`
+    JSONTitle string `json:"story_title"`
     //Date time.Time `json:"story_date"`
-    PrettyDate string `json:"short_parsed_date"`
-    Content template.HTML `json:"story_content"`
-    Permalink string `json:"story_permalink"`
-    ReadStatus int `json:"read_status"`
-    Tags []string `json:"story_tags"`
-    HasModifications int `json:"has_modifications"`
-    Intelligence Intelligence `json:"intelligence"`
+    JSONPrettyDate string `json:"short_parsed_date"`
+    JSONContent template.HTML `json:"story_content"`
+    JSONPermalink string `json:"story_permalink"`
+    JSONReadStatus int `json:"read_status"`
+    JSONTags []string `json:"story_tags"`
+    JSONHasModifications int `json:"has_modifications"`
+    JSONIntelligence Intelligence `json:"intelligence"`
 }
 
 type StoryInt interface {
     Score() int
-    GetReadStatus() int
+    ReadStatus() int
+    Content() template.HTML
+    ID() string
+    Title() string
+    PrettyDate() string
+    Permalink() string
+    Intelligence() Intelligence
+    HashStory() string
 }
 
 type StoryList struct {
@@ -142,21 +148,21 @@ type SocialFeed struct {
 }
 
 type SocialStory struct {
-    ID string `json:"id"`
-    GUID string `json:"guid_hash"`
-    Title string `json:"story_title"`
-    Author string `json:"story_authors"`
+    JSONId string `json:"id"`
+    JSONGuid string `json:"guid_hash"`
+    JSONTitle string `json:"story_title"`
+    JSONAuthor string `json:"story_authors"`
     //Date time.Time `json:"story_date"`
-    PrettyDate string `json:"short_parsed_date"`
-    Content template.HTML `json:"story_content"`
-    Permalink string `json:"story_permalink"`
-    ReadStatus int `json:"read_status"`
-    StoryFeedID int `json:"story_feed_id"`
-    Tags []string `json:"story_tags"`
-    HasModifications int `json:"has_modifications"`
-    Intelligence Intelligence `json:"intelligence"`
-    CommentCount int `json:"comment_count"`
-    Stories []SocialStory
+    JSONPrettyDate string `json:"short_parsed_date"`
+    JSONContent template.HTML `json:"story_content"`
+    JSONPermalink string `json:"story_permalink"`
+    JSONReadStatus int `json:"read_status"`
+    JSONStoryFeedID int `json:"story_feed_id"`
+    JSONTags []string `json:"story_tags"`
+    JSONHasModifications int `json:"has_modifications"`
+    JSONIntelligence Intelligence `json:"intelligence"`
+    JSONCommentCount int `json:"comment_count"`
+    JSONStories []SocialStory
 }
 
 
@@ -215,14 +221,14 @@ func (nb *Newsblur) Login(username, password string) (cookie string, error error
 
 // TODO: Deduplicate this logic
 func (story *Story) HashStory() string {
-    b := []byte(story.ID)
+    b := []byte(story.ID())
     hasher := sha512.New()
     hasher.Write(b)
     sha := fmt.Sprintf("%x", hasher.Sum(nil))
     return sha
 }
 func (story *SocialStory) HashStory() string {
-    b := []byte(story.ID)
+    b := []byte(story.ID())
     hasher := sha512.New()
     hasher.Write(b)
     sha := fmt.Sprintf("%x", hasher.Sum(nil))
@@ -234,12 +240,9 @@ func (feed *Feed) IsStale() (bool) {
     return true
 }
 
-func (nb *Newsblur) GetFolders() (folder Folder) {
-    profile := nb.Profile
-
-    //folder.Feeds = getFolderFeeds(folder)
-    folder.Feeds = getFolderFeeds(nb, profile.RawFolders)
-    folder.Folders = getFolderFolders(nb, profile.RawFolders)
+func (nb *Newsblur) getFolders() (folder Folder) {
+    folder.Feeds = getFolderFeeds(nb, nb.Profile.RawFolders)
+    folder.Folders = getFolderFolders(nb, nb.Profile.RawFolders)
     nb.Profile.Folder = folder
 
     return folder
@@ -280,24 +283,7 @@ func getFolderFolders(nb *Newsblur, folder []interface{}) (folders []Folder) {
 }
 
 
-// TODO: Do I need things like this function since I refactored for folder support?
-func (nb *Newsblur) GetFeeds() (map[int]Feed) {
-    feeds := make(map[int]Feed)
-
-    profile := nb.GetProfile()
-    for feedID, feed := range profile.Feeds {
-        feedIDInt, err := strconv.Atoi(feedID)
-        if err != nil {
-            panic(err)
-        }
-        feeds[feedIDInt] = feed
-    }
-    nb.Feeds = feeds
-    return feeds
-}
-
-
-func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) (StoryList) {
+func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) ([]StoryInt) {
     u, err := url.Parse(nbURL + "/reader/feed/" + strconv.Itoa(feed.ID))
     if err != nil {
         panic(err)
@@ -318,14 +304,23 @@ func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) (StoryList) {
 
     var storyList StoryList
     json.Unmarshal(b, &storyList)
-    // TODO: Store this stuff in the cache
 
+    // TODO: Store this stuff in the cache
     feed.Stories = storyList
-    return storyList
+
+    var ret []StoryInt
+    fmt.Println("\nHere are some stories")
+    for i, _ := range storyList.Stories {
+        fmt.Println(storyList.Stories[i])
+        ret = append(ret, &storyList.Stories[i])
+    }
+    fmt.Println("Stories are done\n")
+
+    return ret
 }
 
 
-func (feed *SocialFeed) GetSocialStoryPage(nb *Newsblur, page int, force bool) (SocialStoryList) {
+func (feed *SocialFeed) GetSocialStoryPage(nb *Newsblur, page int, force bool) ([]StoryInt) {
     u, err := url.Parse(nbURL + "/social/stories/" + strconv.Itoa(feed.SocialID) + "/")  // Trailing slash is necessary or Newsblur 404s
     if err != nil {
         panic(err)
@@ -349,7 +344,13 @@ func (feed *SocialFeed) GetSocialStoryPage(nb *Newsblur, page int, force bool) (
     // TODO: Store this stuff in the cache
 
     feed.Stories = storyList.Stories
-    return storyList
+
+    var ret []StoryInt
+    for i, _ := range storyList.Stories {
+        ret = append(ret, &storyList.Stories[i])
+    }
+
+    return ret
 }
 
 
@@ -418,6 +419,8 @@ func (nb *Newsblur) GetProfile() (Profile) {
     }
 
     nb.Profile = profile
+
+    nb.getFolders()
     return profile
 }
 
@@ -569,18 +572,59 @@ func (nb *Newsblur) MarkStoryUnread(feedID, storyID string) (error) {
     }
 }
 
-func (story *Story) GetReadStatus() (int) {
-    return story.ReadStatus
+
+
+func (story *Story) ID() (string) {
+    return story.JSONId
 }
-func (story *SocialStory) GetReadStatus() (int) {
-    return story.ReadStatus
+func (story *Story) Title() (string) {
+    return story.JSONTitle
+}
+func (story *Story) PrettyDate() (string) {
+    return story.JSONPrettyDate
+}
+func (story *Story) Permalink() (string) {
+    return story.JSONPermalink
+}
+func (story *Story) Intelligence() (Intelligence) {
+    return story.JSONIntelligence
+}
+func (story *Story) ReadStatus() (int) {
+    return story.JSONReadStatus
+}
+func (story *Story) Content() (template.HTML) {
+    return story.JSONContent
 }
 
-func (story *Story) Score() (score int) {
-    return scoreStory(story.Intelligence)
+func (story *SocialStory) ID() (string) {
+    return story.JSONId
+}
+func (story *SocialStory) Title() (string) {
+    return story.JSONTitle
+}
+func (story *SocialStory) PrettyDate() (string) {
+    return story.JSONPrettyDate
+}
+func (story *SocialStory) Permalink() (string) {
+    return story.JSONPermalink
+}
+func (story *SocialStory) Intelligence() (Intelligence) {
+    return story.JSONIntelligence
+}
+func (story *SocialStory) ReadStatus() (int) {
+    return story.JSONReadStatus
+}
+func (story *SocialStory) Content() (template.HTML) {
+    return story.JSONContent
+}
+
+
+// TODO: Refactor this to be one function that takes a StoryInt and uses getters instead of properties
+func (story Story) Score() (score int) {
+    return scoreStory(story.JSONIntelligence)
 }
 func (story *SocialStory) Score() (score int) {
-    return scoreStory(story.Intelligence)
+    return scoreStory(story.JSONIntelligence)
 }
 
 func scoreStory(intelligence Intelligence) (score int) {

@@ -1,6 +1,7 @@
 package main
 
 import (
+    "encoding/json"
     "errors"
     "fmt"
     "net/http"
@@ -69,8 +70,6 @@ func initNewsblur(w *http.ResponseWriter, r *http.Request) (newsblur.Newsblur, e
     fmt.Println(nb.Threshold, nb.ShowRead, nb.EmptyFeeds)
 
     nb.GetProfile()
-    nb.GetFeeds()
-    nb.GetFolders()
 
     return nb, nil
 }
@@ -169,21 +168,17 @@ func stories(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    nb.GetFolders()
-    nb.GetFeeds()
-
-    feed_id, err := strconv.Atoi(vars["feed_id"])
-    if err != nil {
-        panic(err)
-    }
+    feedID := vars["feedID"]
 
     page, err := strconv.Atoi(r.URL.Query().Get("p"))
     if err != nil {
         page = 1
     }
 
-    feed := nb.Feeds[feed_id]
-    stories := feed.GetStoryPage(&nb, page, false).Stories
+    feed := nb.Profile.Feeds[feedID]
+    stories := feed.GetStoryPage(&nb, page, false)
+    fmt.Println("Stories")
+    fmt.Println(stories)
     if len(stories) == 0 {
         fmt.Fprintf(w, "false")
         return
@@ -211,6 +206,68 @@ func stories(w http.ResponseWriter, r *http.Request) {
 }
 
 
+func getStoryContent(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+
+    nb, err := initNewsblur(&w, r)
+    if err != nil {
+        return
+    }
+
+    feedID := r.URL.Query().Get("feedID")
+    storyID, err := strconv.Atoi(vars["storyID"])
+    isSocial, err := strconv.ParseBool(vars["isSocial"])
+    if err != nil {
+        panic(err)
+    }
+
+    page, err := strconv.Atoi(r.URL.Query().Get("page"))
+    if err != nil {
+        page = 1
+    }
+
+    var stories []newsblur.StoryInt
+    if isSocial {
+        feed := nb.Profile.SocialFeeds[feedID]
+        stories = feed.GetSocialStoryPage(&nb, page, false)
+    } else {
+        feed := nb.Profile.Feeds[feedID]
+        stories = feed.GetStoryPage(&nb, page, false)
+    }
+    if len(stories) == 0 {
+        fmt.Fprintf(w, "false")
+        return
+    }
+
+    var story newsblur.StoryInt
+    found := false
+    for id, s := range stories {
+        if id == storyID {
+            story = s
+            found = true
+            break
+        }
+    }
+
+    if found == false {
+        fmt.Fprintf(w, "false")
+        return
+    }
+
+    ret := map[string]string {
+        "content": string(story.Content()),
+    }
+
+    retj, err := json.Marshal(ret)
+    if found == false {
+        fmt.Fprintf(w, "false")
+        return
+    }
+
+    fmt.Fprintf(w, string(retj))
+}
+
+
 func socialStories(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
 
@@ -219,7 +276,7 @@ func socialStories(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    feed_id := vars["feed_id"]
+    feedID := vars["feedID"]
 
     page, err := strconv.Atoi(r.URL.Query().Get("p"))
     if err != nil {
@@ -227,8 +284,8 @@ func socialStories(w http.ResponseWriter, r *http.Request) {
         fmt.Println("Page not set explicitly")
     }
 
-    feed := nb.Profile.SocialFeeds[feed_id]
-    stories := feed.GetSocialStoryPage(&nb, page, false).Stories
+    feed := nb.Profile.SocialFeeds[feedID]
+    stories := feed.GetSocialStoryPage(&nb, page, false)
     if len(stories) == 0 {
         fmt.Fprintf(w, "false")
         return
@@ -262,10 +319,10 @@ func markStoryRead(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    feed_id := r.URL.Query().Get("feed_id")
+    feedID := r.URL.Query().Get("feed_id")
 
     var isSocial bool
-    if strings.Contains(feed_id, ":") {
+    if strings.Contains(feedID, ":") {
         isSocial = true
     } else {
         isSocial = false
@@ -279,7 +336,7 @@ func markStoryRead(w http.ResponseWriter, r *http.Request) {
     // TODO: Make this support social story (string) IDs. Or better, find the equivalent social story function
     if isSocial == true {
         storyFeedID := r.URL.Query().Get("storyFeedID")
-        feedID := strings.Split(feed_id, ":")[1]
+        feedID := strings.Split(feedID, ":")[1]
         stories := make(map[string]map[string][]string)
         if stories[feedID] == nil {
             stories[feedID] = make(map[string][]string)
@@ -287,7 +344,8 @@ func markStoryRead(w http.ResponseWriter, r *http.Request) {
         stories[feedID][storyFeedID] = append(stories[feedID][storyFeedID], storyID)
         err = nb.MarkSocialStoriesRead(stories)
     } else {
-        feed_id_int, err := strconv.Atoi(feed_id)
+        fmt.Println(feedID)
+        feed_id_int, err := strconv.Atoi(feedID)
         if err != nil {
             panic(err)
         }
@@ -450,9 +508,10 @@ func showFeed(nb newsblur.Newsblur) func(newsblur.FeedInt) (bool) {
 
 
 func showStory(nb newsblur.Newsblur) func(newsblur.StoryInt) (bool) {
-    return func(story  newsblur.StoryInt) (bool) {
-        fmt.Println(story.GetReadStatus())
-        return story.Score() >= nb.Threshold && (story.GetReadStatus() == 0 || nb.ShowRead == true)
+    return func(story newsblur.StoryInt) (bool) {
+        fmt.Println(story)
+        fmt.Println(story.ReadStatus())
+        return story.Score() >= nb.Threshold && (story.ReadStatus() == 0 || nb.ShowRead == true)
     }
 }
 
@@ -481,9 +540,10 @@ func main() {
     r.HandleFunc("/login", login)
     r.HandleFunc("/logout", logout)
     r.HandleFunc("/feeds", index)
-    r.HandleFunc("/feeds/{feed_id}", stories)
-    r.HandleFunc("/social/{feed_id}", socialStories)
+    r.HandleFunc("/feeds/{feedID}", stories)
+    r.HandleFunc("/social/{feedID}", socialStories)
     r.HandleFunc("/stories/mark_read", markStoryRead)
+    r.HandleFunc("/stories/getContent", getStoryContent)
     r.HandleFunc("/stories/markReadBulk", markReadBulk)
     r.HandleFunc("/stories/markUnread", markUnread)
     r.HandleFunc("/settings", settings)
