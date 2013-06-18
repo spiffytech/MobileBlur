@@ -309,12 +309,9 @@ func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) ([]StoryInt) 
     feed.Stories = storyList
 
     var ret []StoryInt
-    fmt.Println("\nHere are some stories")
     for i, _ := range storyList.Stories {
-        fmt.Println(storyList.Stories[i])
         ret = append(ret, &storyList.Stories[i])
     }
-    fmt.Println("Stories are done\n")
 
     return ret
 }
@@ -442,7 +439,6 @@ func (nb *Newsblur) MarkStoryRead(feedID int, storyID string) (error) {
     var response Response
 
     b, err := ioutil.ReadAll(resp.Body)
-    fmt.Println(string(b))
     if err != nil {
         panic(err)
     }
@@ -519,7 +515,6 @@ func (nb *Newsblur) MarkSocialStoriesRead(stories map[string]map[string][]string
     var response Response
 
     b, err = ioutil.ReadAll(resp.Body)
-    fmt.Println(string(b))
     if err != nil {
         panic(err)
     }

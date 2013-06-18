@@ -40,7 +40,7 @@
                             <input type="checkbox" name='story-{{$feed.ID}}-{{if $isSocial}}{{.StoryFeedID}}-{{end}}{{.ID}}'>
                         </div>
                     </div>
-                    <div class="row content">{{.Content}}</div>
+                    <div class="row content"></div>
                 </div>
             {{end}}
         {{end}}
@@ -65,6 +65,22 @@
             jQuery(document).on("click", ".story .opener", function() {
                 var that = jQuery(this).parents(".story");
                 that.removeClass("unread");
+
+                jQuery.get(
+                    "/stories/getContent",
+                    {
+                        "feedID": {{.feed.ID}},
+                        {{if .isSocial}}"storyFeedID": that.attr("data-story-feed-id"),{{end}}
+                        "isSocial": {{if .isSocial}}true{{else}}false{{end}},
+                        "story_id": that.attr("id")
+                    },
+                    function(data) {
+                        jQuery(that).html(data["content"]);
+                    },
+                    "json"
+                );
+
+
                 jQuery.get(
                     "/stories/mark_read",
                     {

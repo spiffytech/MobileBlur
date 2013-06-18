@@ -216,7 +216,7 @@ func getStoryContent(w http.ResponseWriter, r *http.Request) {
 
     feedID := r.URL.Query().Get("feedID")
     storyID, err := strconv.Atoi(vars["storyID"])
-    isSocial, err := strconv.ParseBool(vars["isSocial"])
+    isSocial, err := strconv.ParseBool(r.URL.Query().Get("isSocial"))
     if err != nil {
         panic(err)
     }
@@ -228,19 +228,28 @@ func getStoryContent(w http.ResponseWriter, r *http.Request) {
 
     var stories []newsblur.StoryInt
     if isSocial {
-        feed := nb.Profile.SocialFeeds[feedID]
+        feed, ok := nb.Profile.SocialFeeds[feedID]
+        if !ok {
+            fmt.Fprintf(w, "Feed not found: false: ", feedID)
+            return
+        }
         stories = feed.GetSocialStoryPage(&nb, page, false)
     } else {
-        feed := nb.Profile.Feeds[feedID]
+        feed, ok := nb.Profile.Feeds[feedID]
+        if !ok {
+            fmt.Fprintf(w, "Feed not found: false: ", feedID)
+            return
+        }
         stories = feed.GetStoryPage(&nb, page, false)
     }
     if len(stories) == 0 {
-        fmt.Fprintf(w, "false")
+        fmt.Fprintf(w, "No stories: false")
         return
     }
 
     var story newsblur.StoryInt
     found := false
+    // TODO: Fix this for social story IDs
     for id, s := range stories {
         if id == storyID {
             story = s
@@ -250,7 +259,7 @@ func getStoryContent(w http.ResponseWriter, r *http.Request) {
     }
 
     if found == false {
-        fmt.Fprintf(w, "false")
+        fmt.Fprintf(w, "Story id invalid: false")
         return
     }
 
