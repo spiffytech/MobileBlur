@@ -75,7 +75,7 @@
                         "story_id": that.attr("id")
                     },
                     function(data) {
-                        jQuery(that).html(data["content"]);
+                        jQuery(that).find(".content").html(data["content"]);
                     },
                     "json"
                 );
