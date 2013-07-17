@@ -2,7 +2,6 @@ package main
 
 import (
     "encoding/json"
-    "errors"
     "fmt"
     "net/http"
     "html/template"
@@ -13,9 +12,11 @@ import (
     "./newsblur"
     gocache "github.com/pmylund/go-cache"
     mux "github.com/gorilla/mux"
-    //"github.com/hoisie/mustache"
-    //"./mustache"
 )
+
+type AuthMux struct {
+    *mux.Router
+}
 
 type MyCache struct {
     cache gocache.Cache
@@ -33,47 +34,6 @@ func (cache *MyCache) get(key string, f func() interface{}, duration time.Durati
 }
 
 var cache = gocache.New(2*time.Minute, 30*time.Second)
-
-func initNewsblur(w *http.ResponseWriter, r *http.Request) (newsblur.Newsblur, error) {
-    var nb newsblur.Newsblur
-        if cookie, err := r.Cookie("newsblur_sessionid"); err == nil {
-        nb.Cookie = cookie.Value
-    } else {
-        http.Redirect(*w, r, "/login", http.StatusSeeOther)
-        return nb, errors.New("You need to log in")
-    }
-
-    threshold := setCookie(w, *r, "threshold", "-1", false)
-    if threshold, err := strconv.Atoi(threshold); err != nil {
-        setCookie(w, *r, "threshold", "-1", true)
-        nb.Threshold = -1
-    } else {
-        nb.Threshold = threshold
-    }
-
-    showRead := setCookie(w, *r, "showRead", "true", false)
-    if showRead, err := strconv.ParseBool(showRead); err != nil {
-        setCookie(w, *r, "showRead", "true", true)
-        nb.ShowRead = true
-    } else {
-        nb.ShowRead = showRead
-    }
-
-    emptyFeeds := setCookie(w, *r, "emptyFeeds", "-1", false)
-    if emptyFeeds, err := strconv.ParseBool(emptyFeeds); err != nil {
-        setCookie(w, *r, "emptyFeeds", "true", true)
-        nb.EmptyFeeds = true
-    } else {
-        nb.EmptyFeeds = emptyFeeds
-    }
-
-    fmt.Println(nb.Threshold, nb.ShowRead, nb.EmptyFeeds)
-
-    nb.GetProfile()
-
-    return nb, nil
-}
-
 
 func login(w http.ResponseWriter, r *http.Request) {
     var username string
@@ -139,12 +99,7 @@ func logout(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func index(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur(&w, r)
-    if err != nil {
-        return
-    }
-
+func index(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     vals := map[string]interface{}{
         "nb": nb,
         "feeds": nb.Profile.Feeds,
@@ -153,20 +108,15 @@ func index(w http.ResponseWriter, r *http.Request) {
     }
 
     t := template.Must(template.New("index").Funcs(template.FuncMap{"showFeed": showFeed(nb)}).ParseFiles("templates/wrapper.html", "templates/index"))
-    err = t.Execute(w, vals)
+    err := t.Execute(w, vals)
     if err != nil {
         panic(err)
     }
 }
 
 
-func stories(w http.ResponseWriter, r *http.Request) {
+func stories(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     vars := mux.Vars(r)
-
-    nb, err := initNewsblur(&w, r)
-    if err != nil {
-        return
-    }
 
     feedID := vars["feedID"]
 
@@ -176,7 +126,7 @@ func stories(w http.ResponseWriter, r *http.Request) {
     }
 
     feed := nb.Profile.Feeds[feedID]
-    stories := feed.GetStoryPage(&nb, page, false)
+    stories := feed.GetStoryPage(nb, page, false)
     fmt.Println("Stories")
     fmt.Println(stories)
     if len(stories) == 0 {
@@ -206,13 +156,8 @@ func stories(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func getStoryContent(w http.ResponseWriter, r *http.Request) {
+func getStoryContent(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     vars := mux.Vars(r)
-
-    nb, err := initNewsblur(&w, r)
-    if err != nil {
-        return
-    }
 
     feedID := r.URL.Query().Get("feedID")
     storyID, err := strconv.Atoi(vars["storyID"])
@@ -233,14 +178,14 @@ func getStoryContent(w http.ResponseWriter, r *http.Request) {
             fmt.Fprintf(w, "Feed not found: false: ", feedID)
             return
         }
-        stories = feed.GetSocialStoryPage(&nb, page, false)
+        stories = feed.GetSocialStoryPage(nb, page, false)
     } else {
         feed, ok := nb.Profile.Feeds[feedID]
         if !ok {
             fmt.Fprintf(w, "Feed not found: false: ", feedID)
             return
         }
-        stories = feed.GetStoryPage(&nb, page, false)
+        stories = feed.GetStoryPage(nb, page, false)
     }
     if len(stories) == 0 {
         fmt.Fprintf(w, "No stories: false")
@@ -277,13 +222,8 @@ func getStoryContent(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func socialStories(w http.ResponseWriter, r *http.Request) {
+func socialStories(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     vars := mux.Vars(r)
-
-    nb, err := initNewsblur(&w, r)
-    if err != nil {
-        return
-    }
 
     feedID := vars["feedID"]
 
@@ -294,7 +234,7 @@ func socialStories(w http.ResponseWriter, r *http.Request) {
     }
 
     feed := nb.Profile.SocialFeeds[feedID]
-    stories := feed.GetSocialStoryPage(&nb, page, false)
+    stories := feed.GetSocialStoryPage(nb, page, false)
     if len(stories) == 0 {
         fmt.Fprintf(w, "false")
         return
@@ -322,12 +262,7 @@ func socialStories(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func markStoryRead(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur(&w, r)
-    if err != nil {
-        return
-    }
-
+func markStoryRead(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     feedID := r.URL.Query().Get("feed_id")
 
     var isSocial bool
@@ -338,11 +273,9 @@ func markStoryRead(w http.ResponseWriter, r *http.Request) {
     }
 
     storyID := r.URL.Query().Get("story_id")
-    if err != nil {
-        panic(err)
-    }
 
     // TODO: Make this support social story (string) IDs. Or better, find the equivalent social story function
+    var err error
     if isSocial == true {
         storyFeedID := r.URL.Query().Get("storyFeedID")
         feedID := strings.Split(feedID, ":")[1]
@@ -371,13 +304,10 @@ func markStoryRead(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func markReadBulk(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur(&w, r)
-    if err != nil {
-        return
-    }
-
+func markReadBulk(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     r.ParseForm()
+
+    var err error
     if r.URL.Query().Get("isSocial") == "true" {
         stories := make(map[string]map[string][]string)
         for story, _ := range r.Form {
@@ -421,19 +351,14 @@ func markReadBulk(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func markUnread(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur(&w, r)
-    if err != nil {
-        return
-    }
-
+func markUnread(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     r.ParseForm()
     rawStory := r.Form.Get("story")
     fields := strings.SplitN(rawStory, "-", 3)
     feedID := fields[1]
     storyID := fields[2]
 
-    err = nb.MarkStoryUnread(feedID, storyID)
+    err := nb.MarkStoryUnread(feedID, storyID)
 
     if err != nil {
         w.WriteHeader(http.StatusInternalServerError)
@@ -445,12 +370,7 @@ func markUnread(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func settings(w http.ResponseWriter, r *http.Request) {
-    nb, err := initNewsblur(&w, r)
-    if err != nil {
-        return
-    }
-
+func settings(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     if r.Method == "POST" {
         r.ParseForm()
         if threshold, err := strconv.Atoi(r.Form.Get("threshold")); err == nil {
@@ -487,7 +407,7 @@ func settings(w http.ResponseWriter, r *http.Request) {
     }
 
     t := template.Must(template.New("settings.html").ParseFiles("templates/wrapper.html", "templates/settings.html"))
-    err = t.Execute(w, vals)
+    err := t.Execute(w, vals)
     if err != nil {
         panic(err)
     }
@@ -499,7 +419,7 @@ func PassesThreshold(story newsblur.Story, nb newsblur.Newsblur) (bool) {
 }
 
 
-func showFeed(nb newsblur.Newsblur) func(newsblur.FeedInt) (bool) {
+func showFeed(nb *newsblur.Newsblur) func(newsblur.FeedInt) (bool) {
     return func(feed newsblur.FeedInt) (bool) {
         numAboveThreshold := 0
         numAboveThreshold += feed.GetPS()
@@ -516,7 +436,7 @@ func showFeed(nb newsblur.Newsblur) func(newsblur.FeedInt) (bool) {
 }
 
 
-func showStory(nb newsblur.Newsblur) func(newsblur.StoryInt) (bool) {
+func showStory(nb *newsblur.Newsblur) func(newsblur.StoryInt) (bool) {
     return func(story newsblur.StoryInt) (bool) {
         fmt.Println(story)
         fmt.Println(story.ReadStatus())
@@ -543,11 +463,64 @@ func setCookie(w *http.ResponseWriter, r http.Request, name string, defaultValue
     return
 }
 
+
+func (mux *AuthMux) HandleFunc(pattern string, handler func(http.ResponseWriter, *http.Request, *newsblur.Newsblur)) {
+   mux.Router.HandleFunc(pattern, authenticate(handler))
+}
+
+func (mux *AuthMux) HandleFuncNoAuth(pattern string, handler func(http.ResponseWriter, *http.Request)) {
+    mux.Router.HandleFunc(pattern, handler)
+}
+
+func authenticate(handler func(http.ResponseWriter, *http.Request, *newsblur.Newsblur)) func(http.ResponseWriter, *http.Request) {
+    return func(w http.ResponseWriter, r *http.Request) {
+        var nb newsblur.Newsblur
+            if cookie, err := r.Cookie("newsblur_sessionid"); err == nil {
+            nb.Cookie = cookie.Value
+        } else {
+            http.Redirect(w, r, "/login", http.StatusSeeOther)
+            fmt.Fprintf(w, "You need to log in")
+            return
+        }
+
+        threshold := setCookie(&w, *r, "threshold", "-1", false)
+        if threshold, err := strconv.Atoi(threshold); err != nil {
+            setCookie(&w, *r, "threshold", "-1", true)
+            nb.Threshold = -1
+        } else {
+            nb.Threshold = threshold
+        }
+
+        showRead := setCookie(&w, *r, "showRead", "true", false)
+        if showRead, err := strconv.ParseBool(showRead); err != nil {
+            setCookie(&w, *r, "showRead", "true", true)
+            nb.ShowRead = true
+        } else {
+            nb.ShowRead = showRead
+        }
+
+        emptyFeeds := setCookie(&w, *r, "emptyFeeds", "-1", false)
+        if emptyFeeds, err := strconv.ParseBool(emptyFeeds); err != nil {
+            setCookie(&w, *r, "emptyFeeds", "true", true)
+            nb.EmptyFeeds = true
+        } else {
+            nb.EmptyFeeds = emptyFeeds
+        }
+
+        fmt.Println(nb.Threshold, nb.ShowRead, nb.EmptyFeeds)
+
+        nb.GetProfile()
+
+        handler(w, r, &nb)
+    }
+}
+
+
 func main() {
-    r := mux.NewRouter()
+    r := AuthMux{mux.NewRouter()}
     r.HandleFunc("/", index)
-    r.HandleFunc("/login", login)
-    r.HandleFunc("/logout", logout)
+    r.HandleFuncNoAuth("/login", login)
+    r.HandleFuncNoAuth("/logout", logout)
     r.HandleFunc("/feeds", index)
     r.HandleFunc("/feeds/{feedID}", stories)
     r.HandleFunc("/social/{feedID}", socialStories)
