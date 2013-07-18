@@ -72,7 +72,7 @@
                         "feedID": {{.feed.ID}},
                         {{if .isSocial}}"storyFeedID": that.attr("data-story-feed-id"),{{end}}
                         "isSocial": {{if .isSocial}}true{{else}}false{{end}},
-                        "story_id": that.attr("id")
+                        "storyID": that.attr("id")
                     },
                     function(data) {
                         jQuery(that).find(".content").html(data["content"]);

@@ -153,14 +153,14 @@ func stories(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
 }
 
 func getStoryContent(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
-    vars := mux.Vars(r)
-
     feedID := r.URL.Query().Get("feedID")
-    storyID, err := strconv.Atoi(vars["storyID"])
+    storyID := r.URL.Query().Get("storyID")
     isSocial, err := strconv.ParseBool(r.URL.Query().Get("isSocial"))
     if err != nil {
         panic(err)
     }
+
+    fmt.Println("Getting content: " + feedID + " " + storyID)
 
     page, err := strconv.Atoi(r.URL.Query().Get("page"))
     if err != nil {
@@ -191,8 +191,9 @@ func getStoryContent(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsbl
     var story newsblur.StoryInt
     found := false
     // TODO: Fix this for social story IDs
-    for id, s := range stories {
-        if id == storyID {
+    for _, s := range stories {
+        fmt.Println(s)
+        if s.ID() == storyID {
             story = s
             found = true
             break
