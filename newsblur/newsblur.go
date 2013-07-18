@@ -662,7 +662,7 @@ func (client *NBClient) Get(url string) (resp *http.Response, clientErr error) {
         resp, clientErr = client.Client.Get(url)
         if resp.StatusCode == 429 {
             fmt.Println("Waiting for the rate limit (" + url + ")")
-            time.Sleep(30 * time.Second)
+            time.Sleep(1 * time.Second)
         } else {
             fmt.Println("No more rate limit!")
             break
