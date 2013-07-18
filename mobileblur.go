@@ -3,15 +3,15 @@ package main
 import (
     "encoding/json"
     "fmt"
-    "net/http"
     "html/template"
+    "net/http"
     "strconv"
     "strings"
     "time"
 
     "./newsblur"
-    gocache "github.com/pmylund/go-cache"
     mux "github.com/gorilla/mux"
+    gocache "github.com/pmylund/go-cache"
 )
 
 type AuthMux struct {
@@ -22,9 +22,9 @@ type MyCache struct {
     cache gocache.Cache
 }
 
-func (cache *MyCache) get(key string, f func() interface{}, duration time.Duration) (interface{}) {
+func (cache *MyCache) get(key string, f func() interface{}, duration time.Duration) interface{} {
     val, found := cache.cache.Get(key)
-    if(found) {
+    if found {
         return val
     }
 
@@ -47,9 +47,9 @@ func login(w http.ResponseWriter, r *http.Request) {
         cookie, err := nb.Login(username, password)
         if err == nil {
             c := http.Cookie{
-                Name: "newsblur_sessionid",
-                Value: cookie,
-                Path: "/",
+                Name:   "newsblur_sessionid",
+                Value:  cookie,
+                Path:   "/",
                 Domain: ".mbtest.spiffyte.ch",
                 MaxAge: 315360000,
             }
@@ -58,9 +58,9 @@ func login(w http.ResponseWriter, r *http.Request) {
 
             if _, err = r.Cookie("intelligence_threshold"); err != nil {
                 c := http.Cookie{
-                    Name: "intelligence_threshold",
-                    Value: strconv.Itoa(-1),
-                    Path: "/",
+                    Name:   "intelligence_threshold",
+                    Value:  strconv.Itoa(-1),
+                    Path:   "/",
                     Domain: ".mbtest.spiffyte.ch",
                     MaxAge: 315360000,
                 }
@@ -75,7 +75,7 @@ func login(w http.ResponseWriter, r *http.Request) {
     vals := map[string]interface{}{
         "username": username,
         "password": password,
-        "error": err,
+        "error":    err,
     }
 
     t := template.Must(template.New("login.html").ParseFiles("templates/wrapper.html", "templates/login.html"))
@@ -85,25 +85,23 @@ func login(w http.ResponseWriter, r *http.Request) {
     }
 }
 
-
 func logout(w http.ResponseWriter, r *http.Request) {
     c := http.Cookie{
-        Name: "newsblur_sessionid",
-        Value: "deleted",
-        Path: "/",
-        Domain: ".mbtest.spiffyte.ch",
+        Name:    "newsblur_sessionid",
+        Value:   "deleted",
+        Path:    "/",
+        Domain:  ".mbtest.spiffyte.ch",
         Expires: time.Unix(1000000, 0),
     }
     http.SetCookie(w, &c)
     http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-
 func index(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     vals := map[string]interface{}{
-        "nb": nb,
-        "feeds": nb.Profile.Feeds,
-        "folder": nb.Profile.Folder,
+        "nb":          nb,
+        "feeds":       nb.Profile.Feeds,
+        "folder":      nb.Profile.Folder,
         "socialFeeds": nb.Profile.SocialFeeds,
     }
 
@@ -113,7 +111,6 @@ func index(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
         panic(err)
     }
 }
-
 
 func stories(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     vars := mux.Vars(r)
@@ -135,10 +132,10 @@ func stories(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     }
 
     vals := map[string]interface{}{
-        "nb": nb,
-        "Stories": stories,
-        "feed": feed,
-        "page": page,  // use this instead of feed ID in template to collapse things
+        "nb":       nb,
+        "Stories":  stories,
+        "feed":     feed,
+        "page":     page, // use this instead of feed ID in template to collapse things
         "isSocial": false,
     }
 
@@ -154,7 +151,6 @@ func stories(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
         panic(err)
     }
 }
-
 
 func getStoryContent(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     vars := mux.Vars(r)
@@ -208,7 +204,7 @@ func getStoryContent(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsbl
         return
     }
 
-    ret := map[string]string {
+    ret := map[string]string{
         "content": string(story.Content()),
     }
 
@@ -220,7 +216,6 @@ func getStoryContent(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsbl
 
     fmt.Fprintf(w, string(retj))
 }
-
 
 func socialStories(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     vars := mux.Vars(r)
@@ -241,10 +236,10 @@ func socialStories(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur
     }
 
     vals := map[string]interface{}{
-        "nb": nb,
-        "Stories": stories,
-        "feed": feed,
-        "page": page,  // TODO: use this instead of feed ID in template to collapse things
+        "nb":       nb,
+        "Stories":  stories,
+        "feed":     feed,
+        "page":     page, // TODO: use this instead of feed ID in template to collapse things
         "isSocial": true,
     }
 
@@ -260,7 +255,6 @@ func socialStories(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur
         panic(err)
     }
 }
-
 
 func markStoryRead(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     feedID := r.URL.Query().Get("feed_id")
@@ -302,7 +296,6 @@ func markStoryRead(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur
 
     fmt.Fprintf(w, "true")
 }
-
 
 func markReadBulk(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     r.ParseForm()
@@ -350,7 +343,6 @@ func markReadBulk(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur)
     fmt.Fprintf(w, "true")
 }
 
-
 func markUnread(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     r.ParseForm()
     rawStory := r.Form.Get("story")
@@ -368,7 +360,6 @@ func markUnread(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
 
     fmt.Fprintf(w, "true")
 }
-
 
 func settings(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     if r.Method == "POST" {
@@ -393,11 +384,11 @@ func settings(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     }
 
     vals := map[string]interface{}{
-        "nb": nb,
-        "threshold": nb.Threshold,
-        "showRead": nb.ShowRead,
+        "nb":         nb,
+        "threshold":  nb.Threshold,
+        "showRead":   nb.ShowRead,
         "emptyFeeds": nb.EmptyFeeds,
-        "isSocial": true,
+        "isSocial":   true,
     }
 
     if r.Header.Get("X-Requested-With") == "XMLHttpRequest" {
@@ -413,14 +404,12 @@ func settings(w http.ResponseWriter, r *http.Request, nb *newsblur.Newsblur) {
     }
 }
 
-
-func PassesThreshold(story newsblur.Story, nb newsblur.Newsblur) (bool) {
+func PassesThreshold(story newsblur.Story, nb newsblur.Newsblur) bool {
     return story.Score() > nb.Threshold
 }
 
-
-func showFeed(nb *newsblur.Newsblur) func(newsblur.FeedInt) (bool) {
-    return func(feed newsblur.FeedInt) (bool) {
+func showFeed(nb *newsblur.Newsblur) func(newsblur.FeedInt) bool {
+    return func(feed newsblur.FeedInt) bool {
         numAboveThreshold := 0
         numAboveThreshold += feed.GetPS()
         if nb.Threshold < 1 {
@@ -435,9 +424,8 @@ func showFeed(nb *newsblur.Newsblur) func(newsblur.FeedInt) (bool) {
     }
 }
 
-
-func showStory(nb *newsblur.Newsblur) func(newsblur.StoryInt) (bool) {
-    return func(story newsblur.StoryInt) (bool) {
+func showStory(nb *newsblur.Newsblur) func(newsblur.StoryInt) bool {
+    return func(story newsblur.StoryInt) bool {
         fmt.Println(story)
         fmt.Println(story.ReadStatus())
         return story.Score() >= nb.Threshold && (story.ReadStatus() == 0 || nb.ShowRead == true)
@@ -448,9 +436,9 @@ func setCookie(w *http.ResponseWriter, r http.Request, name string, defaultValue
     c, err := r.Cookie(name)
     if err != nil || stomp == true {
         c := http.Cookie{
-            Name: name,
-            Value: defaultValue,
-            Path: "/",
+            Name:   name,
+            Value:  defaultValue,
+            Path:   "/",
             Domain: ".mbtest.spiffyte.ch",
             MaxAge: 315360000,
         }
@@ -463,9 +451,8 @@ func setCookie(w *http.ResponseWriter, r http.Request, name string, defaultValue
     return
 }
 
-
 func (mux *AuthMux) HandleFunc(pattern string, handler func(http.ResponseWriter, *http.Request, *newsblur.Newsblur)) {
-   mux.Router.HandleFunc(pattern, authenticate(handler))
+    mux.Router.HandleFunc(pattern, authenticate(handler))
 }
 
 func (mux *AuthMux) HandleFuncNoAuth(pattern string, handler func(http.ResponseWriter, *http.Request)) {
@@ -475,7 +462,7 @@ func (mux *AuthMux) HandleFuncNoAuth(pattern string, handler func(http.ResponseW
 func authenticate(handler func(http.ResponseWriter, *http.Request, *newsblur.Newsblur)) func(http.ResponseWriter, *http.Request) {
     return func(w http.ResponseWriter, r *http.Request) {
         var nb newsblur.Newsblur
-            if cookie, err := r.Cookie("newsblur_sessionid"); err == nil {
+        if cookie, err := r.Cookie("newsblur_sessionid"); err == nil {
             nb.Cookie = cookie.Value
         } else {
             http.Redirect(w, r, "/login", http.StatusSeeOther)
@@ -514,7 +501,6 @@ func authenticate(handler func(http.ResponseWriter, *http.Request, *newsblur.New
         handler(w, r, &nb)
     }
 }
-
 
 func main() {
     r := AuthMux{mux.NewRouter()}

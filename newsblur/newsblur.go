@@ -16,30 +16,30 @@ import (
 )
 
 type Newsblur struct {
-    Cookie string
-    Profile Profile
-    Threshold int
-    ShowRead bool
+    Cookie     string
+    Profile    Profile
+    Threshold  int
+    ShowRead   bool
     EmptyFeeds bool
 }
 
 type NBCoreResponse struct {
-    Result string `json:"result"`
-    Code int `json:"code"`
-    Errors []string `json:"errors"`
+    Result  string      `json:"result"`
+    Code    int         `json:"code"`
+    Errors  []string    `json:"errors"`
     Payload interface{} `json:"payload"`
 }
 
 type Feed struct {
-    ID int `json:"id"`
-    PS int `json:"ps"`
-    NT int `json:"nt"`
-    NG int `json:"ng"`
-    UpdatedSecondsAgo int `json:"updated_seconds_ago"`
-    Address string `json:"feed_address"`
-    Title string `json:"feed_title"`
-    Link string `json:"feed_link"`
-    Stories StoryList
+    ID                int    `json:"id"`
+    PS                int    `json:"ps"`
+    NT                int    `json:"nt"`
+    NG                int    `json:"ng"`
+    UpdatedSecondsAgo int    `json:"updated_seconds_ago"`
+    Address           string `json:"feed_address"`
+    Title             string `json:"feed_title"`
+    Link              string `json:"feed_link"`
+    Stories           StoryList
 }
 
 type FeedInt interface {
@@ -47,6 +47,7 @@ type FeedInt interface {
     GetNT() int
     GetNG() int
 }
+
 func (feed *SocialFeed) GetPS() int {
     return feed.PS
 }
@@ -67,25 +68,24 @@ func (feed *Feed) GetNG() int {
 }
 
 type Folder struct {
-    Name string
-    Feeds []Feed
+    Name    string
+    Feeds   []Feed
     Folders []Folder
 }
 
 type FeedList struct {
-    Feeds map[int]Feed
+    Feeds   map[int]Feed
     Folders []Folder
     //Blurblogs map[int]Blurblogs
 }
 
 type Profile struct {
-    RawFolders []interface{} `json:"folders"`
-    Folder Folder
-    Feeds map[string]Feed
+    RawFolders     []interface{} `json:"folders"`
+    Folder         Folder
+    Feeds          map[string]Feed
     RawSocialFeeds []SocialFeed `json:"social_feeds"`
-    SocialFeeds map[string]SocialFeed
+    SocialFeeds    map[string]SocialFeed
 }
-
 
 type UserProfile struct {
     Username string `json:"username"`
@@ -96,24 +96,24 @@ type RealProfile struct {
 }
 
 type Intelligence struct {
-    Feed int `json:"feed"`
-    Tags int `json:"tags"`
+    Feed   int `json:"feed"`
+    Tags   int `json:"tags"`
     Author int `json:"author"`
-    Title int `json:"title"`
+    Title  int `json:"title"`
 }
 
 type Story struct {
-    JSONId string `json:"id"`
-    JSONGuid string `json:"guid_hash"`
+    JSONId    string `json:"id"`
+    JSONGuid  string `json:"guid_hash"`
     JSONTitle string `json:"story_title"`
     //Date time.Time `json:"story_date"`
-    JSONPrettyDate string `json:"short_parsed_date"`
-    JSONContent template.HTML `json:"story_content"`
-    JSONPermalink string `json:"story_permalink"`
-    JSONReadStatus int `json:"read_status"`
-    JSONTags []string `json:"story_tags"`
-    JSONHasModifications int `json:"has_modifications"`
-    JSONIntelligence Intelligence `json:"intelligence"`
+    JSONPrettyDate       string        `json:"short_parsed_date"`
+    JSONContent          template.HTML `json:"story_content"`
+    JSONPermalink        string        `json:"story_permalink"`
+    JSONReadStatus       int           `json:"read_status"`
+    JSONTags             []string      `json:"story_tags"`
+    JSONHasModifications int           `json:"has_modifications"`
+    JSONIntelligence     Intelligence  `json:"intelligence"`
 }
 
 type StoryInt interface {
@@ -137,40 +137,39 @@ type SocialStoryList struct {
 }
 
 type SocialFeed struct {
-    Title string `json:"feed_title"`
-    ID string `json:"id"`
-    SocialID int `json:"subscription_user_id"`
-    Link string `json:"feed_link"`
-    PS int `json:"ps"`
-    NT int `json:"nt"`
-    NG int `json:"ng"`
-    Stories []SocialStory
+    Title    string `json:"feed_title"`
+    ID       string `json:"id"`
+    SocialID int    `json:"subscription_user_id"`
+    Link     string `json:"feed_link"`
+    PS       int    `json:"ps"`
+    NT       int    `json:"nt"`
+    NG       int    `json:"ng"`
+    Stories  []SocialStory
 }
 
 type SocialStory struct {
-    JSONId string `json:"id"`
-    JSONGuid string `json:"guid_hash"`
-    JSONTitle string `json:"story_title"`
+    JSONId     string `json:"id"`
+    JSONGuid   string `json:"guid_hash"`
+    JSONTitle  string `json:"story_title"`
     JSONAuthor string `json:"story_authors"`
     //Date time.Time `json:"story_date"`
-    JSONPrettyDate string `json:"short_parsed_date"`
-    JSONContent template.HTML `json:"story_content"`
-    JSONPermalink string `json:"story_permalink"`
-    JSONReadStatus int `json:"read_status"`
-    JSONStoryFeedID int `json:"story_feed_id"`
-    JSONTags []string `json:"story_tags"`
-    JSONHasModifications int `json:"has_modifications"`
-    JSONIntelligence Intelligence `json:"intelligence"`
-    JSONCommentCount int `json:"comment_count"`
-    JSONStories []SocialStory
+    JSONPrettyDate       string        `json:"short_parsed_date"`
+    JSONContent          template.HTML `json:"story_content"`
+    JSONPermalink        string        `json:"story_permalink"`
+    JSONReadStatus       int           `json:"read_status"`
+    JSONStoryFeedID      int           `json:"story_feed_id"`
+    JSONTags             []string      `json:"story_tags"`
+    JSONHasModifications int           `json:"has_modifications"`
+    JSONIntelligence     Intelligence  `json:"intelligence"`
+    JSONCommentCount     int           `json:"comment_count"`
+    JSONStories          []SocialStory
 }
-
 
 var nbURL = "http://www.newsblur.com"
 
 func (nb *Newsblur) Login(username, password string) (cookie string, error error) {
     resp, err := http.PostForm(
-        nbURL + "/api/login",
+        nbURL+"/api/login",
         url.Values{
             "username": {username},
             "password": {password},
@@ -182,9 +181,9 @@ func (nb *Newsblur) Login(username, password string) (cookie string, error error
     defer resp.Body.Close()
 
     type Response struct {
-        Result string `json:"result"`
+        Result string      `json:"result"`
         Errors interface{} `json:"errors"`
-        Code int
+        Code   int
     }
     var response Response
 
@@ -235,7 +234,7 @@ func (story *SocialStory) HashStory() string {
     return sha
 }
 
-func (feed *Feed) IsStale() (bool) {
+func (feed *Feed) IsStale() bool {
     // TODO: Need to flesh this out to check the cache when I actually have a cache mechanism to check
     return true
 }
@@ -248,42 +247,39 @@ func (nb *Newsblur) getFolders() (folder Folder) {
     return folder
 }
 
-
 func getFolderFeeds(nb *Newsblur, folder []interface{}) (feeds []Feed) {
     for _, item := range folder {
         switch item.(type) {
-            case float64:
-                feedID := strconv.Itoa(int(item.(float64)))
-                // TODO: Find a way to grab a reference to the feed, instead of a copy
-                feeds = append(feeds, nb.Profile.Feeds[feedID])
-            case interface{}:
+        case float64:
+            feedID := strconv.Itoa(int(item.(float64)))
+            // TODO: Find a way to grab a reference to the feed, instead of a copy
+            feeds = append(feeds, nb.Profile.Feeds[feedID])
+        case interface{}:
         }
     }
     return feeds
 }
 
-
 func getFolderFolders(nb *Newsblur, folder []interface{}) (folders []Folder) {
     for _, item := range folder {
         switch item.(type) {
-            case float64:
-            case interface{}:
-                for folderName, val := range item.(map[string]interface{}) {
-                    folder := Folder{}
-                    folder.Name = folderName
-                    //folder.Feeds = getFolderFeeds(folder)
-                    folder.Feeds = getFolderFeeds(nb, val.([]interface{}))
-                    folder.Folders = getFolderFolders(nb, val.([]interface{}))
-                    folders = append(folders, folder)
-                }
+        case float64:
+        case interface{}:
+            for folderName, val := range item.(map[string]interface{}) {
+                folder := Folder{}
+                folder.Name = folderName
+                //folder.Feeds = getFolderFeeds(folder)
+                folder.Feeds = getFolderFeeds(nb, val.([]interface{}))
+                folder.Folders = getFolderFolders(nb, val.([]interface{}))
+                folders = append(folders, folder)
+            }
         }
     }
 
     return folders
 }
 
-
-func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) ([]StoryInt) {
+func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) []StoryInt {
     u, err := url.Parse(nbURL + "/reader/feed/" + strconv.Itoa(feed.ID))
     if err != nil {
         panic(err)
@@ -316,9 +312,8 @@ func (feed *Feed) GetStoryPage(nb *Newsblur, page int, force bool) ([]StoryInt) 
     return ret
 }
 
-
-func (feed *SocialFeed) GetSocialStoryPage(nb *Newsblur, page int, force bool) ([]StoryInt) {
-    u, err := url.Parse(nbURL + "/social/stories/" + strconv.Itoa(feed.SocialID) + "/")  // Trailing slash is necessary or Newsblur 404s
+func (feed *SocialFeed) GetSocialStoryPage(nb *Newsblur, page int, force bool) []StoryInt {
+    u, err := url.Parse(nbURL + "/social/stories/" + strconv.Itoa(feed.SocialID) + "/") // Trailing slash is necessary or Newsblur 404s
     if err != nil {
         panic(err)
     }
@@ -350,8 +345,7 @@ func (feed *SocialFeed) GetSocialStoryPage(nb *Newsblur, page int, force bool) (
     return ret
 }
 
-
-func (nb *Newsblur) NewClient() (*NBClient) {
+func (nb *Newsblur) NewClient() *NBClient {
     client := NBClient{}
     client.Client = &http.Client{}
     cookie := http.Cookie{Name: "newsblur_sessionid", Value: nb.Cookie}
@@ -366,8 +360,7 @@ func (nb *Newsblur) NewClient() (*NBClient) {
     return &client
 }
 
-
-func (nb *Newsblur) RetrieveRealProfile() (RealProfile) {
+func (nb *Newsblur) RetrieveRealProfile() RealProfile {
     // TODO: Cache this, keyed on the session cookie value
     client := nb.NewClient()
     resp, err := client.Get(nbURL + "/social/profile")
@@ -385,13 +378,12 @@ func (nb *Newsblur) RetrieveRealProfile() (RealProfile) {
     return profile
 }
 
-func (nb *Newsblur) GetUsername() (string) {
+func (nb *Newsblur) GetUsername() string {
     profile := nb.RetrieveRealProfile()
     return profile.UserProfile.Username
 }
 
-
-func (nb *Newsblur) GetProfile() (Profile) {
+func (nb *Newsblur) GetProfile() Profile {
     client := nb.NewClient()
     resp, err := client.Get(nbURL + "/reader/feeds")
     if err != nil {
@@ -421,11 +413,10 @@ func (nb *Newsblur) GetProfile() (Profile) {
     return profile
 }
 
-
-func (nb *Newsblur) MarkStoryRead(feedID int, storyID string) (error) {
+func (nb *Newsblur) MarkStoryRead(feedID int, storyID string) error {
     client := nb.NewClient()
     resp, err := client.PostForm(
-        nbURL + "/reader/mark_story_as_read",
+        nbURL+"/reader/mark_story_as_read",
         url.Values{"feed_id": {strconv.Itoa(feedID)}, "story_id": {storyID}},
     )
     if err != nil {
@@ -454,8 +445,7 @@ func (nb *Newsblur) MarkStoryRead(feedID int, storyID string) (error) {
     }
 }
 
-
-func (nb *Newsblur) MarkStoriesReadBulk(stories map[string][]string) (error) {
+func (nb *Newsblur) MarkStoriesReadBulk(stories map[string][]string) error {
     b, err := json.Marshal(stories)
     if err != nil {
         panic(err)
@@ -463,7 +453,7 @@ func (nb *Newsblur) MarkStoriesReadBulk(stories map[string][]string) (error) {
 
     client := nb.NewClient()
     resp, err := client.PostForm(
-        nbURL + "/reader/mark_feed_stories_as_read",
+        nbURL+"/reader/mark_feed_stories_as_read",
         url.Values{"feeds_stories": {string(b)}},
     )
     if err != nil {
@@ -492,8 +482,7 @@ func (nb *Newsblur) MarkStoriesReadBulk(stories map[string][]string) (error) {
     }
 }
 
-
-func (nb *Newsblur) MarkSocialStoriesRead(stories map[string]map[string][]string) (error) {
+func (nb *Newsblur) MarkSocialStoriesRead(stories map[string]map[string][]string) error {
     b, err := json.Marshal(stories)
     if err != nil {
         panic(err)
@@ -501,7 +490,7 @@ func (nb *Newsblur) MarkSocialStoriesRead(stories map[string]map[string][]string
 
     client := nb.NewClient()
     resp, err := client.PostForm(
-        nbURL + "/reader/mark_social_stories_as_read",
+        nbURL+"/reader/mark_social_stories_as_read",
         url.Values{"users_feeds_stories": {string(b)}},
     )
     if err != nil {
@@ -530,13 +519,12 @@ func (nb *Newsblur) MarkSocialStoriesRead(stories map[string]map[string][]string
     }
 }
 
-
-func (nb *Newsblur) MarkStoryUnread(feedID, storyID string) (error) {
+func (nb *Newsblur) MarkStoryUnread(feedID, storyID string) error {
     client := nb.NewClient()
     resp, err := client.PostForm(
-        nbURL + "/reader/mark_story_as_unread",
+        nbURL+"/reader/mark_story_as_unread",
         url.Values{
-            "feed_id": {feedID},
+            "feed_id":  {feedID},
             "story_id": {storyID},
         },
     )
@@ -567,52 +555,49 @@ func (nb *Newsblur) MarkStoryUnread(feedID, storyID string) (error) {
     }
 }
 
-
-
-func (story *Story) ID() (string) {
+func (story *Story) ID() string {
     return story.JSONId
 }
-func (story *Story) Title() (string) {
+func (story *Story) Title() string {
     return story.JSONTitle
 }
-func (story *Story) PrettyDate() (string) {
+func (story *Story) PrettyDate() string {
     return story.JSONPrettyDate
 }
-func (story *Story) Permalink() (string) {
+func (story *Story) Permalink() string {
     return story.JSONPermalink
 }
-func (story *Story) Intelligence() (Intelligence) {
+func (story *Story) Intelligence() Intelligence {
     return story.JSONIntelligence
 }
-func (story *Story) ReadStatus() (int) {
+func (story *Story) ReadStatus() int {
     return story.JSONReadStatus
 }
-func (story *Story) Content() (template.HTML) {
+func (story *Story) Content() template.HTML {
     return story.JSONContent
 }
 
-func (story *SocialStory) ID() (string) {
+func (story *SocialStory) ID() string {
     return story.JSONId
 }
-func (story *SocialStory) Title() (string) {
+func (story *SocialStory) Title() string {
     return story.JSONTitle
 }
-func (story *SocialStory) PrettyDate() (string) {
+func (story *SocialStory) PrettyDate() string {
     return story.JSONPrettyDate
 }
-func (story *SocialStory) Permalink() (string) {
+func (story *SocialStory) Permalink() string {
     return story.JSONPermalink
 }
-func (story *SocialStory) Intelligence() (Intelligence) {
+func (story *SocialStory) Intelligence() Intelligence {
     return story.JSONIntelligence
 }
-func (story *SocialStory) ReadStatus() (int) {
+func (story *SocialStory) ReadStatus() int {
     return story.JSONReadStatus
 }
-func (story *SocialStory) Content() (template.HTML) {
+func (story *SocialStory) Content() template.HTML {
     return story.JSONContent
 }
-
 
 // TODO: Refactor this to be one function that takes a StoryInt and uses getters instead of properties
 func (story Story) Score() (score int) {
@@ -634,12 +619,12 @@ func scoreStory(intelligence Intelligence) (score int) {
     minScore = math.Min(minScore, float64(intelligence.Title))
 
     if maxScore > 0 {
-        score = 1;
+        score = 1
     } else if minScore < 0 {
-        score = -1;
+        score = -1
     }
 
-    if (score == 0) {
+    if score == 0 {
         if intelligence.Feed > 0 {
             score = 1
         } else if intelligence.Feed < 0 {
@@ -649,7 +634,7 @@ func scoreStory(intelligence Intelligence) (score int) {
         }
     }
 
-    return;
+    return
 }
 
 type NBClient struct {
