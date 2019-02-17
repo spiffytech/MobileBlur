@@ -1,3 +1,5 @@
+[*]
+end_of_line = lf
 [**/*.vue]
 indent_style = space
 indent_size = 2
