@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import Feed from './components/Feed.vue';
+import Story from './components/Story.vue';
 
 import store from './store';
 
@@ -14,6 +16,19 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
+      children: [
+        {
+          name: 'feed',
+          path: 'feed/:feed',
+          component: Feed,
+        },
+
+        {
+          name: 'story',
+          path: 'feed/:feed/page/:page/story/:story',
+          component: Story,
+        }
+      ],
     },
     {
       path: '/login',

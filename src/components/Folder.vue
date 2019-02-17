@@ -4,7 +4,8 @@
         <div v-for="item in filteredContents" :key="isFolder(item) ? folderName(item) : item">
             <!-- Some items don't have corresponding feeds or folders. No idea what they are. -->
             <div v-if="!isFolder(item) && feeds[item]">
-                {{feeds[item].feed_title}} {{feeds[item].ng}} {{feeds[item].nt}} {{feeds[item].ps}}
+                <router-link :to="{name: 'feed', params: {feed: item}}">{{feeds[item].feed_title}}</router-link>
+                {{feeds[item].ng}} {{feeds[item].nt}} {{feeds[item].ps}}
             </div>
 
             <Folder v-else :name="folderName(item)" :feeds="feeds" :contents="folderContents(item)" />

@@ -20,6 +20,15 @@ export async function fetchFeeds() {
 }
 
 /**
+ * Returns the stories for the given feed
+ * @param feed Feed ID
+ */
+export async function fetchStories(feed: string | number, page: number) {
+    const response = await axios.get(base + `/reader/feed/${feed}?page=${page}`);
+    return response.data;
+}
+
+/**
  * Does this feed have any unread stories that match/exceed our current filter?
  * @param filter
  */

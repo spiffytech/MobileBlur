@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <Feeds />
+    <router-view />
   </div>
 </template>
 
@@ -15,3 +16,10 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.home {
+  display: flex;
+  flex-direction: row;
+}
+</style>
