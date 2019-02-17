@@ -27,7 +27,7 @@ const router = new Router({
           name: 'story',
           path: 'feed/:feed/page/:page/story/:story',
           component: Story,
-        }
+        },
       ],
     },
     {
