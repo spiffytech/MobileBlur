@@ -4,7 +4,7 @@
     <h1 class="title">{{feed.feed_title}}</h1>
     <div v-for="story in this.stories" :key="story.id" :class="{read: story.read_status === 1}">
       <router-link
-        :to="{name: 'story', params: {feed: feed.id, story: story.id, page: story.page}}"
+        :to="{name: 'story', params: {feed: feed.feed_id, story: story.id, page: story.page}}"
       >
         <header>{{story.story_title}}</header>
         <p>{{story.long_parsed_date}}</p>

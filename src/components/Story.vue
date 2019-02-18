@@ -1,7 +1,7 @@
 <template>
   <div v-if="loading">Loading...</div>
   <div v-else>
-    <h1 class="title">{{story.story_title}}</h1>
+    <a :href="story.story_permalink"><h1 class="title">{{story.story_title}}</h1></a>
     <div v-html="story.story_content"/>
   </div>
 </template>
