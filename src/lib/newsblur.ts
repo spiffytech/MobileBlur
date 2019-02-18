@@ -10,12 +10,19 @@ export async function logIn(username: string, password: string) {
         method: 'post',
         url: base + '/api/login',
         data,
+        withCredentials: true,
     });
     return response.data;
 }
 
+export async function logOut() {
+  await axios.post(base + '/api/logout', {withCredentials: true});
+  return;
+}
+
 export async function fetchFeeds() {
     const response = await axios.get(base + '/reader/feeds', {withCredentials: true});
+    if (!response.data.authenticated) throw new Error('Unauthenticated');
     return response.data;
 }
 
@@ -24,7 +31,8 @@ export async function fetchFeeds() {
  * @param feed Feed ID
  */
 export async function fetchStories(feed: string | number, page: number) {
-    const response = await axios.get(base + `/reader/feed/${feed}?page=${page}`);
+    const response = await axios.get(base + `/reader/feed/${feed}?page=${page}`, {withCredentials: true});
+    if (!response.data.authenticated) throw new Error('Unauthenticated');
     return response.data;
 }
 

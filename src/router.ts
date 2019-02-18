@@ -4,6 +4,7 @@ import Home from './views/Home.vue';
 import Feed from './components/Feed.vue';
 import Story from './components/Story.vue';
 
+import * as newsblur from './lib/newsblur';
 import store from './store';
 
 Vue.use(Router);
@@ -41,8 +42,17 @@ const router = new Router({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (!store.state.loggedIn && to.name !== 'log-in') return next({name: 'log-in'});
+router.beforeEach(async (to, from, next) => {
+  if (!store.state.loggedIn && to.name !== 'log-in') {
+    // Attempt to validate whether we're logged in
+    try {
+      await newsblur.fetchFeeds();
+      store.commit('setLoggedIn', true);
+      return next();
+    } catch (ex) {
+      return next({name: 'log-in'});
+    }
+  }
   next();
 });
 
